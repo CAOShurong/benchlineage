@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-08-04T07:59:00+00:00",
+  "hypothesis": "The measured cutoff follows 1/(2πRC) within the expanded uncertainty.",
+  "id": "rc-filter",
+  "objective": "Estimate the -3 dB cutoff and quantify the effect of a resistor substitution.",
+  "protocol": "Apply a 1 V sine sweep from 20 Hz to 100 kHz. Record input amplitude, output amplitude, and phase at 41 logarithmically spaced frequencies.",
+  "schema": "benchlineage/study/v1",
+  "tags": [
+    "analog",
+    "filter",
+    "frequency-response",
+    "metrology"
+  ],
+  "title": "First-order RC low-pass characterization"
+}

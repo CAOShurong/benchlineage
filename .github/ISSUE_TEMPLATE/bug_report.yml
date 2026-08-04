@@ -1,0 +1,43 @@
+name: Bug report
+description: Report incorrect behavior or an integrity/audit failure.
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: Do not upload private, proprietary, regulated, or safety-sensitive laboratory data.
+  - type: input
+    id: version
+    attributes:
+      label: BenchLineage version
+      placeholder: "0.1.0"
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected area
+      options:
+        - Workspace records
+        - Analysis
+        - Uncertainty
+        - Audit
+        - Seal or verification
+        - HTML report
+        - Packaging
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Use synthetic data and include commands, expected behavior, and actual behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: Evidence impact
+      description: Explain whether raw data, analysis, audit, or root-digest interpretation is affected.
+    validations:
+      required: true

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://caoshurong.github.io/benchlineage/schemas/calibration.schema.json",
+  "title": "BenchLineage calibration",
+  "type": "object",
+  "required": [
+    "schema", "id", "instrument_id", "performed_at", "due_at", "certificate",
+    "standard_uncertainty", "unit", "coverage_factor", "status"
+  ],
+  "properties": {
+    "schema": {"const": "benchlineage/calibration/v1"},
+    "id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "instrument_id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "performed_at": {"type": "string", "format": "date-time"},
+    "due_at": {"type": "string", "format": "date-time"},
+    "certificate": {"type": "string", "minLength": 1},
+    "standard_uncertainty": {"type": "number", "minimum": 0},
+    "unit": {"type": "string", "minLength": 1},
+    "coverage_factor": {"type": "number", "exclusiveMinimum": 0},
+    "status": {"enum": ["valid", "expired", "withdrawn", "unknown"]},
+    "created_at": {"type": "string", "format": "date-time"}
+  },
+  "additionalProperties": true
+}

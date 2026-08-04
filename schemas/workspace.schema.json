@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://caoshurong.github.io/benchlineage/schemas/workspace.schema.json",
+  "title": "BenchLineage workspace",
+  "type": "object",
+  "required": ["format", "format_version", "title", "owner", "created_at"],
+  "properties": {
+    "format": {"const": "benchlineage-workspace"},
+    "format_version": {"const": "1.0"},
+    "title": {"type": "string", "minLength": 1},
+    "owner": {"type": "string", "minLength": 1},
+    "created_at": {"type": "string", "format": "date-time"},
+    "principles": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": true
+}

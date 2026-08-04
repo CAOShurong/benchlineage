@@ -1,0 +1,24 @@
+{
+  "conditions": {
+    "ambient_temperature_degC": 23.8,
+    "nominal_c_f": 1e-08,
+    "nominal_r_ohm": 12000
+  },
+  "deviations": [
+    "Resistor changed from 10 kohm to 12 kohm by design."
+  ],
+  "id": "rc-swap-002",
+  "instruments": [
+    "scope-01",
+    "source-01"
+  ],
+  "notes": "Synthetic demonstration data; no physical measurement claim.",
+  "operator": "Shurong Cao",
+  "raw_files": [
+    "data/raw/rc-resistor-swap.csv"
+  ],
+  "recorded_at": "2026-08-04T07:59:00+00:00",
+  "schema": "benchlineage/run/v1",
+  "started_at": "2026-08-04T08:00:00+00:00",
+  "study_id": "rc-filter"
+}

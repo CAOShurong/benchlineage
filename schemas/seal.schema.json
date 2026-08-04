@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://caoshurong.github.io/benchlineage/schemas/seal.schema.json",
+  "title": "BenchLineage evidence seal",
+  "type": "object",
+  "required": ["schema", "created_at", "algorithm", "scope", "files", "root_digest"],
+  "properties": {
+    "schema": {"const": "benchlineage/seal/v1"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "label": {"type": "string"},
+    "algorithm": {"const": "sha256"},
+    "scope": {"type": "object"},
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "bytes", "digest"],
+        "properties": {
+          "path": {"type": "string"},
+          "bytes": {"type": "integer", "minimum": 0},
+          "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+        }
+      }
+    },
+    "root_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+  },
+  "additionalProperties": false
+}

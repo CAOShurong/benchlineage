@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://caoshurong.github.io/benchlineage/schemas/study.schema.json",
+  "title": "BenchLineage study",
+  "type": "object",
+  "required": ["schema", "id", "title", "objective", "protocol", "created_at"],
+  "properties": {
+    "schema": {"const": "benchlineage/study/v1"},
+    "id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "title": {"type": "string", "minLength": 1},
+    "objective": {"type": "string", "minLength": 1},
+    "hypothesis": {"type": "string"},
+    "protocol": {"type": "string", "minLength": 1},
+    "tags": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+    "created_at": {"type": "string", "format": "date-time"}
+  },
+  "additionalProperties": true
+}

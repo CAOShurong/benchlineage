@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="BenchLineage creates local-first provenance, uncertainty, and audit trails for electrical-engineering experiments.">
+  <meta name="theme-color" content="#071411">
+  <title>BenchLineage — from measurement to evidence</title>
+  <style>
+    :root{--bg:#071411;--panel:#10231f;--panel2:#142e27;--line:#295047;--ink:#edf8f4;
+      --muted:#9bb2ac;--mint:#78e6bd;--blue:#7fc8ff;--amber:#f3bc62}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at
+      80% 0,#194a3e 0,transparent 30%),var(--bg);color:var(--ink);font:16px/1.6 Inter,ui-sans-serif,
+      system-ui,-apple-system,sans-serif}a{color:inherit;text-decoration:none}.wrap{width:min(1180px,
+      calc(100% - 38px));margin:auto}.nav{height:84px;display:flex;align-items:center;justify-content:
+      space-between}.brand{font-weight:850;font-size:20px}.brand i{font-style:normal;background:var(--mint);
+      color:#082019;border-radius:9px;padding:5px 9px;margin-right:8px}.links{display:flex;align-items:center;
+      gap:28px;color:var(--muted);font-size:14px}.links a:hover{color:var(--ink)}.source{border:1px solid
+      var(--line);padding:9px 14px;border-radius:10px;color:var(--ink)!important}.hero{min-height:680px;
+      display:grid;grid-template-columns:1.1fr .9fr;gap:65px;align-items:center}.eyebrow{font:750 12px/1.2
+      ui-monospace,monospace;letter-spacing:.16em;color:var(--mint)}h1{font-size:clamp(56px,7vw,88px);
+      line-height:.93;letter-spacing:-.06em;margin:20px 0 28px;max-width:760px}h1 span{color:var(--mint)}
+    .lede{font-size:20px;color:#b6cbc5;max-width:700px}.actions{display:flex;gap:12px;margin:34px 0 25px;
+      flex-wrap:wrap}.button{font-weight:800;padding:14px 18px;border-radius:11px;background:var(--mint);
+      color:#082019}.button.secondary{background:#112b25;color:var(--ink);border:1px solid var(--line)}
+    .proofs{display:flex;gap:22px;flex-wrap:wrap;color:var(--muted);font-size:13px}.proofs b{color:var(--mint)}
+    .trace-visual{height:460px;border:1px solid var(--line);border-radius:28px;background:linear-gradient(145deg,
+      #102b25,#081814);position:relative;overflow:hidden;box-shadow:0 40px 100px #0007}.trace-visual:before{
+      content:"";position:absolute;inset:0;background-image:linear-gradient(#fff1 1px,transparent 1px),
+      linear-gradient(90deg,#fff1 1px,transparent 1px);background-size:38px 38px;opacity:.35}.signal{position:
+      absolute;inset:68px 28px auto}.signal svg{width:100%;filter:drop-shadow(0 0 12px #78e6bd88)}
+    .root{position:absolute;left:32px;right:32px;bottom:30px;display:grid;grid-template-columns:1fr 1fr;
+      gap:10px}.root div{padding:17px;background:#0a1b18dd;border:1px solid var(--line);border-radius:12px}
+    .root small{display:block;color:var(--muted)}.root strong{font-size:22px}.stats{display:grid;grid-template-columns:
+      repeat(4,1fr);border:1px solid var(--line);border-radius:20px;overflow:hidden;background:#0b1c18;
+      margin:0 auto 110px}.stats div{padding:26px;border-right:1px solid var(--line)}.stats div:last-child{border:0}
+    .stats strong{display:block;font-size:32px}.stats span{color:var(--muted);font-size:14px}section{padding:70px 0}
+    h2{font-size:clamp(36px,5vw,58px);line-height:1;letter-spacing:-.045em;margin:14px 0 20px;max-width:820px}
+    .section-copy{color:var(--muted);max-width:720px;font-size:18px}.chain{display:grid;grid-template-columns:
+      repeat(3,1fr);gap:14px;margin-top:36px}.card{padding:24px;border-radius:17px;background:var(--panel);
+      border:1px solid var(--line);min-height:185px}.card .number{color:var(--mint);font:700 12px ui-monospace}
+    .card h3{font-size:22px;margin:22px 0 9px}.card p{color:var(--muted);margin:0}.demo{display:grid;
+      grid-template-columns:.85fr 1.15fr;gap:24px;align-items:center}.terminal{background:#050e0c;border:1px solid
+      var(--line);border-radius:18px;overflow:hidden;box-shadow:0 28px 70px #0005}.terminal header{padding:12px 16px;
+      border-bottom:1px solid #203f37;color:var(--muted);font:12px ui-monospace}.terminal pre{margin:0;padding:25px;
+      overflow:auto;color:#b9d7ce;font:13px/1.8 ui-monospace,monospace}.terminal .cmd{color:var(--mint)}
+    .terminal .out{color:var(--amber)}.boundary{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:
+      32px}.boundary article{background:#0b1d19;border-left:3px solid var(--amber);padding:22px 24px;border-radius:
+      0 14px 14px 0}.boundary strong{display:block;margin-bottom:7px}.boundary p{color:var(--muted);margin:0}
+    .cta{margin:80px 0;background:linear-gradient(135deg,#174a3d,#0e2822);border:1px solid #3a6d60;border-radius:
+      25px;padding:50px;display:flex;justify-content:space-between;gap:30px;align-items:center}.cta h2{margin:0;
+      font-size:43px}.cta p{color:#bcd3cc;margin-bottom:0}.footer{display:flex;justify-content:space-between;
+      border-top:1px solid var(--line);padding:28px 0 50px;color:var(--muted);font-size:13px}
+    @media(max-width:850px){.links a:not(.source){display:none}.hero,.demo{grid-template-columns:1fr}.hero{
+      padding:70px 0}.trace-visual{height:390px}.stats{grid-template-columns:1fr 1fr}.chain{grid-template-columns:1fr 1fr}
+      .boundary{grid-template-columns:1fr}.cta{align-items:flex-start;flex-direction:column}}
+    @media(max-width:560px){.chain,.stats{grid-template-columns:1fr}.stats div{border-right:0;border-bottom:1px
+      solid var(--line)}.root{grid-template-columns:1fr}.root div:nth-child(n+3){display:none}.cta{padding:30px}}
+  </style>
+</head>
+<body>
+  <nav class="nav wrap">
+    <a class="brand" href="#"><i>⟟</i>BenchLineage</a>
+    <div class="links">
+      <a href="#chain">Evidence chain</a>
+      <a href="#demo">Demonstration</a>
+      <a href="#boundaries">Boundaries</a>
+      <a class="source" href="https://github.com/CAOShurong/benchlineage">View source ↗</a>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero wrap">
+      <div>
+        <div class="eyebrow">LOCAL-FIRST EE EXPERIMENT PROVENANCE</div>
+        <h1>From measurement<br>to <span>evidence.</span></h1>
+        <p class="lede">Keep research intent, instrument identity, calibration coverage, raw data,
+          analysis, uncertainty, and publication in one inspectable chain—without a server.</p>
+        <div class="actions">
+          <a class="button" href="demo/demo-report.html">Open synthetic report →</a>
+          <a class="button secondary" href="https://github.com/CAOShurong/benchlineage#try-the-complete-demonstration">Run locally</a>
+        </div>
+        <div class="proofs"><span><b>✓</b> no account</span><span><b>✓</b> zero runtime dependencies</span>
+          <span><b>✓</b> MIT licensed</span></div>
+      </div>
+      <div class="trace-visual" aria-label="Stylized signal becoming sealed evidence">
+        <div class="signal">
+          <svg viewBox="0 0 500 190" role="img" aria-label="Signal waveform with sample points">
+            <path d="M0 97C36 97 36 23 72 23s36 148 72 148 36-111 72-111 36 53 72 53 36-26 72-26 36 10 72 10 36-5 72-5" fill="none" stroke="#78e6bd" stroke-width="5"/>
+            <g fill="#f3bc62"><circle cx="72" cy="23" r="6"/><circle cx="144" cy="171" r="6"/>
+              <circle cx="216" cy="60" r="6"/><circle cx="288" cy="113" r="6"/><circle cx="432" cy="92" r="6"/></g>
+          </svg>
+        </div>
+        <div class="root">
+          <div><small>Study intent</small><strong>recorded</strong></div>
+          <div><small>Calibration</small><strong>in date</strong></div>
+          <div><small>Raw evidence</small><strong>3 files</strong></div>
+          <div><small>Root</small><strong>SHA-256</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="stats wrap">
+      <div><strong>0</strong><span>runtime dependencies</span></div>
+      <div><strong>7</strong><span>durable artifact types</span></div>
+      <div><strong>4</strong><span>built-in analyses</span></div>
+      <div><strong>1 file</strong><span>portable report</span></div>
+    </div>
+
+    <section id="chain" class="wrap">
+      <div class="eyebrow">THE EVIDENCE CHAIN</div>
+      <h2>A plot is not a provenance record.</h2>
+      <p class="section-copy">BenchLineage keeps the decisions and identities around a measurement
+        visible. Every layer is a plain file that can be reviewed, versioned, migrated, and audited.</p>
+      <div class="chain">
+        <article class="card"><span class="number">01 / INTENT</span><h3>Study</h3>
+          <p>Objective, hypothesis, protocol, and tags preserve why the experiment exists.</p></article>
+        <article class="card"><span class="number">02 / TRACE</span><h3>Instrument</h3>
+          <p>Manufacturer, model, serial, asset tag, and calibration window establish recorded identity.</p></article>
+        <article class="card"><span class="number">03 / OBSERVE</span><h3>Run</h3>
+          <p>Operator, timestamp, conditions, deviations, and raw paths connect intent to observations.</p></article>
+        <article class="card"><span class="number">04 / DERIVE</span><h3>Analysis</h3>
+          <p>Deterministic results name their source run and keep uncertainty assumptions explicit.</p></article>
+        <article class="card"><span class="number">05 / AUDIT</span><h3>Relationships</h3>
+          <p>Cross-file checks expose missing references, calibration gaps, orphan data, and path escape.</p></article>
+        <article class="card"><span class="number">06 / SEAL</span><h3>Evidence root</h3>
+          <p>SHA-256 inventories detect byte changes while keeping the integrity claim deliberately narrow.</p></article>
+      </div>
+    </section>
+
+    <section id="demo" class="wrap demo">
+      <div>
+        <div class="eyebrow">REPRODUCIBLE DEMONSTRATION</div>
+        <h2>Build the whole chain in four commands.</h2>
+        <p class="section-copy">The seeded demo creates two studies, three runs, three instruments,
+          calibration records, 92 measurement rows, analyses, uncertainty budgets, an audit, a seal,
+          and a standalone report.</p>
+        <div class="actions"><a class="button" href="demo/demo-report.html">Inspect the evidence →</a></div>
+      </div>
+      <div class="terminal">
+        <header>local terminal · no network required</header>
+        <pre><span class="cmd">$ benchlineage demo my-bench</span>
+<span class="out">workspace: my-bench
+report: reports/demo-report.html</span>
+
+<span class="cmd">$ benchlineage audit my-bench</span>
+<span class="out">status: pass
+studies: 2 · runs: 3 · raw files: 3</span>
+
+<span class="cmd">$ benchlineage verify my-bench</span>
+<span class="out">valid: true
+changed: [] · missing: [] · added: []</span>
+
+<span class="cmd">$ start my-bench/reports/demo-report.html</span></pre>
+      </div>
+    </section>
+
+    <section id="boundaries" class="wrap">
+      <div class="eyebrow">HONEST CLAIMS</div>
+      <h2>Integrity is one part of trustworthy measurement.</h2>
+      <p class="section-copy">A digest can show that bytes match. It cannot turn weak experimental
+        design into strong evidence.</p>
+      <div class="boundary">
+        <article><strong>Not an electronic signature.</strong><p>A local seal does not establish identity,
+          authorship, or a trusted timestamp.</p></article>
+        <article><strong>Not calibration authority.</strong><p>Certificate references and coverage dates
+          are recorded, not independently authenticated.</p></article>
+        <article><strong>Not regulatory compliance.</strong><p>Permissions, validated workflows, retention,
+          and institutional governance require other systems.</p></article>
+        <article><strong>Not scientific truth.</strong><p>Fabricated data can still be internally consistent.
+          Review methods, raw observations, and uncertainty assumptions.</p></article>
+      </div>
+    </section>
+
+    <section class="wrap cta">
+      <div><div class="eyebrow">PORTABLE BY DEFAULT</div><h2>Keep the evidence, even if the tool disappears.</h2>
+        <p>JSON, CSV, HTML, and SHA-256. No proprietary database and no mandatory cloud.</p></div>
+      <a class="button" href="https://github.com/CAOShurong/benchlineage">Get BenchLineage →</a>
+    </section>
+  </main>
+
+  <footer class="footer wrap"><span>BenchLineage · MIT License · Shurong Cao</span>
+    <span>Built for inspectable EE research evidence.</span></footer>
+</body>
+</html>

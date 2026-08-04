@@ -1,0 +1,106 @@
+{
+  "algorithm": "sha256",
+  "created_at": "2026-08-04T08:00:00+00:00",
+  "files": [
+    {
+      "bytes": 4158,
+      "digest": "sha256:883d14cabeb37f93f14f7d16f7af8d41f7c44ce183b9854154cf779b4215b274",
+      "path": "analysis/buck-load-001.json"
+    },
+    {
+      "bytes": 9312,
+      "digest": "sha256:12cd228f0d0da04a04fdc5db0ac9da9ce9e0b278f78e2417943c9ab9b38fc1b7",
+      "path": "analysis/rc-baseline-001.json"
+    },
+    {
+      "bytes": 9319,
+      "digest": "sha256:cbd99df11ebf788edf970d40f2827bd52d00c1073a513444ad3f605f3934d2b2",
+      "path": "analysis/rc-swap-002.json"
+    },
+    {
+      "bytes": 404,
+      "digest": "sha256:45440da0e6d606fee44a63843c744556aec05bab9df109c9e7cfab3ae6849dd3",
+      "path": "benchlineage.json"
+    },
+    {
+      "bytes": 373,
+      "digest": "sha256:59bf35001aba40f43b45900d8584324e883f2b13dd886f2f97eb03f95d4a35f5",
+      "path": "calibrations/cal-dmm-01-2026.json"
+    },
+    {
+      "bytes": 379,
+      "digest": "sha256:3b2a0702e00ed0cbe1b9e949b7973268318ddd12d0dad0ffc033c38a9c15ee5d",
+      "path": "calibrations/cal-scope-01-2026.json"
+    },
+    {
+      "bytes": 382,
+      "digest": "sha256:bf5028f10c74e0d80ed73363386644e55114f3e7ef39dbd68c15a93836b92bc6",
+      "path": "calibrations/cal-source-01-2026.json"
+    },
+    {
+      "bytes": 456,
+      "digest": "sha256:94adcd45d83a1a836b64182f41270bb1a6e31e0121ade82084cc7780a9e070f1",
+      "path": "data/raw/buck-load-sweep.csv"
+    },
+    {
+      "bytes": 1693,
+      "digest": "sha256:4266851a5cdaf4fd8cb30110c1a7de7ec19c3bc5ccd7e5b721973e7858e63a83",
+      "path": "data/raw/rc-baseline.csv"
+    },
+    {
+      "bytes": 1699,
+      "digest": "sha256:17608ebc141b71dbb79bc954b4826f2746a9375b8f26d96e3d56cd7e479dd9cf",
+      "path": "data/raw/rc-resistor-swap.csv"
+    },
+    {
+      "bytes": 333,
+      "digest": "sha256:a41557a2d2170db06b84170f695ac5cec77e9b9497ffb3d74f0efd7946ae40a5",
+      "path": "instruments/dmm-01.json"
+    },
+    {
+      "bytes": 332,
+      "digest": "sha256:8337dfb996cfb8c1555dfc0823c101ce4e5039b0d77a336195dd425182cf980f",
+      "path": "instruments/scope-01.json"
+    },
+    {
+      "bytes": 350,
+      "digest": "sha256:f796b33e5f4ddac03c133d3537b3e91f906a15661bcba42022912fa0b1be46f2",
+      "path": "instruments/source-01.json"
+    },
+    {
+      "bytes": 512,
+      "digest": "sha256:f1fca5c644688a366ea4f10e3407dc358eae5ee11f8eb778c0569b409c44730f",
+      "path": "runs/buck-load-001.json"
+    },
+    {
+      "bytes": 530,
+      "digest": "sha256:7739745561dc08544192c5f31a7da02524fc9e814466a5b1b607a77d80561fb6",
+      "path": "runs/rc-baseline-001.json"
+    },
+    {
+      "bytes": 592,
+      "digest": "sha256:33a6101c6745e77f4563620d254b8fc1ac91cf542054b6505b88eea994c76f61",
+      "path": "runs/rc-swap-002.json"
+    },
+    {
+      "bytes": 558,
+      "digest": "sha256:7e411b8f6398da3f2104e44609b4434920155b5559fd9fb78b5c10b37306ef60",
+      "path": "studies/buck-efficiency.json"
+    },
+    {
+      "bytes": 591,
+      "digest": "sha256:57dfb43bc61b148e0ba40efc70590530c0d68ba6ac6a223d61ec3e6aa4827d61",
+      "path": "studies/rc-filter.json"
+    }
+  ],
+  "label": "Public synthetic demonstration",
+  "root_digest": "sha256:92e3e93aed187a051aaa6544ddfc3ed66e0bd7a486abdf7c6b2777a4816124fd",
+  "schema": "benchlineage/seal/v1",
+  "scope": {
+    "excluded": [
+      "reports/**",
+      "seals/**"
+    ],
+    "included": "all workspace files"
+  }
+}

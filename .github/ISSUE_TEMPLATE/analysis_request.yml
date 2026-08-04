@@ -1,0 +1,31 @@
+name: Analysis request
+description: Propose a new inspectable EE analysis or artifact adapter.
+title: "[Analysis] "
+labels: ["enhancement", "analysis"]
+body:
+  - type: input
+    id: workflow
+    attributes:
+      label: Experimental workflow
+      placeholder: "Double-pulse test switching-energy extraction"
+    validations:
+      required: true
+  - type: textarea
+    id: inputs
+    attributes:
+      label: Required raw inputs and units
+    validations:
+      required: true
+  - type: textarea
+    id: assumptions
+    attributes:
+      label: Equations, assumptions, and failure modes
+    validations:
+      required: true
+  - type: textarea
+    id: validation
+    attributes:
+      label: Independent validation strategy
+      description: State how an implementation can be checked against a reference.
+    validations:
+      required: true

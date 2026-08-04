@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="500" viewBox="0 0 1400 500" role="img">
+  <title>BenchLineage — evidence chains for electrical-engineering experiments</title>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop stop-color="#061512"/>
+      <stop offset="1" stop-color="#12372f"/>
+    </linearGradient>
+    <linearGradient id="mint" x1="0" x2="1">
+      <stop stop-color="#76e5bb"/>
+      <stop offset="1" stop-color="#7fc8ff"/>
+    </linearGradient>
+    <pattern id="grid" width="38" height="38" patternUnits="userSpaceOnUse">
+      <path d="M38 0H0V38" fill="none" stroke="#92aaa5" stroke-opacity=".08"/>
+    </pattern>
+    <filter id="glow"><feGaussianBlur stdDeviation="9" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="1400" height="500" rx="26" fill="url(#bg)"/>
+  <rect width="1400" height="500" rx="26" fill="url(#grid)"/>
+  <g transform="translate(82 94)">
+    <rect width="62" height="62" rx="15" fill="#78e6bd"/>
+    <path d="M18 40V22h7v18zm13 0V15h7v25zm13 0V27h7v13z" fill="#092019"/>
+    <text x="0" y="120" fill="#78e6bd" font-family="ui-monospace,monospace" font-size="18" font-weight="700" letter-spacing="3">MEASUREMENT → EVIDENCE</text>
+    <text x="0" y="202" fill="#edf8f4" font-family="Inter,Arial,sans-serif" font-size="72" font-weight="800" letter-spacing="-3">BenchLineage</text>
+    <text x="0" y="251" fill="#b5ccc5" font-family="Inter,Arial,sans-serif" font-size="26">Local-first provenance, uncertainty, and audit trails for EE experiments.</text>
+    <g transform="translate(0 292)" font-family="Inter,Arial,sans-serif" font-size="17">
+      <rect width="182" height="45" rx="22.5" fill="#163d33"/><text x="22" y="29" fill="#9eefd1">zero dependencies</text>
+      <rect x="197" width="154" height="45" rx="22.5" fill="#163d33"/><text x="219" y="29" fill="#9eefd1">offline first</text>
+      <rect x="366" width="206" height="45" rx="22.5" fill="#163d33"/><text x="388" y="29" fill="#9eefd1">SHA-256 evidence</text>
+    </g>
+  </g>
+  <g transform="translate(940 83)" filter="url(#glow)">
+    <path d="M0 166C40 166 39 68 80 68s39 196 80 196 39-148 80-148 39 50 80 50 39-18 80-18" fill="none" stroke="url(#mint)" stroke-width="5"/>
+    <g fill="#78e6bd">
+      <circle cx="0" cy="166" r="7"/><circle cx="80" cy="68" r="7"/><circle cx="160" cy="264" r="7"/>
+      <circle cx="240" cy="116" r="7"/><circle cx="320" cy="166" r="7"/><circle cx="400" cy="148" r="7"/>
+    </g>
+    <path d="M116 343h230" stroke="#365d54" stroke-width="2"/>
+    <path d="m324 318 28 25-28 25" fill="none" stroke="#78e6bd" stroke-width="5"/>
+    <rect x="24" y="310" width="92" height="66" rx="12" fill="#102b25" stroke="#315c51"/>
+    <text x="41" y="337" fill="#92aaa5" font-family="ui-monospace,monospace" font-size="11">ROOT</text>
+    <text x="41" y="360" fill="#edf8f4" font-family="ui-monospace,monospace" font-size="15">sha256</text>
+  </g>
+</svg>

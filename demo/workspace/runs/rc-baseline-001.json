@@ -1,0 +1,22 @@
+{
+  "conditions": {
+    "ambient_temperature_degC": 23.4,
+    "nominal_c_f": 1e-08,
+    "nominal_r_ohm": 10000
+  },
+  "deviations": [],
+  "id": "rc-baseline-001",
+  "instruments": [
+    "scope-01",
+    "source-01"
+  ],
+  "notes": "Synthetic demonstration data; no physical measurement claim.",
+  "operator": "Shurong Cao",
+  "raw_files": [
+    "data/raw/rc-baseline.csv"
+  ],
+  "recorded_at": "2026-08-04T07:59:00+00:00",
+  "schema": "benchlineage/run/v1",
+  "started_at": "2026-08-04T06:00:00+00:00",
+  "study_id": "rc-filter"
+}

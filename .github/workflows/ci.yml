@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ["3.11", "3.13"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - name: Install package and quality tools
+        run: python -m pip install --upgrade pip ruff build
+      - name: Install BenchLineage
+        run: python -m pip install -e .
+      - name: Unit and integration tests
+        run: python -m unittest discover -s tests -v
+      - name: Lint
+        run: ruff check src tests scripts
+      - name: Format check
+        run: ruff format --check src tests scripts
+      - name: Compile
+        run: python -m compileall -q src tests scripts
+      - name: Verify deterministic demonstration
+        run: python scripts/build_demo.py --check
+      - name: Repository audit
+        run: python scripts/check_repository.py
+      - name: Build distribution
+        run: python -m build
+
+  package-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - run: python -m pip install build
+      - run: python -m build
+      - run: python -m pip install --target isolated dist/*.whl
+      - name: Exercise isolated wheel
+        env:
+          PYTHONPATH: isolated
+        run: |
+          python -m benchlineage --version
+          python -m benchlineage demo wheel-demo
+          python -m benchlineage audit wheel-demo
+          python -m benchlineage verify wheel-demo

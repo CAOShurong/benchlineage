@@ -1,0 +1,21 @@
+{
+  "conditions": {
+    "ambient_temperature_degC": 24.1,
+    "input_setpoint_v": 12.0
+  },
+  "deviations": [],
+  "id": "buck-load-001",
+  "instruments": [
+    "dmm-01",
+    "source-01"
+  ],
+  "notes": "Synthetic demonstration data; no physical measurement claim.",
+  "operator": "Shurong Cao",
+  "raw_files": [
+    "data/raw/buck-load-sweep.csv"
+  ],
+  "recorded_at": "2026-08-04T07:59:00+00:00",
+  "schema": "benchlineage/run/v1",
+  "started_at": "2026-08-05T06:00:00+00:00",
+  "study_id": "buck-efficiency"
+}

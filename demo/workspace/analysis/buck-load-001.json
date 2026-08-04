@@ -1,0 +1,131 @@
+{
+  "created_at": "2026-08-04T07:59:00+00:00",
+  "files": [
+    {
+      "columns": [
+        "load_ohm",
+        "vin_v",
+        "iin_a",
+        "vout_v",
+        "iout_a"
+      ],
+      "path": "data/raw/buck-load-sweep.csv",
+      "result": {
+        "kind": "power_efficiency",
+        "mean_efficiency_percent": 87.92794891039203,
+        "observations": 10,
+        "peak_efficiency_percent": 91.95507098376258,
+        "peak_output_power_w": 3.5898746353356,
+        "points": [
+          {
+            "efficiency_percent": 79.4853166250702,
+            "input_power_w": 0.3158305051648,
+            "load_ohm": 100.0,
+            "loss_w": 0.06479162813600003,
+            "output_power_w": 0.25103887702879996
+          },
+          {
+            "efficiency_percent": 81.73145365378456,
+            "input_power_w": 0.4536605550204,
+            "load_ohm": 68.0,
+            "loss_w": 0.08287718874839994,
+            "output_power_w": 0.37078336627200004
+          },
+          {
+            "efficiency_percent": 84.19382636235116,
+            "input_power_w": 0.6360608698245,
+            "load_ohm": 47.0,
+            "loss_w": 0.10053688552560003,
+            "output_power_w": 0.5355239842989
+          },
+          {
+            "efficiency_percent": 86.61408593729391,
+            "input_power_w": 0.87192157254,
+            "load_ohm": 33.0,
+            "loss_w": 0.11671467239440003,
+            "output_power_w": 0.7552069001456
+          },
+          {
+            "efficiency_percent": 89.12950652843362,
+            "input_power_w": 1.2695958208088,
+            "load_ohm": 22.0,
+            "loss_w": 0.13801133081630002,
+            "output_power_w": 1.1315844899925
+          },
+          {
+            "efficiency_percent": 90.81111041508473,
+            "input_power_w": 1.8268995560539,
+            "load_ohm": 15.0,
+            "loss_w": 0.16787178303310024,
+            "output_power_w": 1.6590277730207998
+          },
+          {
+            "efficiency_percent": 91.69551174969182,
+            "input_power_w": 2.6833507176655997,
+            "load_ohm": 10.0,
+            "loss_w": 0.22283854506309986,
+            "output_power_w": 2.4605121726025
+          },
+          {
+            "efficiency_percent": 91.87683468755532,
+            "input_power_w": 3.2629547229702993,
+            "load_ohm": 8.2,
+            "loss_w": 0.2650552062170992,
+            "output_power_w": 2.9978995167532
+          },
+          {
+            "efficiency_percent": 91.95507098376258,
+            "input_power_w": 3.9039441728771,
+            "load_ohm": 6.8,
+            "loss_w": 0.3140695375414997,
+            "output_power_w": 3.5898746353356
+          },
+          {
+            "efficiency_percent": 91.78677216089244,
+            "input_power_w": 4.707216562969601,
+            "load_ohm": 5.6,
+            "loss_w": 0.38661442119690115,
+            "output_power_w": 4.320602141772699
+          }
+        ]
+      }
+    }
+  ],
+  "run_id": "buck-load-001",
+  "schema": "benchlineage/analysis/v1",
+  "study_id": "buck-efficiency",
+  "uncertainty_budget": {
+    "combined_standard_uncertainty": 0.004618802153517006,
+    "components": [
+      {
+        "contribution": 0.0034641016151377548,
+        "distribution": "rectangular",
+        "name": "voltage channels",
+        "sensitivity": 1.0,
+        "source": "synthetic calibration certificate",
+        "standard_uncertainty": 0.0034641016151377548,
+        "variance_share": 0.5625000000000001
+      },
+      {
+        "contribution": 0.002309401076758503,
+        "distribution": "rectangular",
+        "name": "current channels",
+        "sensitivity": 1.0,
+        "source": "synthetic calibration certificate",
+        "standard_uncertainty": 0.002309401076758503,
+        "variance_share": 0.25
+      },
+      {
+        "contribution": 0.002,
+        "distribution": "normal",
+        "name": "load temperature drift",
+        "sensitivity": 1.0,
+        "source": "stability window",
+        "standard_uncertainty": 0.002,
+        "variance_share": 0.18749999999999997
+      }
+    ],
+    "coverage_factor": 2.0,
+    "expanded_uncertainty": 0.009237604307034013
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://caoshurong.github.io/benchlineage/schemas/analysis.schema.json",
+  "title": "BenchLineage analysis",
+  "type": "object",
+  "required": ["schema", "run_id", "study_id", "created_at", "files"],
+  "properties": {
+    "schema": {"const": "benchlineage/analysis/v1"},
+    "run_id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "study_id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "files": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["path", "columns", "result"],
+        "properties": {
+          "path": {"type": "string"},
+          "columns": {"type": "array", "items": {"type": "string"}},
+          "result": {"type": "object", "required": ["kind", "observations"]}
+        }
+      }
+    },
+    "uncertainty_budget": {"type": "object"}
+  },
+  "additionalProperties": true
+}

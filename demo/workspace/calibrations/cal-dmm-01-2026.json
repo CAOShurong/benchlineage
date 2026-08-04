@@ -1,0 +1,13 @@
+{
+  "certificate": "SYNTHETIC-CERT-DMM-01",
+  "coverage_factor": 2.0,
+  "created_at": "2026-08-04T07:59:00+00:00",
+  "due_at": "2027-01-15T09:00:00+00:00",
+  "id": "cal-dmm-01-2026",
+  "instrument_id": "dmm-01",
+  "performed_at": "2026-01-15T09:00:00+00:00",
+  "schema": "benchlineage/calibration/v1",
+  "standard_uncertainty": 0.0008,
+  "status": "valid",
+  "unit": "V"
+}
