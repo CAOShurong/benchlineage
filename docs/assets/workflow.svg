@@ -1,45 +1,39 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="390" viewBox="0 0 1400 390" role="img">
-  <title>BenchLineage workflow from research intent to sealed evidence</title>
-  <defs>
-    <linearGradient id="bg" x1="0" x2="1"><stop stop-color="#0a1b17"/><stop offset="1" stop-color="#102b25"/></linearGradient>
-    <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0 0l7 3-7 3z" fill="#78e6bd"/></marker>
-  </defs>
-  <rect width="1400" height="390" rx="24" fill="url(#bg)"/>
-  <text x="70" y="58" fill="#78e6bd" font-family="ui-monospace,monospace" font-size="15" font-weight="700" letter-spacing="2">ONE INSPECTABLE EVIDENCE CHAIN</text>
-  <g font-family="Inter,Arial,sans-serif">
-    <g transform="translate(55 100)"><rect width="195" height="190" rx="18" fill="#102e27" stroke="#315a50"/>
-      <text x="22" y="36" fill="#78e6bd" font-size="13" font-weight="700">01 · INTENT</text>
-      <text x="22" y="78" fill="#edf8f4" font-size="25" font-weight="750">Study</text>
-      <text x="22" y="109" fill="#a9c0ba" font-size="14">objective</text><text x="22" y="133" fill="#a9c0ba" font-size="14">hypothesis</text>
-      <text x="22" y="157" fill="#a9c0ba" font-size="14">protocol</text></g>
-    <g transform="translate(280 100)"><rect width="195" height="190" rx="18" fill="#102e27" stroke="#315a50"/>
-      <text x="22" y="36" fill="#78e6bd" font-size="13" font-weight="700">02 · TRACE</text>
-      <text x="22" y="78" fill="#edf8f4" font-size="25" font-weight="750">Bench</text>
-      <text x="22" y="109" fill="#a9c0ba" font-size="14">instrument serial</text><text x="22" y="133" fill="#a9c0ba" font-size="14">calibration window</text>
-      <text x="22" y="157" fill="#a9c0ba" font-size="14">conditions</text></g>
-    <g transform="translate(505 100)"><rect width="195" height="190" rx="18" fill="#102e27" stroke="#315a50"/>
-      <text x="22" y="36" fill="#78e6bd" font-size="13" font-weight="700">03 · OBSERVE</text>
-      <text x="22" y="78" fill="#edf8f4" font-size="25" font-weight="750">Raw data</text>
-      <text x="22" y="109" fill="#a9c0ba" font-size="14">CSV or binary</text><text x="22" y="133" fill="#a9c0ba" font-size="14">immutable source</text>
-      <text x="22" y="157" fill="#a9c0ba" font-size="14">run linkage</text></g>
-    <g transform="translate(730 100)"><rect width="195" height="190" rx="18" fill="#102e27" stroke="#315a50"/>
-      <text x="22" y="36" fill="#78e6bd" font-size="13" font-weight="700">04 · DERIVE</text>
-      <text x="22" y="78" fill="#edf8f4" font-size="25" font-weight="750">Analysis</text>
-      <text x="22" y="109" fill="#a9c0ba" font-size="14">deterministic result</text><text x="22" y="133" fill="#a9c0ba" font-size="14">uncertainty budget</text>
-      <text x="22" y="157" fill="#a9c0ba" font-size="14">source references</text></g>
-    <g transform="translate(955 100)"><rect width="195" height="190" rx="18" fill="#102e27" stroke="#315a50"/>
-      <text x="22" y="36" fill="#78e6bd" font-size="13" font-weight="700">05 · AUDIT</text>
-      <text x="22" y="78" fill="#edf8f4" font-size="25" font-weight="750">Relationships</text>
-      <text x="22" y="109" fill="#a9c0ba" font-size="14">references</text><text x="22" y="133" fill="#a9c0ba" font-size="14">date coverage</text>
-      <text x="22" y="157" fill="#a9c0ba" font-size="14">orphan evidence</text></g>
-    <g transform="translate(1180 100)"><rect width="165" height="190" rx="18" fill="#173d34" stroke="#78e6bd"/>
-      <text x="22" y="36" fill="#78e6bd" font-size="13" font-weight="700">06 · SEAL</text>
-      <text x="22" y="78" fill="#edf8f4" font-size="25" font-weight="750">Evidence</text>
-      <text x="22" y="109" fill="#a9c0ba" font-size="14">file digests</text><text x="22" y="133" fill="#a9c0ba" font-size="14">root digest</text>
-      <text x="22" y="157" fill="#a9c0ba" font-size="14">portable report</text></g>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="430" viewBox="0 0 1400 430" role="img" aria-labelledby="title desc">
+  <title id="title">BenchLineage evidence workflow</title>
+  <desc id="desc">Six research-evidence stages, from study intent through bench traceability, raw observation, analysis, audit, and a publication bundle.</desc>
+  <rect width="1400" height="430" rx="8" fill="#faf9f5"/>
+  <rect x="1" y="1" width="1398" height="428" rx="7" fill="none" stroke="#d5d2ca"/>
+  <g font-family="Inter,Segoe UI,Arial,sans-serif">
+    <text x="62" y="58" fill="#172a35" font-family="Georgia,Times New Roman,serif" font-size="29" font-weight="700">One chain, six explicit claims</text>
+    <text x="62" y="87" fill="#647178" font-size="15">Each stage records what is known, what is inferred, and which artifact supports it.</text>
+
+    <line x1="124" y1="191" x2="1260" y2="191" stroke="#9ba5a9" stroke-width="2"/>
+    <g fill="#faf9f5" stroke-width="3">
+      <circle cx="124" cy="191" r="21" stroke="#1f5b61"/>
+      <circle cx="352" cy="191" r="21" stroke="#1f5b61"/>
+      <circle cx="580" cy="191" r="21" stroke="#1f5b61"/>
+      <circle cx="808" cy="191" r="21" stroke="#b5792d"/>
+      <circle cx="1036" cy="191" r="21" stroke="#1f5b61"/>
+      <circle cx="1260" cy="191" r="21" stroke="#6b7742"/>
+    </g>
+    <g text-anchor="middle" font-size="13" font-weight="800">
+      <text x="124" y="196" fill="#1f5b61">01</text>
+      <text x="352" y="196" fill="#1f5b61">02</text>
+      <text x="580" y="196" fill="#1f5b61">03</text>
+      <text x="808" y="196" fill="#b5792d">04</text>
+      <text x="1036" y="196" fill="#1f5b61">05</text>
+      <text x="1260" y="196" fill="#6b7742">06</text>
+    </g>
+
+    <g text-anchor="middle">
+      <g transform="translate(124 0)"><text y="143" fill="#172a35" font-size="17" font-weight="700">Intent</text><text y="229" fill="#647178" font-size="13">Objective + protocol</text><text y="310" fill="#1f5b61" font-family="ui-monospace,monospace" font-size="11">studies/*.json</text></g>
+      <g transform="translate(352 0)"><text y="143" fill="#172a35" font-size="17" font-weight="700">Bench</text><text y="229" fill="#647178" font-size="13">Identity + calibration</text><text y="310" fill="#1f5b61" font-family="ui-monospace,monospace" font-size="11">instruments/*.json</text></g>
+      <g transform="translate(580 0)"><text y="143" fill="#172a35" font-size="17" font-weight="700">Observe</text><text y="229" fill="#647178" font-size="13">Conditions + raw bytes</text><text y="310" fill="#1f5b61" font-family="ui-monospace,monospace" font-size="11">data/raw/*</text></g>
+      <g transform="translate(808 0)"><text y="143" fill="#172a35" font-size="17" font-weight="700">Derive</text><text y="229" fill="#647178" font-size="13">Result + uncertainty</text><text y="310" fill="#8a5b24" font-family="ui-monospace,monospace" font-size="11">analysis/*.json</text></g>
+      <g transform="translate(1036 0)"><text y="143" fill="#172a35" font-size="17" font-weight="700">Audit + seal</text><text y="229" fill="#647178" font-size="13">References + digests</text><text y="310" fill="#1f5b61" font-family="ui-monospace,monospace" font-size="11">seals/*.json</text></g>
+      <g transform="translate(1260 0)"><text y="143" fill="#172a35" font-size="17" font-weight="700">Publish</text><text y="229" fill="#647178" font-size="13">Reviewable bundle</text><text y="310" fill="#53613a" font-family="ui-monospace,monospace" font-size="11">evidence.zip</text></g>
+    </g>
+    <line x1="62" y1="353" x2="1338" y2="353" stroke="#d8d5cd"/>
+    <text x="62" y="386" fill="#6c777d" font-size="13">Integrity is not authenticity. Authenticity is not scientific validity. BenchLineage keeps those claims separate.</text>
   </g>
-  <g stroke="#78e6bd" stroke-width="3" marker-end="url(#arrow)">
-    <path d="M250 195h24"/><path d="M475 195h24"/><path d="M700 195h24"/><path d="M925 195h24"/><path d="M1150 195h24"/>
-  </g>
-  <text x="70" y="340" fill="#92aaa5" font-family="Inter,Arial,sans-serif" font-size="16">Integrity is not authenticity. Authenticity is not scientific validity. The report keeps those claims separate.</text>
 </svg>

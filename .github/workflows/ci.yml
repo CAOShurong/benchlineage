@@ -3,6 +3,7 @@ name: CI
 on:
   push:
     branches: [main]
+    tags: ["v*"]
   pull_request:
   workflow_dispatch:
 
@@ -18,8 +19,8 @@ jobs:
         python-version: ["3.11", "3.13"]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-python@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
@@ -45,8 +46,8 @@ jobs:
   package-smoke:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-python@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.13"
       - run: python -m pip install build
@@ -60,3 +61,9 @@ jobs:
           python -m benchlineage demo wheel-demo
           python -m benchlineage audit wheel-demo
           python -m benchlineage verify wheel-demo
+          python -m benchlineage bundle wheel-demo --output wheel-demo.zip
+          python -m benchlineage verify-bundle wheel-demo.zip
+      - uses: actions/upload-artifact@v7
+        with:
+          name: benchlineage-distributions
+          path: dist/

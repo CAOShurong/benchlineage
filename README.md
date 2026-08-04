@@ -1,17 +1,5 @@
 <p align="center">
-  <img src="docs/assets/hero.svg" alt="BenchLineage — evidence chains for electrical-engineering experiments" width="100%">
-</p>
-
-<p align="center">
-  <strong>Local-first provenance, uncertainty, and audit trails for electrical-engineering experiments.</strong>
-</p>
-
-<p align="center">
-  <a href="https://caoshurong.github.io/benchlineage/"><img alt="Live demonstration" src="https://img.shields.io/badge/live-demonstration-78e6bd?style=flat-square"></a>
-  <a href="https://github.com/CAOShurong/benchlineage/actions/workflows/ci.yml"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/CAOShurong/benchlineage/ci.yml?style=flat-square&label=CI"></a>
-  <a href="LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-7fc8ff?style=flat-square"></a>
-  <img alt="zero runtime dependencies" src="https://img.shields.io/badge/runtime%20dependencies-0-f3bc62?style=flat-square">
-  <img alt="Python 3.11+" src="https://img.shields.io/badge/python-3.11%2B-3776ab?style=flat-square">
+  <img src="docs/assets/hero.svg" alt="BenchLineage graphical abstract: from a measured value to reviewable evidence" width="100%">
 </p>
 
 BenchLineage turns an ordinary project directory into a verifiable chain from **research
@@ -25,6 +13,12 @@ instrument, calibration window, run conditions, raw file, and analysis lineage d
 
 The default workflow is offline. There is no account, server, database, API key, telemetry, or
 runtime dependency.
+
+[Live demonstration](https://caoshurong.github.io/benchlineage/)
+· [Synthetic report](https://caoshurong.github.io/benchlineage/demo/demo-report.html)
+· [Methodology](docs/METHODOLOGY.md)
+· [CI](https://github.com/CAOShurong/benchlineage/actions/workflows/ci.yml)
+· Python 3.11+ · MIT · zero runtime dependencies
 
 > [!IMPORTANT]
 > BenchLineage is a research recordkeeping tool, not a calibration authority, regulatory
@@ -60,12 +54,37 @@ synthetic. The demo illustrates the evidence model; it makes no claim about phys
 | Seal | `seals/*.json` | Do the current bytes match the published evidence root? |
 | Report | `reports/*.html` | Can another person inspect the chain without this package? |
 
-## Try the complete demonstration
+## Install
+
+Install the signed-off v0.2.0 wheel from the GitHub Release:
+
+```bash
+python -m pip install "https://github.com/CAOShurong/benchlineage/releases/download/v0.2.0/benchlineage-0.2.0-py3-none-any.whl"
+benchlineage --version
+```
+
+Or install the exact source tag:
+
+```bash
+python -m pip install "git+https://github.com/CAOShurong/benchlineage.git@v0.2.0"
+```
+
+> [!NOTE]
+> The package is not currently published on PyPI, so `pip install
+> benchlineage` alone is not advertised. Each GitHub Release carries a wheel,
+> source archive, and SHA-256 checksum file.
+
+For development:
 
 ```bash
 git clone https://github.com/CAOShurong/benchlineage.git
 cd benchlineage
 python -m pip install -e .
+```
+
+## Try the complete demonstration
+
+```bash
 
 benchlineage demo my-bench --seed 20260804
 benchlineage audit my-bench
@@ -154,6 +173,25 @@ benchlineage report thesis-bench \
   --output gate-loop-report.html
 ```
 
+## Publish a reviewable evidence bundle
+
+After audit and sealing, create one deterministic ZIP for a collaborator,
+reviewer, or data repository:
+
+```bash
+benchlineage bundle thesis-bench --output thesis-bench-evidence.zip
+benchlineage verify-bundle thesis-bench-evidence.zip
+```
+
+The bundle includes the workspace records, raw files, reports, latest seal, a
+human-readable README, and `BUNDLE-MANIFEST.json`. The manifest lists every
+included path, byte length, and SHA-256 digest. Rebuilding from unchanged bytes
+produces the same ZIP bytes.
+
+The verifier refuses unsafe archive paths and reports duplicate, missing,
+added, or changed members without extracting the bundle. This is an integrity
+check, not a digital signature or a claim that the experiment was valid.
+
 ## Built-in analyses
 
 BenchLineage deliberately implements a small, inspectable analysis core:
@@ -237,7 +275,7 @@ usable.
 ## Repository map
 
 ```text
-src/benchlineage/       package, CLI, analysis, audit, report, and sealing engine
+src/benchlineage/       CLI, analysis, audit, report, sealing, and bundle engine
 schemas/                JSON Schema contracts for durable artifacts
 demo/workspace/         committed synthetic example
 site/                   public project site and generated report

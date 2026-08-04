@@ -60,10 +60,13 @@ Its differentiators are the combination of:
 - plain JSON/CSV artifacts suited to Git review;
 - byte-level sealing with a narrow, honest integrity claim;
 - a single-file public report;
+- a deterministic publication ZIP with a verifier and plain SHA-256 manifest;
 - no attempt to own acquisition or analysis.
 
-No individual feature is novel. The contribution is a small interoperable workflow whose failure
-modes are easier to inspect than a general ELN deployment.
+No individual feature is novel. The contribution is a small interoperable
+workflow whose failure modes are easier to inspect than a general ELN
+deployment. It should be compared on setup cost, evidence completeness,
+long-term readability, and independent verification—not on feature count.
 
 ## When not to use BenchLineage
 

@@ -2,6 +2,24 @@
 
 All notable changes to BenchLineage are documented here.
 
+## 0.2.0 — 2026-08-05
+
+### Added
+
+- Deterministic publication ZIPs with fixed archive metadata and a plain
+  SHA-256 member manifest.
+- `verify-bundle` checks for unsafe, duplicate, missing, added, and changed
+  archive members without extraction.
+- Versioned GitHub Release installation, checksums, and package smoke tests.
+
+### Changed
+
+- Rebuilt the README graphics, site, and generated report around a restrained
+  academic visual system.
+- Clarified the product gap, scientific claim boundary, and publication
+  workflow.
+- Updated supported GitHub Actions to their current major versions.
+
 ## 0.1.1 — 2026-08-04
 
 ### Fixed

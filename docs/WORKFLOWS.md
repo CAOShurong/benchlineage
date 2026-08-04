@@ -36,8 +36,10 @@ binds them.
 3. Audit the export.
 4. Seal the export.
 5. Generate the report after sealing.
-6. Archive the workspace, seal, software version, and analysis environment together.
-7. Publish the root digest in the README, data repository, or supplementary methods.
+6. Run `benchlineage bundle <workspace> --output <evidence.zip>`.
+7. Verify the finished archive with `benchlineage verify-bundle <evidence.zip>`.
+8. Archive the bundle and analysis environment together.
+9. Publish the root digest in the README, data repository, or supplementary methods.
 
 Removing sensitive content necessarily produces a different evidence root. Keep the private
 original and public redacted root distinct.

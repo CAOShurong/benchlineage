@@ -152,3 +152,17 @@ A paper or dataset using BenchLineage should report:
 - acquisition software and raw binary formats outside BenchLineage;
 - analysis code or extension version;
 - any redaction performed before public release.
+
+## 7. Publication bundles
+
+`benchlineage bundle` packages every workspace file, including reports and
+seals, under a fixed `workspace/` prefix. `BUNDLE-MANIFEST.json` records the
+byte length and SHA-256 digest of every included member, the latest sealed
+evidence root, and the audit summary. Fixed member order, timestamps,
+permissions, and compression settings make a bundle byte-stable when the
+workspace bytes and BenchLineage version are unchanged.
+
+`verify-bundle` reads without extracting, rejects unsafe or duplicate member
+paths, and reports missing, added, or changed members. The ZIP is not encrypted
+or digitally signed. A valid bundle proves internal byte consistency, not
+authorship, trusted time, certificate authenticity, or scientific validity.

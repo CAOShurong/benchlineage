@@ -249,55 +249,59 @@ def build_report(
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="color-scheme" content="dark">
+<meta name="color-scheme" content="light">
 <title>{_escape(report_title)} · BenchLineage</title>
 <style>
-:root{{--ink:#edf8f4;--muted:#92aaa5;--panel:#10231f;--panel2:#142d27;--line:#264b43;
---mint:#78e6bd;--amber:#f3bc62;--red:#ff7b83;--navy:#071411;--blue:#7fc8ff}}
-*{{box-sizing:border-box}} body{{margin:0;background:radial-gradient(circle at 85% -10%,#17483c 0,
-transparent 35%),var(--navy);color:var(--ink);font:15px/1.55 Inter,ui-sans-serif,system-ui,sans-serif}}
+:root{{--ink:#172a35;--muted:#647178;--panel:#fff;--panel2:#f5f4ef;--line:#d3d0c8;
+--mint:#1f5b61;--amber:#b5792d;--red:#9a4037;--navy:#faf9f5;--blue:#356f8a}}
+*{{box-sizing:border-box}} body{{margin:0;background:var(--navy);color:var(--ink);
+font:15px/1.55 Inter,ui-sans-serif,system-ui,sans-serif}}
 main{{width:min(1180px,calc(100% - 34px));margin:auto;padding:34px 0 80px}}
-nav{{display:flex;justify-content:space-between;align-items:center;margin-bottom:70px;color:var(--muted)}}
+nav{{display:flex;justify-content:space-between;align-items:center;margin-bottom:62px;color:var(--muted);
+padding-bottom:18px;border-bottom:1px solid var(--line)}}
 .brand{{color:var(--ink);font-weight:800;letter-spacing:.02em}} .brand i{{font-style:normal;color:var(--mint)}}
 .hero{{display:grid;grid-template-columns:1.35fr .65fr;gap:34px;align-items:end;margin-bottom:38px}}
 .eyebrow,.analysis-card header span,.study-card>span{{color:var(--mint);font:700 12px/1.2 ui-monospace;
-letter-spacing:.14em}} h1{{font-size:clamp(46px,7vw,82px);line-height:.96;letter-spacing:-.055em;
-margin:14px 0 22px;max-width:800px}} .lede{{font-size:19px;color:#b7cdc7;max-width:720px}}
-.seal-card{{background:linear-gradient(145deg,#16362e,#0e211d);border:1px solid var(--line);
-border-radius:20px;padding:22px;box-shadow:0 18px 60px #0005}} .seal-card code{{display:block;
-word-break:break-all;color:var(--mint);font-size:11px}} .seal-card strong{{font-size:34px}}
-.kpis{{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid var(--line);border-radius:18px;
-overflow:hidden;margin:28px 0 72px;background:#0c1d1a}} .kpis div{{padding:22px;border-right:1px solid var(--line)}}
+letter-spacing:.14em}} h1{{font-family:Georgia,Times New Roman,serif;font-size:clamp(43px,6vw,70px);
+line-height:1.02;letter-spacing:-.035em;margin:14px 0 22px;max-width:800px}}
+.lede{{font-size:18px;color:#526168;max-width:720px}}
+.seal-card{{background:#eef3f1;border:1px solid #a8bbb9;border-top:4px solid var(--mint);
+border-radius:3px;padding:22px}} .seal-card code{{display:block;word-break:break-all;color:var(--mint);
+font-size:11px}} .seal-card strong{{font-family:Georgia,Times New Roman,serif;font-size:32px}}
+.kpis{{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid var(--line);
+overflow:hidden;margin:28px 0 72px;background:#fff}} .kpis div{{padding:22px;border-right:1px solid var(--line)}}
 .kpis div:last-child{{border:0}} .kpis strong{{display:block;font-size:30px}} .kpis span{{color:var(--muted)}}
-h2{{font-size:32px;letter-spacing:-.03em;margin:64px 0 10px}} .section-lede{{color:var(--muted);
+h2{{font-family:Georgia,Times New Roman,serif;font-size:32px;letter-spacing:-.02em;margin:64px 0 10px}} .section-lede{{color:var(--muted);
 max-width:760px;margin:0 0 25px}} .studies{{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}}
-.study-card,.analysis-card{{background:var(--panel);border:1px solid var(--line);border-radius:18px;
-padding:23px}} .study-card h3,.analysis-card h3{{font-size:22px;margin:8px 0}} .study-card p{{color:#b3c8c2}}
-.chips{{display:flex;gap:7px;flex-wrap:wrap}} .chips b{{background:#1b4037;color:#a8f0d4;border-radius:99px;
-padding:4px 9px;font-size:11px}} .table-wrap{{overflow:auto;border:1px solid var(--line);border-radius:16px}}
-table{{width:100%;border-collapse:collapse;background:#0d1f1b}} th,td{{padding:13px 15px;text-align:left;
-border-bottom:1px solid #1f3c35}} th{{color:var(--muted);font:700 11px ui-monospace;letter-spacing:.08em}}
+.study-card,.analysis-card{{background:var(--panel);border:1px solid var(--line);border-radius:3px;
+padding:23px}} .study-card h3,.analysis-card h3{{font-family:Georgia,Times New Roman,serif;
+font-size:22px;margin:8px 0}} .study-card p{{color:#526168}}
+.chips{{display:flex;gap:7px;flex-wrap:wrap}} .chips b{{background:#eef3f1;color:#27585c;
+padding:4px 9px;font-size:11px}} .table-wrap{{overflow:auto;border:1px solid var(--line)}}
+table{{width:100%;border-collapse:collapse;background:#fff}} th,td{{padding:13px 15px;text-align:left;
+border-bottom:1px solid #e1dfd8}} th{{color:var(--muted);font:700 11px ui-monospace;letter-spacing:.08em;
+background:#f3f2ee}}
 tbody tr:last-child td{{border:0}} code{{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}}
-.status{{font-size:11px;font-weight:750;padding:4px 8px;border-radius:99px}} .status.good{{color:#9cf0ce;
-background:#173b31}} .status.warn{{color:#ffd18a;background:#48381f}} .analysis-grid{{display:grid;
+.status{{font-size:11px;font-weight:750;padding:4px 8px}} .status.good{{color:#365f48;
+background:#edf2e9}} .status.warn{{color:#80571f;background:#f7f0e5}} .analysis-grid{{display:grid;
 grid-template-columns:repeat(2,1fr);gap:18px}} .analysis-card{{padding:0;overflow:hidden}}
 .analysis-card header{{padding:22px 22px 8px}} .analysis-file{{padding:0 22px 22px}} .file-label{{color:var(--muted);
 font:12px ui-monospace;margin-bottom:10px}} .metric-row{{display:grid;grid-template-columns:repeat(3,1fr);
-gap:8px;margin:10px 0}} .metric-row div{{background:#0a1a17;padding:11px;border-radius:10px}}
+gap:8px;margin:10px 0}} .metric-row div{{background:#f3f2ee;padding:11px}}
 .metric-row small{{display:block;color:var(--muted)}} .metric-row strong{{font-size:18px}}
-.line-chart{{width:100%;background:#091713;border-radius:12px}} .line-chart .grid line{{stroke:#1a3731}}
+.line-chart{{width:100%;background:#faf9f5;border:1px solid #e0ddd6}} .line-chart .grid line{{stroke:#dedbd4}}
 .line-chart polyline{{fill:none;stroke:var(--mint);stroke-width:2.2}} .line-chart circle{{fill:var(--amber)}}
 .line-chart text{{fill:var(--muted);font:10px ui-monospace}} details{{border-top:1px solid var(--line);
 padding:14px 22px 22px}} summary{{cursor:pointer;color:var(--blue);font-weight:700}}
 .audit{{display:grid;grid-template-columns:.7fr 1.3fr;gap:18px}} .audit-score{{display:grid;place-items:center;
-min-height:220px;border:1px solid var(--line);border-radius:18px;background:var(--panel)}}
+min-height:220px;border:1px solid var(--line);border-top:4px solid var(--mint);background:var(--panel)}}
 .audit-score strong{{font-size:64px;color:{
         "var(--mint)" if audit["status"] == "pass" else "var(--red)"
     }}}
 .findings{{margin:0;padding:18px 18px 18px 40px;background:var(--panel);border:1px solid var(--line);
-border-radius:18px}} .findings li{{padding:5px}} .findings .warning{{color:#f4ca85}}
-.findings .error{{color:#ff969d}} .findings .good{{color:#9de6ca}} input{{width:100%;background:#0b1b18;
-color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:13px;margin:5px 0 16px}}
+}} .findings li{{padding:5px}} .findings .warning{{color:#8b6128}}
+.findings .error{{color:#9a4037}} .findings .good{{color:#365f48}} input{{width:100%;background:#fff;
+color:var(--ink);border:1px solid #bcb9b1;border-radius:2px;padding:13px;margin:5px 0 16px}}
 footer{{color:var(--muted);margin-top:75px;border-top:1px solid var(--line);padding-top:25px}}
 @media(max-width:850px){{.hero,.audit{{grid-template-columns:1fr}}.kpis{{grid-template-columns:1fr 1fr}}
 .analysis-grid,.studies{{grid-template-columns:1fr}}}} @media print{{body{{background:white;color:#111}}
@@ -340,7 +344,7 @@ raw CSV. No network service or hidden notebook state is required.</p>
 <strong>{_escape(audit["status"].upper())}</strong></div></div><ul class="findings">{
         issue_rows
     }</ul></section>
-<footer>Generated by BenchLineage 0.1.1 · self-contained HTML · no CDN · no tracker ·
+<footer>Generated by BenchLineage 0.2.0 · self-contained HTML · no CDN · no tracker ·
 raw evidence remains authoritative.</footer>
 </main>
 <script>

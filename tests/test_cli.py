@@ -31,6 +31,12 @@ class CliTests(unittest.TestCase):
                 ),
                 0,
             )
+            bundle = self.root.parent / "evidence.zip"
+            self.assertEqual(
+                main(["bundle", str(self.root), "--output", str(bundle)]),
+                0,
+            )
+            self.assertEqual(main(["verify-bundle", str(bundle)]), 0)
         self.assertTrue((self.root / "reports" / "cli.html").is_file())
 
     def test_error_is_concise(self):

@@ -26,6 +26,9 @@ BenchLineage is tested at five layers.
 - removing an inventoried file fails verification;
 - adding evidence fails strict verification;
 - stored-inventory manipulation invalidates the declared root.
+- publication bundles are byte-stable for unchanged workspaces;
+- modified ZIP members fail bundle verification;
+- bundle paths cannot escape during extraction.
 
 ## 4. End-to-end workflow
 
@@ -42,5 +45,6 @@ reported, and compared with the committed fixture. The generated report is inspe
 
 CI runs on Windows and Ubuntu with Python 3.11 and 3.13. Release validation builds a wheel, installs
 it into an isolated target, executes the CLI, generates the demonstration, and verifies its seal.
+The same smoke test creates and verifies a publication bundle.
 
 Passing tests do not validate a user's physical experiment or uncertainty model.

@@ -10,6 +10,7 @@ from typing import Any
 
 from .analysis import analyze_run
 from .audit import audit_workspace
+from .bundle import build_bundle, verify_bundle
 from .demo import build_demo
 from .io import read_json, write_json
 from .provenance import latest_seal, seal_workspace, verify_seal
@@ -33,7 +34,7 @@ def _parser() -> argparse.ArgumentParser:
         prog="benchlineage",
         description="Local-first provenance and uncertainty trails for EE experiments.",
     )
-    parser.add_argument("--version", action="version", version="BenchLineage 0.1.1")
+    parser.add_argument("--version", action="version", version="BenchLineage 0.2.0")
     subcommands = parser.add_subparsers(dest="command", required=True)
 
     initialize = subcommands.add_parser("init", help="initialize a transparent workspace")
@@ -118,6 +119,17 @@ def _parser() -> argparse.ArgumentParser:
     report.add_argument("--output", required=True)
     report.add_argument("--title")
     report.add_argument("--note", default="")
+
+    bundle = subcommands.add_parser(
+        "bundle", help="build a deterministic, self-verifying publication ZIP"
+    )
+    bundle.add_argument("workspace")
+    bundle.add_argument("--output", required=True)
+
+    verify_bundle_parser = subcommands.add_parser(
+        "verify-bundle", help="verify a publication ZIP without extracting it"
+    )
+    verify_bundle_parser.add_argument("bundle")
 
     demo = subcommands.add_parser("demo", help="generate the public synthetic demonstration")
     demo.add_argument("destination")
@@ -218,6 +230,21 @@ def execute(arguments: argparse.Namespace) -> int:
             note=arguments.note,
         )
         _print({"report": str(output.resolve())})
+    elif command == "bundle":
+        output = build_bundle(arguments.workspace, arguments.output)
+        verification = verify_bundle(output)
+        _print(
+            {
+                "bundle": str(output.resolve()),
+                "bytes": output.stat().st_size,
+                "root_digest": verification["workspace"].get("root_digest"),
+                "verified": verification["valid"],
+            }
+        )
+    elif command == "verify-bundle":
+        result = verify_bundle(arguments.bundle)
+        _print(result)
+        return 0 if result["valid"] else 1
     elif command == "demo":
         bench = build_demo(arguments.destination, seed=arguments.seed, replace=arguments.replace)
         _print({"workspace": str(bench.root), "report": "reports/demo-report.html"})
@@ -228,7 +255,13 @@ def main(argv: list[str] | None = None) -> int:
     parser = _parser()
     try:
         return execute(parser.parse_args(argv))
-    except (FileNotFoundError, FileExistsError, ValueError, json.JSONDecodeError) as exception:
+    except (
+        FileNotFoundError,
+        FileExistsError,
+        ValueError,
+        json.JSONDecodeError,
+        OSError,
+    ) as exception:
         print(f"error: {exception}", file=sys.stderr)
         return 2
 

@@ -1,0 +1,43 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+      - name: Build distributions
+        run: |
+          python -m pip install --upgrade build twine
+          python -m build
+          python -m twine check dist/*
+      - name: Verify wheel and bundle in a clean environment
+        run: |
+          python -m venv clean-install
+          clean-install/bin/python -m pip install dist/*.whl
+          clean-install/bin/benchlineage demo release-demo
+          clean-install/bin/benchlineage audit release-demo
+          clean-install/bin/benchlineage verify release-demo
+          clean-install/bin/benchlineage bundle release-demo --output release-demo.zip
+          clean-install/bin/benchlineage verify-bundle release-demo.zip
+      - name: Write checksums
+        run: |
+          cd dist
+          sha256sum *.whl *.tar.gz > SHA256SUMS
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" dist/* \
+            --verify-tag \
+            --generate-notes \
+            --title "BenchLineage ${GITHUB_REF_NAME}"
