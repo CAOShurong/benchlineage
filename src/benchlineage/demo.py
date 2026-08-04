@@ -16,6 +16,19 @@ from .report import build_report
 from .workspace import Workspace
 
 
+def _portable_numbers(value):
+    """Remove insignificant libm/statistics drift from the committed demo fixture."""
+    if isinstance(value, float):
+        if not math.isfinite(value):
+            return value
+        return float(f"{value:.10g}")
+    if isinstance(value, list):
+        return [_portable_numbers(item) for item in value]
+    if isinstance(value, dict):
+        return {key: _portable_numbers(item) for key, item in value.items()}
+    return value
+
+
 def _write_csv(path: Path, fields: list[str], rows: list[dict[str, float]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8", newline="") as handle:
@@ -263,7 +276,7 @@ def build_demo(
         *sorted((root / "runs").glob("*.json")),
         *sorted((root / "analysis").glob("*.json")),
     ]:
-        record = read_json(record_path)
+        record = _portable_numbers(read_json(record_path))
         if "created_at" in record:
             record["created_at"] = fixed_created_at
         if "recorded_at" in record:

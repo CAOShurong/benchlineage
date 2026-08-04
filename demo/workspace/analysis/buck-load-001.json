@@ -12,80 +12,80 @@
       "path": "data/raw/buck-load-sweep.csv",
       "result": {
         "kind": "power_efficiency",
-        "mean_efficiency_percent": 87.92794891039203,
+        "mean_efficiency_percent": 87.92794891,
         "observations": 10,
-        "peak_efficiency_percent": 91.95507098376258,
-        "peak_output_power_w": 3.5898746353356,
+        "peak_efficiency_percent": 91.95507098,
+        "peak_output_power_w": 3.589874635,
         "points": [
           {
-            "efficiency_percent": 79.4853166250702,
-            "input_power_w": 0.3158305051648,
+            "efficiency_percent": 79.48531663,
+            "input_power_w": 0.3158305052,
             "load_ohm": 100.0,
-            "loss_w": 0.06479162813600003,
-            "output_power_w": 0.25103887702879996
+            "loss_w": 0.06479162814,
+            "output_power_w": 0.251038877
           },
           {
-            "efficiency_percent": 81.73145365378456,
-            "input_power_w": 0.4536605550204,
+            "efficiency_percent": 81.73145365,
+            "input_power_w": 0.453660555,
             "load_ohm": 68.0,
-            "loss_w": 0.08287718874839994,
-            "output_power_w": 0.37078336627200004
+            "loss_w": 0.08287718875,
+            "output_power_w": 0.3707833663
           },
           {
-            "efficiency_percent": 84.19382636235116,
-            "input_power_w": 0.6360608698245,
+            "efficiency_percent": 84.19382636,
+            "input_power_w": 0.6360608698,
             "load_ohm": 47.0,
-            "loss_w": 0.10053688552560003,
-            "output_power_w": 0.5355239842989
+            "loss_w": 0.1005368855,
+            "output_power_w": 0.5355239843
           },
           {
-            "efficiency_percent": 86.61408593729391,
-            "input_power_w": 0.87192157254,
+            "efficiency_percent": 86.61408594,
+            "input_power_w": 0.8719215725,
             "load_ohm": 33.0,
-            "loss_w": 0.11671467239440003,
-            "output_power_w": 0.7552069001456
+            "loss_w": 0.1167146724,
+            "output_power_w": 0.7552069001
           },
           {
-            "efficiency_percent": 89.12950652843362,
-            "input_power_w": 1.2695958208088,
+            "efficiency_percent": 89.12950653,
+            "input_power_w": 1.269595821,
             "load_ohm": 22.0,
-            "loss_w": 0.13801133081630002,
-            "output_power_w": 1.1315844899925
+            "loss_w": 0.1380113308,
+            "output_power_w": 1.13158449
           },
           {
-            "efficiency_percent": 90.81111041508473,
-            "input_power_w": 1.8268995560539,
+            "efficiency_percent": 90.81111042,
+            "input_power_w": 1.826899556,
             "load_ohm": 15.0,
-            "loss_w": 0.16787178303310024,
-            "output_power_w": 1.6590277730207998
+            "loss_w": 0.167871783,
+            "output_power_w": 1.659027773
           },
           {
-            "efficiency_percent": 91.69551174969182,
-            "input_power_w": 2.6833507176655997,
+            "efficiency_percent": 91.69551175,
+            "input_power_w": 2.683350718,
             "load_ohm": 10.0,
-            "loss_w": 0.22283854506309986,
-            "output_power_w": 2.4605121726025
+            "loss_w": 0.2228385451,
+            "output_power_w": 2.460512173
           },
           {
-            "efficiency_percent": 91.87683468755532,
-            "input_power_w": 3.2629547229702993,
+            "efficiency_percent": 91.87683469,
+            "input_power_w": 3.262954723,
             "load_ohm": 8.2,
-            "loss_w": 0.2650552062170992,
-            "output_power_w": 2.9978995167532
+            "loss_w": 0.2650552062,
+            "output_power_w": 2.997899517
           },
           {
-            "efficiency_percent": 91.95507098376258,
-            "input_power_w": 3.9039441728771,
+            "efficiency_percent": 91.95507098,
+            "input_power_w": 3.903944173,
             "load_ohm": 6.8,
-            "loss_w": 0.3140695375414997,
-            "output_power_w": 3.5898746353356
+            "loss_w": 0.3140695375,
+            "output_power_w": 3.589874635
           },
           {
-            "efficiency_percent": 91.78677216089244,
-            "input_power_w": 4.707216562969601,
+            "efficiency_percent": 91.78677216,
+            "input_power_w": 4.707216563,
             "load_ohm": 5.6,
-            "loss_w": 0.38661442119690115,
-            "output_power_w": 4.320602141772699
+            "loss_w": 0.3866144212,
+            "output_power_w": 4.320602142
           }
         ]
       }
@@ -95,24 +95,24 @@
   "schema": "benchlineage/analysis/v1",
   "study_id": "buck-efficiency",
   "uncertainty_budget": {
-    "combined_standard_uncertainty": 0.004618802153517006,
+    "combined_standard_uncertainty": 0.004618802154,
     "components": [
       {
-        "contribution": 0.0034641016151377548,
+        "contribution": 0.003464101615,
         "distribution": "rectangular",
         "name": "voltage channels",
         "sensitivity": 1.0,
         "source": "synthetic calibration certificate",
-        "standard_uncertainty": 0.0034641016151377548,
-        "variance_share": 0.5625000000000001
+        "standard_uncertainty": 0.003464101615,
+        "variance_share": 0.5625
       },
       {
-        "contribution": 0.002309401076758503,
+        "contribution": 0.002309401077,
         "distribution": "rectangular",
         "name": "current channels",
         "sensitivity": 1.0,
         "source": "synthetic calibration certificate",
-        "standard_uncertainty": 0.002309401076758503,
+        "standard_uncertainty": 0.002309401077,
         "variance_share": 0.25
       },
       {
@@ -122,10 +122,10 @@
         "sensitivity": 1.0,
         "source": "stability window",
         "standard_uncertainty": 0.002,
-        "variance_share": 0.18749999999999997
+        "variance_share": 0.1875
       }
     ],
     "coverage_factor": 2.0,
-    "expanded_uncertainty": 0.009237604307034013
+    "expanded_uncertainty": 0.009237604307
   }
 }
