@@ -4,11 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "benchlineage"
-version = "0.2.0"
+version = "0.2.1"
 description = "Local-first provenance, uncertainty, and audit trails for electrical-engineering experiments."
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
+license-files = ["LICENSE"]
 authors = [{ name = "Shurong Cao" }]
 keywords = [
   "electrical-engineering",
@@ -33,8 +34,11 @@ dependencies = []
 
 [project.urls]
 Homepage = "https://caoshurong.github.io/benchlineage/"
+Documentation = "https://github.com/CAOShurong/benchlineage#readme"
 Repository = "https://github.com/CAOShurong/benchlineage"
 Issues = "https://github.com/CAOShurong/benchlineage/issues"
+Changelog = "https://github.com/CAOShurong/benchlineage/blob/main/CHANGELOG.md"
+Discussions = "https://github.com/CAOShurong/benchlineage/discussions"
 
 [project.scripts]
 benchlineage = "benchlineage.cli:main"
