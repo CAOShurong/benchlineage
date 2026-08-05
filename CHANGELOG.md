@@ -2,6 +2,20 @@
 
 All notable changes to BenchLineage are documented here.
 
+## 0.2.1 — 2026-08-05
+
+### Added
+
+- PyPI Trusted Publishing with short-lived GitHub OIDC credentials and publish attestations.
+- PyPI-safe README graphics and links, a large social preview, and a direct package-install path.
+- A community discussion route alongside the existing engineering-analysis request form.
+
+### Changed
+
+- Split package construction, PyPI publication, and GitHub Release publication into separate
+  least-privilege jobs that share one verified distribution artifact.
+- Updated generated report and bundle provenance to identify BenchLineage 0.2.1.
+
 ## 0.2.0 — 2026-08-05
 
 ### Added

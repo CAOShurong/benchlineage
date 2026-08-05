@@ -3,6 +3,12 @@
 BenchLineage follows evidence needs rather than feature count. Items move only when a concrete
 research workflow and validation case exist.
 
+## 0.2.1 — Distribution
+
+- PyPI distribution through OIDC Trusted Publishing.
+- PyPI-safe documentation links and a large-image social preview.
+- Structured routes for reproducible bugs, analysis proposals, and workflow discussion.
+
 ## 0.2 — Interoperability
 
 - CSV dialect profiles for common oscilloscopes, source-measure units, VNAs, and power analyzers.

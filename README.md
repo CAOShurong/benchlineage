@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/assets/hero.svg" alt="BenchLineage worked example: measure a cutoff frequency, link its equipment and files, then verify the record later" width="100%">
+  <img src="https://raw.githubusercontent.com/CAOShurong/benchlineage/main/docs/assets/hero.svg" alt="BenchLineage worked example: measure a cutoff frequency, link its equipment and files, then verify the record later" width="100%">
 </p>
 
 BenchLineage turns an ordinary project directory into a verifiable chain from **research
@@ -16,7 +16,8 @@ runtime dependency.
 
 [Live demonstration](https://caoshurong.github.io/benchlineage/)
 · [Synthetic report](https://caoshurong.github.io/benchlineage/demo/demo-report.html)
-· [Methodology](docs/METHODOLOGY.md)
+· [PyPI package](https://pypi.org/project/benchlineage/)
+· [Methodology](https://github.com/CAOShurong/benchlineage/blob/main/docs/METHODOLOGY.md)
 · [CI](https://github.com/CAOShurong/benchlineage/actions/workflows/ci.yml)
 · Python 3.11+ · MIT · zero runtime dependencies
 
@@ -29,9 +30,9 @@ runtime dependency.
 
 - [Project site](https://caoshurong.github.io/benchlineage/)
 - [Synthetic interactive report](https://caoshurong.github.io/benchlineage/demo/demo-report.html)
-- [Example workspace](demo/workspace/)
-- [Methodology](docs/METHODOLOGY.md)
-- [Competitive landscape](docs/COMPETITIVE_LANDSCAPE.md)
+- [Example workspace](https://github.com/CAOShurong/benchlineage/tree/main/demo/workspace)
+- [Methodology](https://github.com/CAOShurong/benchlineage/blob/main/docs/METHODOLOGY.md)
+- [Competitive landscape](https://github.com/CAOShurong/benchlineage/blob/main/docs/COMPETITIVE_LANDSCAPE.md)
 
 Every instrument name, serial number, certificate, and measurement in the public demonstration is
 synthetic. The demo illustrates the evidence model; it makes no claim about physical hardware.
@@ -39,7 +40,7 @@ synthetic. The demo illustrates the evidence model; it makes no claim about phys
 ## The evidence chain
 
 <p align="center">
-  <img src="docs/assets/workflow.svg" alt="Six plain-language stages: plan the experiment, identify equipment, save raw data, compute the result, check links, and share one bundle" width="100%">
+  <img src="https://raw.githubusercontent.com/CAOShurong/benchlineage/main/docs/assets/workflow.svg" alt="Six plain-language stages: plan the experiment, identify equipment, save raw data, compute the result, check links, and share one bundle" width="100%">
 </p>
 
 <p align="center"><sub>Every stage writes an inspectable file; the final bundle keeps those files together.</sub></p>
@@ -63,30 +64,29 @@ with it. This is the smallest useful mental model for BenchLineage: the reported
 middle, and every surrounding statement has a recorded source.
 
 <p align="center">
-  <img src="docs/assets/result-record.svg" alt="A fictional cutoff-frequency result linked to its objective, raw observations, equipment, analysis method, uncertainty budget, and integrity record" width="100%">
+  <img src="https://raw.githubusercontent.com/CAOShurong/benchlineage/main/docs/assets/result-record.svg" alt="A fictional cutoff-frequency result linked to its objective, raw observations, equipment, analysis method, uncertainty budget, and integrity record" width="100%">
 </p>
 
 <p align="center"><sub>Integrity checks answer whether recorded files changed; they do not certify whether the experiment was scientifically correct.</sub></p>
 
 ## Install
 
-Install the signed-off v0.2.0 wheel from the GitHub Release:
+Install from PyPI:
 
 ```bash
-python -m pip install "https://github.com/CAOShurong/benchlineage/releases/download/v0.2.0/benchlineage-0.2.0-py3-none-any.whl"
+python -m pip install benchlineage
 benchlineage --version
 ```
 
-Or install the exact source tag:
+For an isolated one-off demonstration with [pipx](https://pipx.pypa.io/):
 
 ```bash
-python -m pip install "git+https://github.com/CAOShurong/benchlineage.git@v0.2.0"
+pipx run benchlineage demo my-bench --seed 20260804
 ```
 
-> [!NOTE]
-> The package is not currently published on PyPI, so `pip install
-> benchlineage` alone is not advertised. Each GitHub Release carries a wheel,
-> source archive, and SHA-256 checksum file.
+PyPI distributions are published from the tagged GitHub workflow with a short-lived OIDC
+credential and a public provenance attestation. Each GitHub Release also carries the same wheel,
+source archive, and a SHA-256 checksum file.
 
 For development:
 
@@ -252,7 +252,7 @@ benchlineage analyze thesis-bench \
 The engine converts stated limits for normal, rectangular, and triangular distributions into
 standard uncertainties, applies sensitivity coefficients, combines independent contributions by
 root-sum-square, and reports component variance shares. See
-[Uncertainty model](docs/UNCERTAINTY.md) for assumptions and limitations.
+[Uncertainty model](https://github.com/CAOShurong/benchlineage/blob/main/docs/UNCERTAINTY.md) for assumptions and limitations.
 
 ## Auditing and sealing are different
 
@@ -311,7 +311,8 @@ BenchLineage does not currently:
 - replace raw binary formats with CSV;
 - guarantee FAIR compliance merely because metadata fields exist.
 
-Those boundaries are intentional and documented in the [roadmap](ROADMAP.md).
+Those boundaries are intentional and documented in the
+[roadmap](https://github.com/CAOShurong/benchlineage/blob/main/ROADMAP.md).
 
 ## Development
 
@@ -331,8 +332,12 @@ The package targets Python 3.11 and newer and has zero runtime dependencies.
 
 If BenchLineage contributes to a published evidence workflow, cite the software version and the
 root digest of the sealed workspace. A software citation file is provided in
-[`CITATION.cff`](CITATION.cff).
+[`CITATION.cff`](https://github.com/CAOShurong/benchlineage/blob/main/CITATION.cff).
 
 ## License
 
-[MIT](LICENSE). Contributions are welcome under the same license.
+[MIT](https://github.com/CAOShurong/benchlineage/blob/main/LICENSE). Contributions are welcome
+under the same license. Questions and concrete laboratory workflows belong in
+[Discussions](https://github.com/CAOShurong/benchlineage/discussions); reproducible defects and
+inspectable analysis proposals belong in
+[Issues](https://github.com/CAOShurong/benchlineage/issues).

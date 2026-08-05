@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import re
+import struct
 import tomllib
 from pathlib import Path
 
@@ -22,21 +23,24 @@ TEXT_SUFFIXES = {
     ".yml",
 }
 IGNORED_PARTS = {".git", ".venv", "__pycache__", "build", "dist"}
+EXPECTED_VERSION = "0.2.1"
+
+
+def is_ignored(path: Path) -> bool:
+    return any(part in IGNORED_PARTS or part.startswith("dist-") for part in path.parts)
 
 
 def text_files() -> list[Path]:
     return [
         path
         for path in ROOT.rglob("*")
-        if path.is_file()
-        and path.suffix.lower() in TEXT_SUFFIXES
-        and not any(part in IGNORED_PARTS for part in path.parts)
+        if path.is_file() and path.suffix.lower() in TEXT_SUFFIXES and not is_ignored(path)
     ]
 
 
 def check_json(errors: list[str]) -> None:
     for path in ROOT.rglob("*.json"):
-        if any(part in IGNORED_PARTS for part in path.parts):
+        if is_ignored(path):
             continue
         try:
             json.loads(path.read_text(encoding="utf-8"))
@@ -47,9 +51,14 @@ def check_json(errors: list[str]) -> None:
 def check_toml(errors: list[str]) -> None:
     try:
         with (ROOT / "pyproject.toml").open("rb") as handle:
-            tomllib.load(handle)
+            pyproject = tomllib.load(handle)
     except (OSError, tomllib.TOMLDecodeError) as exception:
         errors.append(f"invalid pyproject.toml: {exception}")
+        return
+    if pyproject["project"]["version"] != EXPECTED_VERSION:
+        errors.append("pyproject version does not match the release")
+    if pyproject["project"]["authors"] != [{"name": "Shurong Cao"}]:
+        errors.append("package authorship must name Shurong Cao only")
 
 
 def check_english(errors: list[str]) -> None:
@@ -66,7 +75,7 @@ def check_english(errors: list[str]) -> None:
 def check_markdown_links(errors: list[str]) -> None:
     pattern = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
     for path in ROOT.rglob("*.md"):
-        if any(part in IGNORED_PARTS for part in path.parts):
+        if is_ignored(path):
             continue
         text = path.read_text(encoding="utf-8")
         for target in pattern.findall(text):
@@ -106,6 +115,39 @@ def check_site(errors: list[str]) -> None:
         report_text = report.read_text(encoding="utf-8")
         if "<script src=" in report_text or '<link rel="stylesheet"' in report_text:
             errors.append("demonstration report is not self-contained")
+    if "python -m pip install benchlineage" not in index:
+        errors.append("site lacks the PyPI install path")
+    preview = ROOT / "site" / "social-preview.png"
+    if not preview.is_file():
+        errors.append("social preview is missing")
+    else:
+        payload = preview.read_bytes()
+        if payload[:8] != b"\x89PNG\r\n\x1a\n" or len(payload) < 24:
+            errors.append("social preview is not a valid PNG")
+        elif struct.unpack(">II", payload[16:24]) != (1280, 640):
+            errors.append("social preview must be 1280x640")
+
+
+def check_release_metadata(errors: list[str]) -> None:
+    citation = (ROOT / "CITATION.cff").read_text(encoding="utf-8")
+    changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    package = (ROOT / "src" / "benchlineage" / "__init__.py").read_text(encoding="utf-8")
+    for label, text, marker in (
+        ("citation", citation, f"version: {EXPECTED_VERSION}"),
+        ("changelog", changelog, f"## {EXPECTED_VERSION}"),
+        ("package", package, f'__version__ = "{EXPECTED_VERSION}"'),
+        ("README", readme, "python -m pip install benchlineage"),
+    ):
+        if marker not in text:
+            errors.append(f"{label} release metadata is inconsistent")
+    for relative in (
+        "docs/assets/hero.svg",
+        "docs/assets/workflow.svg",
+        "docs/assets/result-record.svg",
+    ):
+        if not (ROOT / relative).is_file():
+            errors.append(f"README figure is missing: {relative}")
 
 
 def main() -> int:
@@ -116,6 +158,7 @@ def main() -> int:
     check_markdown_links(errors)
     check_secret_shapes(errors)
     check_site(errors)
+    check_release_metadata(errors)
     result = {
         "status": "pass" if not errors else "fail",
         "files_checked": len(text_files()),
