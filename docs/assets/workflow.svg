@@ -1,39 +1,78 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="430" viewBox="0 0 1400 430" role="img" aria-labelledby="title desc">
-  <title id="title">BenchLineage evidence workflow</title>
-  <desc id="desc">Six research-evidence stages, from study intent through bench traceability, raw observation, analysis, audit, and a publication bundle.</desc>
-  <rect width="1400" height="430" rx="8" fill="#faf9f5"/>
-  <rect x="1" y="1" width="1398" height="428" rx="7" fill="none" stroke="#d5d2ca"/>
-  <g font-family="Inter,Segoe UI,Arial,sans-serif">
-    <text x="62" y="58" fill="#172a35" font-family="Georgia,Times New Roman,serif" font-size="29" font-weight="700">One chain, six explicit claims</text>
-    <text x="62" y="87" fill="#647178" font-size="15">Each stage records what is known, what is inferred, and which artifact supports it.</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="500" viewBox="0 0 1440 500" role="img" aria-labelledby="title desc">
+  <title id="title">How BenchLineage records one experiment</title>
+  <desc id="desc">Six plain-language stages explain how an experiment moves from a written plan to a shareable, verifiable evidence bundle.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#789096"/>
+    </marker>
+  </defs>
+  <rect width="1440" height="500" rx="10" fill="#F7F6F2"/>
+  <rect x="1" y="1" width="1438" height="498" rx="9" fill="none" stroke="#D4D1C8" stroke-width="2"/>
+  <g font-family="Inter, Segoe UI, Arial, sans-serif" text-anchor="middle">
+    <text x="720" y="58" fill="#172635" font-family="Georgia, Times New Roman, serif" font-size="32" font-weight="700">How one experiment becomes reviewable evidence</text>
+    <text x="720" y="88" fill="#65727A" font-size="14">Each step saves an ordinary file that another person can inspect without BenchLineage.</text>
 
-    <line x1="124" y1="191" x2="1260" y2="191" stroke="#9ba5a9" stroke-width="2"/>
-    <g fill="#faf9f5" stroke-width="3">
-      <circle cx="124" cy="191" r="21" stroke="#1f5b61"/>
-      <circle cx="352" cy="191" r="21" stroke="#1f5b61"/>
-      <circle cx="580" cy="191" r="21" stroke="#1f5b61"/>
-      <circle cx="808" cy="191" r="21" stroke="#b5792d"/>
-      <circle cx="1036" cy="191" r="21" stroke="#1f5b61"/>
-      <circle cx="1260" cy="191" r="21" stroke="#6b7742"/>
+    <path d="M252 232H280M472 232H500M692 232H720M912 232H940M1132 232H1160" fill="none" stroke="#789096" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <g transform="translate(60 132)">
+      <rect width="192" height="210" rx="7" fill="#FFFFFF" stroke="#C9C6BC"/>
+      <circle cx="96" cy="0" r="21" fill="#17324D"/><text x="96" y="6" fill="#FFFFFF" font-size="13" font-weight="800">1</text>
+      <text x="96" y="52" fill="#172635" font-size="16" font-weight="800">Plan the experiment</text>
+      <text x="96" y="86" fill="#5F6D74" font-size="12">Write the objective,</text>
+      <text x="96" y="105" fill="#5F6D74" font-size="12">hypothesis, and protocol.</text>
+      <line x1="24" y1="135" x2="168" y2="135" stroke="#DDD9D0"/>
+      <text x="96" y="166" fill="#2B6F6B" font-family="Consolas, monospace" font-size="11">studies/*.json</text>
     </g>
-    <g text-anchor="middle" font-size="13" font-weight="800">
-      <text x="124" y="196" fill="#1f5b61">01</text>
-      <text x="352" y="196" fill="#1f5b61">02</text>
-      <text x="580" y="196" fill="#1f5b61">03</text>
-      <text x="808" y="196" fill="#b5792d">04</text>
-      <text x="1036" y="196" fill="#1f5b61">05</text>
-      <text x="1260" y="196" fill="#6b7742">06</text>
+    <g transform="translate(280 132)">
+      <rect width="192" height="210" rx="7" fill="#FFFFFF" stroke="#C9C6BC"/>
+      <circle cx="96" cy="0" r="21" fill="#2B6F6B"/><text x="96" y="6" fill="#FFFFFF" font-size="13" font-weight="800">2</text>
+      <text x="96" y="52" fill="#172635" font-size="16" font-weight="800">Identify equipment</text>
+      <text x="96" y="86" fill="#5F6D74" font-size="12">Record the device, serial,</text>
+      <text x="96" y="105" fill="#5F6D74" font-size="12">and calibration dates.</text>
+      <line x1="24" y1="135" x2="168" y2="135" stroke="#DDD9D0"/>
+      <text x="96" y="166" fill="#2B6F6B" font-family="Consolas, monospace" font-size="11">instruments/*.json</text>
+      <text x="96" y="184" fill="#2B6F6B" font-family="Consolas, monospace" font-size="11">calibrations/*.json</text>
+    </g>
+    <g transform="translate(500 132)">
+      <rect width="192" height="210" rx="7" fill="#FFFFFF" stroke="#C9C6BC"/>
+      <circle cx="96" cy="0" r="21" fill="#2B6F6B"/><text x="96" y="6" fill="#FFFFFF" font-size="13" font-weight="800">3</text>
+      <text x="96" y="52" fill="#172635" font-size="16" font-weight="800">Save raw data</text>
+      <text x="96" y="86" fill="#5F6D74" font-size="12">Keep the observations and</text>
+      <text x="96" y="105" fill="#5F6D74" font-size="12">the conditions of the run.</text>
+      <line x1="24" y1="135" x2="168" y2="135" stroke="#DDD9D0"/>
+      <text x="96" y="166" fill="#2B6F6B" font-family="Consolas, monospace" font-size="11">runs/*.json</text>
+      <text x="96" y="184" fill="#2B6F6B" font-family="Consolas, monospace" font-size="11">data/raw/*</text>
+    </g>
+    <g transform="translate(720 132)">
+      <rect width="192" height="210" rx="7" fill="#FFFFFF" stroke="#C9C6BC"/>
+      <circle cx="96" cy="0" r="21" fill="#B07A2A"/><text x="96" y="6" fill="#FFFFFF" font-size="13" font-weight="800">4</text>
+      <text x="96" y="52" fill="#172635" font-size="16" font-weight="800">Compute the result</text>
+      <text x="96" y="86" fill="#5F6D74" font-size="12">Record the method, result,</text>
+      <text x="96" y="105" fill="#5F6D74" font-size="12">and uncertainty sources.</text>
+      <line x1="24" y1="135" x2="168" y2="135" stroke="#DDD9D0"/>
+      <text x="96" y="166" fill="#9A6722" font-family="Consolas, monospace" font-size="11">analysis/*.json</text>
+    </g>
+    <g transform="translate(940 132)">
+      <rect width="192" height="210" rx="7" fill="#FFFFFF" stroke="#C9C6BC"/>
+      <circle cx="96" cy="0" r="21" fill="#17324D"/><text x="96" y="6" fill="#FFFFFF" font-size="13" font-weight="800">5</text>
+      <text x="96" y="52" fill="#172635" font-size="16" font-weight="800">Check the links</text>
+      <text x="96" y="86" fill="#5F6D74" font-size="12">Find missing references and</text>
+      <text x="96" y="105" fill="#5F6D74" font-size="12">detect changed file bytes.</text>
+      <line x1="24" y1="135" x2="168" y2="135" stroke="#DDD9D0"/>
+      <text x="96" y="166" fill="#2B6F6B" font-family="Consolas, monospace" font-size="11">audit + verify</text>
+    </g>
+    <g transform="translate(1160 132)">
+      <rect width="220" height="210" rx="7" fill="#17324D" stroke="#17324D"/>
+      <circle cx="110" cy="0" r="21" fill="#2B6F6B"/><text x="110" y="6" fill="#FFFFFF" font-size="13" font-weight="800">6</text>
+      <text x="110" y="52" fill="#FFFFFF" font-size="16" font-weight="800">Share one bundle</text>
+      <text x="110" y="86" fill="#D9E1E5" font-size="12">Export the report, records,</text>
+      <text x="110" y="105" fill="#D9E1E5" font-size="12">data inventory, and checksums.</text>
+      <line x1="24" y1="135" x2="196" y2="135" stroke="#56747A"/>
+      <text x="110" y="166" fill="#A9D5CF" font-family="Consolas, monospace" font-size="11">evidence.zip</text>
     </g>
 
-    <g text-anchor="middle">
-      <g transform="translate(124 0)"><text y="143" fill="#172a35" font-size="17" font-weight="700">Intent</text><text y="229" fill="#647178" font-size="13">Objective + protocol</text><text y="310" fill="#1f5b61" font-family="ui-monospace,monospace" font-size="11">studies/*.json</text></g>
-      <g transform="translate(352 0)"><text y="143" fill="#172a35" font-size="17" font-weight="700">Bench</text><text y="229" fill="#647178" font-size="13">Identity + calibration</text><text y="310" fill="#1f5b61" font-family="ui-monospace,monospace" font-size="11">instruments/*.json</text></g>
-      <g transform="translate(580 0)"><text y="143" fill="#172a35" font-size="17" font-weight="700">Observe</text><text y="229" fill="#647178" font-size="13">Conditions + raw bytes</text><text y="310" fill="#1f5b61" font-family="ui-monospace,monospace" font-size="11">data/raw/*</text></g>
-      <g transform="translate(808 0)"><text y="143" fill="#172a35" font-size="17" font-weight="700">Derive</text><text y="229" fill="#647178" font-size="13">Result + uncertainty</text><text y="310" fill="#8a5b24" font-family="ui-monospace,monospace" font-size="11">analysis/*.json</text></g>
-      <g transform="translate(1036 0)"><text y="143" fill="#172a35" font-size="17" font-weight="700">Audit + seal</text><text y="229" fill="#647178" font-size="13">References + digests</text><text y="310" fill="#1f5b61" font-family="ui-monospace,monospace" font-size="11">seals/*.json</text></g>
-      <g transform="translate(1260 0)"><text y="143" fill="#172a35" font-size="17" font-weight="700">Publish</text><text y="229" fill="#647178" font-size="13">Reviewable bundle</text><text y="310" fill="#53613a" font-family="ui-monospace,monospace" font-size="11">evidence.zip</text></g>
-    </g>
-    <line x1="62" y1="353" x2="1338" y2="353" stroke="#d8d5cd"/>
-    <text x="62" y="386" fill="#6c777d" font-size="13">Integrity is not authenticity. Authenticity is not scientific validity. BenchLineage keeps those claims separate.</text>
+    <rect x="60" y="390" width="1320" height="56" rx="6" fill="#E8EFEE"/>
+    <text x="720" y="414" fill="#17324D" font-size="13" font-weight="700">What the checks mean</text>
+    <text x="720" y="435" fill="#59676F" font-size="12">“The recorded files are complete and unchanged” — not “the experiment is scientifically correct.”</text>
   </g>
 </svg>

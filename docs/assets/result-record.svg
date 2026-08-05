@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="520" viewBox="0 0 1440 520" role="img" aria-labelledby="title desc">
+  <title id="title">What travels with one BenchLineage result</title>
+  <desc id="desc">A worked example shows the reported value in the center and the five supporting records that make it reviewable.</desc>
+  <rect width="1440" height="520" rx="10" fill="#F7F6F2"/>
+  <rect x="1" y="1" width="1438" height="518" rx="9" fill="none" stroke="#D4D1C8" stroke-width="2"/>
+  <g font-family="Inter, Segoe UI, Arial, sans-serif" text-anchor="middle">
+    <text x="720" y="58" fill="#172635" font-family="Georgia, Times New Roman, serif" font-size="32" font-weight="700">What travels with one reported result?</text>
+    <text x="720" y="88" fill="#65727A" font-size="14">A number is reviewable only when its surrounding evidence is preserved.</text>
+
+    <g fill="none" stroke="#8FA0A4" stroke-width="1.8">
+      <path d="M720 264L302 170M720 264L302 352M720 264L1138 170M720 264L1138 352M720 264V430"/>
+    </g>
+
+    <g transform="translate(540 176)">
+      <rect width="360" height="176" rx="88" fill="#17324D"/>
+      <text x="180" y="57" fill="#B9DCD7" font-size="12" font-weight="700" letter-spacing="1.4">REPORTED VALUE</text>
+      <text x="180" y="108" fill="#FFFFFF" font-family="Georgia, Times New Roman, serif" font-size="34" font-weight="700">1.575 kHz ± 0.8%</text>
+      <text x="180" y="139" fill="#D9E1E5" font-size="13">RC low-pass cutoff frequency</text>
+    </g>
+
+    <g transform="translate(80 112)">
+      <rect width="444" height="116" rx="7" fill="#FFFFFF" stroke="#C9C6BC"/>
+      <text x="222" y="34" fill="#2B6F6B" font-size="13" font-weight="800" letter-spacing="1.2">WHY</text>
+      <text x="222" y="65" fill="#172635" font-size="15" font-weight="700">Objective and protocol</text>
+      <text x="222" y="91" fill="#65727A" font-size="12">What was tested, and what was fixed in advance?</text>
+    </g>
+    <g transform="translate(80 294)">
+      <rect width="444" height="116" rx="7" fill="#FFFFFF" stroke="#C9C6BC"/>
+      <text x="222" y="34" fill="#2B6F6B" font-size="13" font-weight="800" letter-spacing="1.2">WHAT WAS OBSERVED</text>
+      <text x="222" y="65" fill="#172635" font-size="15" font-weight="700">Raw sweep and run conditions</text>
+      <text x="222" y="91" fill="#65727A" font-size="12">41 frequency points, timestamps, and environment.</text>
+    </g>
+    <g transform="translate(916 112)">
+      <rect width="444" height="116" rx="7" fill="#FFFFFF" stroke="#C9C6BC"/>
+      <text x="222" y="34" fill="#2B6F6B" font-size="13" font-weight="800" letter-spacing="1.2">WITH WHICH EQUIPMENT</text>
+      <text x="222" y="65" fill="#172635" font-size="15" font-weight="700">Instrument identity and calibration</text>
+      <text x="222" y="91" fill="#65727A" font-size="12">Device, serial number, certificate, and valid dates.</text>
+    </g>
+    <g transform="translate(916 294)">
+      <rect width="444" height="116" rx="7" fill="#FFFFFF" stroke="#C9C6BC"/>
+      <text x="222" y="34" fill="#B07A2A" font-size="13" font-weight="800" letter-spacing="1.2">HOW IT WAS CALCULATED</text>
+      <text x="222" y="65" fill="#172635" font-size="15" font-weight="700">Analysis method and uncertainty budget</text>
+      <text x="222" y="91" fill="#65727A" font-size="12">Algorithm, inputs, parameters, and error sources.</text>
+    </g>
+    <g transform="translate(540 426)">
+      <rect width="360" height="62" rx="7" fill="#E8EFEE" stroke="#AFC4C1"/>
+      <text x="180" y="26" fill="#2B6F6B" font-size="12" font-weight="800" letter-spacing="1.1">DID THE RECORD CHANGE?</text>
+      <text x="180" y="47" fill="#354A55" font-size="12">File inventory + SHA-256 evidence root</text>
+    </g>
+  </g>
+</svg>

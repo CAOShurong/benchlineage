@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/assets/hero.svg" alt="BenchLineage graphical abstract: from a measured value to reviewable evidence" width="100%">
+  <img src="docs/assets/hero.svg" alt="BenchLineage worked example: measure a cutoff frequency, link its equipment and files, then verify the record later" width="100%">
 </p>
 
 BenchLineage turns an ordinary project directory into a verifiable chain from **research
@@ -39,8 +39,10 @@ synthetic. The demo illustrates the evidence model; it makes no claim about phys
 ## The evidence chain
 
 <p align="center">
-  <img src="docs/assets/workflow.svg" alt="BenchLineage workflow from research intent to sealed evidence" width="100%">
+  <img src="docs/assets/workflow.svg" alt="Six plain-language stages: plan the experiment, identify equipment, save raw data, compute the result, check links, and share one bundle" width="100%">
 </p>
+
+<p align="center"><sub>Every stage writes an inspectable file; the final bundle keeps those files together.</sub></p>
 
 | Layer | Durable artifact | Question it answers |
 |---|---|---|
@@ -53,6 +55,18 @@ synthetic. The demo illustrates the evidence model; it makes no claim about phys
 | Analysis | `analysis/*.json` | Which deterministic derivation produced the result? |
 | Seal | `seals/*.json` | Do the current bytes match the published evidence root? |
 | Report | `reports/*.html` | Can another person inspect the chain without this package? |
+
+### A result is more than a number
+
+The figure below uses one fictional RC-filter result to show the five kinds of context that travel
+with it. This is the smallest useful mental model for BenchLineage: the reported value sits in the
+middle, and every surrounding statement has a recorded source.
+
+<p align="center">
+  <img src="docs/assets/result-record.svg" alt="A fictional cutoff-frequency result linked to its objective, raw observations, equipment, analysis method, uncertainty budget, and integrity record" width="100%">
+</p>
+
+<p align="center"><sub>Integrity checks answer whether recorded files changed; they do not certify whether the experiment was scientifically correct.</sub></p>
 
 ## Install
 
