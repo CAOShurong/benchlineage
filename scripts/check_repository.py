@@ -34,9 +34,7 @@ def text_files() -> list[Path]:
     return [
         path
         for path in ROOT.rglob("*")
-        if path.is_file()
-        and path.suffix.lower() in TEXT_SUFFIXES
-        and not is_ignored(path)
+        if path.is_file() and path.suffix.lower() in TEXT_SUFFIXES and not is_ignored(path)
     ]
 
 
