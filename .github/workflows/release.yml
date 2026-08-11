@@ -19,7 +19,7 @@ jobs:
           python -m pip install --upgrade build twine
           python -m build
           python -m twine check dist/*
-      - name: Verify wheel and bundle in a clean environment
+      - name: Verify wheel, bundle, and ELN exchange in a clean environment
         run: |
           python -m venv clean-install
           clean-install/bin/python -m pip install dist/*.whl
@@ -28,10 +28,15 @@ jobs:
           clean-install/bin/benchlineage verify release-demo
           clean-install/bin/benchlineage bundle release-demo --output release-demo.zip
           clean-install/bin/benchlineage verify-bundle release-demo.zip
+          clean-install/bin/benchlineage export-eln release-demo --output release-demo.eln
+          clean-install/bin/benchlineage verify-eln release-demo.eln
+          clean-install/bin/benchlineage diff-seals release-demo/seals/*.json release-demo/seals/*.json
+          mv release-demo.zip "dist/benchlineage-${GITHUB_REF_NAME#v}-demo.zip"
+          mv release-demo.eln "dist/benchlineage-${GITHUB_REF_NAME#v}-demo.eln"
       - name: Write checksums
         run: |
           cd dist
-          sha256sum *.whl *.tar.gz > SHA256SUMS
+          sha256sum *.whl *.tar.gz *.zip *.eln > SHA256SUMS
       - name: Preserve verified distributions
         uses: actions/upload-artifact@v7
         with:
@@ -39,6 +44,8 @@ jobs:
           path: |
             dist/*.whl
             dist/*.tar.gz
+            dist/*.zip
+            dist/*.eln
             dist/SHA256SUMS
           if-no-files-found: error
 
@@ -58,7 +65,7 @@ jobs:
           name: python-package-distributions
           path: dist
       - name: Keep only package distributions for PyPI
-        run: rm dist/SHA256SUMS
+        run: rm dist/SHA256SUMS dist/*.zip dist/*.eln
       - name: Publish distributions with attestations
         uses: pypa/gh-action-pypi-publish@release/v1
         with:

@@ -57,6 +57,20 @@ BenchLineage does not require built-in analysis:
 The report generator displays built-in analysis kinds. External tools can generate their own
 self-contained report or contribute a renderer.
 
+## Workflow E: handoff to an ELN
+
+Use this when an existing ELN or research-data platform accepts the ELN Consortium exchange
+format:
+
+1. Audit and verify the source workspace.
+2. Export with `benchlineage export-eln <workspace> --output <record.eln>`.
+3. Verify the finished archive with `benchlineage verify-eln <record.eln>`.
+4. Preserve the `.eln` file before testing a product-specific import.
+5. Check the target interface for omitted relationships or fields after import.
+
+Format validation is not a round-trip guarantee. Keep the original archive because an importer
+may display only the subset of RO-Crate metadata it understands.
+
 ## Backup guidance
 
 A single local workspace is not a backup. Follow the 3-2-1 principle when evidence matters:

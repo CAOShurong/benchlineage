@@ -102,6 +102,16 @@ def compare_seals(left: str | Path | dict, right: str | Path | dict) -> dict[str
     right_files = {item["path"]: item["digest"] for item in right_record["files"]}
     return {
         "same_root": left_record.get("root_digest") == right_record.get("root_digest"),
+        "left": {
+            "created_at": left_record.get("created_at"),
+            "label": left_record.get("label", ""),
+            "root_digest": left_record.get("root_digest"),
+        },
+        "right": {
+            "created_at": right_record.get("created_at"),
+            "label": right_record.get("label", ""),
+            "root_digest": right_record.get("root_digest"),
+        },
         "added": sorted(set(right_files) - set(left_files)),
         "removed": sorted(set(left_files) - set(right_files)),
         "changed": sorted(

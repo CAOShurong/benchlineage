@@ -61,6 +61,8 @@ Its differentiators are the combination of:
 - byte-level sealing with a narrow, honest integrity claim;
 - a single-file public report;
 - a deterministic publication ZIP with a verifier and plain SHA-256 manifest;
+- a deterministic ELN Consortium exchange archive for handing the same sealed evidence to an
+  existing electronic lab notebook;
 - no attempt to own acquisition or analysis.
 
 No individual feature is novel. The contribution is a small interoperable
@@ -81,3 +83,8 @@ primary problem.
 
 BenchLineage can provide a portable evidence layer around those systems, but should not pretend to
 replace them.
+
+The `.eln` exporter is therefore a bridge, not a claim that BenchLineage has become an ELN. It
+preserves the original workspace files and maps their relationships into RO-Crate so another tool
+can inspect or import them. Product-specific round-trip fidelity still needs testing with each
+target importer.

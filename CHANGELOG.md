@@ -2,6 +2,25 @@
 
 All notable changes to BenchLineage are documented here.
 
+## 0.3.0 - 2026-08-11
+
+### Added
+
+- Deterministic `.eln` export for moving a sealed BenchLineage workspace into tools that implement
+  the ELN Consortium exchange format.
+- A dependency-free `verify-eln` command that checks archive structure, path safety, metadata,
+  listed payloads, sizes, and SHA-256 digests without extracting the archive.
+- A machine-readable `diff-seals` command for reviewing added, removed, and changed evidence
+  between two workspace seals.
+- Explicit mapping notes for studies, runs, instruments, analyses, people, files, and integrity
+  claims in the exported RO-Crate graph.
+
+### Changed
+
+- Extended package and release smoke tests to exercise ELN export and verification.
+- Added Python 3.14 to the supported CI matrix.
+- Updated the generated demonstration and report provenance to identify BenchLineage 0.3.0.
+
 ## 0.2.1 — 2026-08-05
 
 ### Added
