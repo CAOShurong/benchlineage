@@ -21,18 +21,20 @@ jobs:
           python -m twine check dist/*
       - name: Verify wheel, bundle, and ELN exchange in a clean environment
         run: |
+          demo_version="${GITHUB_REF_NAME#v}"
+          demo_zip="dist/benchlineage-${demo_version}-demo.zip"
+          demo_eln="dist/benchlineage-${demo_version}-demo.eln"
           python -m venv clean-install
           clean-install/bin/python -m pip install dist/*.whl
           clean-install/bin/benchlineage demo release-demo
           clean-install/bin/benchlineage audit release-demo
           clean-install/bin/benchlineage verify release-demo
-          clean-install/bin/benchlineage bundle release-demo --output release-demo.zip
-          clean-install/bin/benchlineage verify-bundle release-demo.zip
-          clean-install/bin/benchlineage export-eln release-demo --output release-demo.eln
-          clean-install/bin/benchlineage verify-eln release-demo.eln
+          clean-install/bin/benchlineage bundle release-demo --output "$demo_zip"
+          clean-install/bin/benchlineage verify-bundle "$demo_zip"
+          clean-install/bin/benchlineage export-eln release-demo --output "$demo_eln"
+          clean-install/bin/benchlineage verify-eln "$demo_eln"
+          clean-install/bin/python -c "from benchlineage import verify_eln; assert verify_eln('$demo_eln')['root_name_matches_archive']"
           clean-install/bin/benchlineage diff-seals release-demo/seals/*.json release-demo/seals/*.json
-          mv release-demo.zip "dist/benchlineage-${GITHUB_REF_NAME#v}-demo.zip"
-          mv release-demo.eln "dist/benchlineage-${GITHUB_REF_NAME#v}-demo.eln"
       - name: Write checksums
         run: |
           cd dist
