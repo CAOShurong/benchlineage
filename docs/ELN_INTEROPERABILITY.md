@@ -1,0 +1,110 @@
+# ELN interoperability
+
+BenchLineage exports the open `.eln` exchange format maintained by the
+[ELN Consortium](https://the.elnconsortium.org/specification/). This is an interoperability path,
+not a claim that BenchLineage is a complete electronic laboratory notebook.
+
+## Why this format
+
+An `.eln` file is a ZIP archive containing one root directory and an attached RO-Crate. The
+Consortium lists import or export implementations in eLabFTW, Kadi4Mat, PASTA, RSpace, SampleDB,
+NOMAD, LinkAhead, OpenSemanticLab, SciLog, and datalab. That makes the format a better handoff
+target than a BenchLineage-only archive when a record must enter an institutional system.
+
+The current Consortium specification accepts RO-Crate 1.1 and newer, while its published test
+suite still validates the RO-Crate 1.1 profile. BenchLineage therefore emits a flattened,
+compacted RO-Crate 1.1 document. This is a deliberate compatibility choice; using the newest core
+RO-Crate context would not by itself prove that deployed ELN importers accept the archive.
+
+## Archive layout
+
+```text
+thesis-bench.eln
+└── thesis-bench.eln/
+    ├── ro-crate-metadata.json
+    └── workspace/
+        ├── benchlineage.json
+        ├── studies/
+        ├── instruments/
+        ├── calibrations/
+        ├── runs/
+        ├── data/raw/
+        ├── analysis/
+        ├── reports/
+        └── seals/
+```
+
+The outer ZIP contains exactly one root directory. The original workspace hierarchy is preserved
+below one ELN `Dataset`, so importers that ignore BenchLineage-specific linked data still receive
+the durable source records and raw bytes.
+
+## Metadata mapping
+
+| BenchLineage artifact | RO-Crate / ELN representation | Important links |
+|---|---|---|
+| Workspace | Root `Dataset` plus one experiment `Dataset` | owner, files, studies, equipment, actions |
+| Owner and operators | `Person` | dataset `author`, run `agent` |
+| Study | `CreativeWork` | objective, hypothesis, protocol, tags |
+| Instrument | `IndividualProduct` | manufacturer, model, serial number, asset tag |
+| Calibration | `CreativeWork` | instrument, certificate, coverage window, uncertainty statement |
+| Experimental run | `CreateAction` | operator, study, equipment, time, raw-file results |
+| Analysis | `CreateAction` | raw-file inputs, BenchLineage software, JSON result |
+| Workspace file | `File` | media type, byte length, SHA-256 digest |
+| Latest seal | Dataset `identifier` | BenchLineage root digest |
+
+The metadata document uses an inline JSON-LD mapping for the ELN Consortium's `sha256` field. No
+network lookup is required to understand or verify file digests.
+
+The Dataset `identifier` is the latest BenchLineage evidence root. Its scope is intentionally the
+same as a native seal: durable evidence is covered, while generated reports and seal records are
+excluded. The ELN graph separately records a size and SHA-256 digest for every included file,
+including reports and seals, so the finished archive verifier still detects any changed member.
+
+## Export and verify
+
+```bash
+benchlineage audit thesis-bench
+benchlineage verify thesis-bench
+benchlineage export-eln thesis-bench --output thesis-bench.eln
+benchlineage verify-eln thesis-bench.eln
+```
+
+Export refuses an unsealed workspace, a failing semantic audit, an invalid latest seal, an output
+inside the source workspace, or an output name without the `.eln` extension. The writer fixes ZIP
+timestamps, permissions, order, and compression settings; unchanged workspace bytes and the same
+archive filename produce identical archive bytes.
+
+The built-in verifier never extracts the archive. It checks:
+
+- one safe root directory and one root metadata document;
+- duplicate, absolute, parent-traversal, backslash, and drive-like member paths;
+- JSON-LD context, descriptor, root Dataset, entity identities, types, and `hasPart` references;
+- the ELN rule that an experiment Dataset does not contain another Dataset;
+- every local File entity against the corresponding ZIP member's size and SHA-256 digest;
+- missing, unlisted, or changed payload files.
+
+CI additionally runs the ELN Consortium's four published suites at commit
+`74a64fd7d9a1786ebf713e0b6eb12bddfb241d69`: parsing with `rocrate` 0.15.1, Consortium parameter
+rules, JSON Schema with `jsonschema` 4.25.1, and `roc-validator` 0.11.3 against the required RO-Crate
+1.1 profile. These are development checks only; the installed BenchLineage runtime remains
+dependency-free.
+
+## Limits
+
+- Export is one-way in version 0.3.0. BenchLineage does not import arbitrary `.eln` archives into
+  its stricter workspace schemas.
+- Passing format validation does not show that a target application's user interface preserves or
+  displays every domain-specific entity.
+- The archive carries hashes, not a trusted signature or timestamp. Anyone who can replace both a
+  file and its metadata can create a different internally consistent archive.
+- No data license is inferred. When the workspace declares none, the root Dataset explicitly says
+  to contact the author before reuse.
+- Format validity, integrity, and provenance do not establish that an experiment was performed
+  correctly or honestly.
+
+## Primary specifications
+
+- [ELN Consortium specification](https://github.com/TheELNConsortium/TheELNFileFormat/blob/master/SPECIFICATION.md)
+- [ELN implementations and examples](https://github.com/TheELNConsortium/TheELNFileFormat)
+- [RO-Crate 1.1](https://w3id.org/ro/crate/1.1)
+- [RO-Crate provenance model](https://www.researchobject.org/ro-crate/specification/1.1/provenance.html)

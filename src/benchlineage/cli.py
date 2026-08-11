@@ -12,8 +12,9 @@ from .analysis import analyze_run
 from .audit import audit_workspace
 from .bundle import build_bundle, verify_bundle
 from .demo import build_demo
+from .eln import build_eln, verify_eln
 from .io import read_json, write_json
-from .provenance import latest_seal, seal_workspace, verify_seal
+from .provenance import compare_seals, latest_seal, seal_workspace, verify_seal
 from .report import build_report
 from .workspace import Workspace
 
@@ -34,7 +35,7 @@ def _parser() -> argparse.ArgumentParser:
         prog="benchlineage",
         description="Local-first provenance and uncertainty trails for EE experiments.",
     )
-    parser.add_argument("--version", action="version", version="BenchLineage 0.2.1")
+    parser.add_argument("--version", action="version", version="BenchLineage 0.3.0")
     subcommands = parser.add_subparsers(dest="command", required=True)
 
     initialize = subcommands.add_parser("init", help="initialize a transparent workspace")
@@ -130,6 +131,24 @@ def _parser() -> argparse.ArgumentParser:
         "verify-bundle", help="verify a publication ZIP without extracting it"
     )
     verify_bundle_parser.add_argument("bundle")
+
+    export_eln = subcommands.add_parser(
+        "export-eln", help="export a sealed workspace in the ELN Consortium format"
+    )
+    export_eln.add_argument("workspace")
+    export_eln.add_argument("--output", required=True)
+
+    verify_eln_parser = subcommands.add_parser(
+        "verify-eln", help="verify an ELN archive without extracting it"
+    )
+    verify_eln_parser.add_argument("archive")
+
+    diff_seals = subcommands.add_parser(
+        "diff-seals", help="show added, removed, and changed evidence between two seals"
+    )
+    diff_seals.add_argument("left")
+    diff_seals.add_argument("right")
+    diff_seals.add_argument("--output")
 
     demo = subcommands.add_parser("demo", help="generate the public synthetic demonstration")
     demo.add_argument("destination")
@@ -245,6 +264,27 @@ def execute(arguments: argparse.Namespace) -> int:
         result = verify_bundle(arguments.bundle)
         _print(result)
         return 0 if result["valid"] else 1
+    elif command == "export-eln":
+        output = build_eln(arguments.workspace, arguments.output)
+        verification = verify_eln(output)
+        _print(
+            {
+                "archive": str(output.resolve()),
+                "bytes": output.stat().st_size,
+                "root_digest": verification["root_digest"],
+                "verified": verification["valid"],
+            }
+        )
+    elif command == "verify-eln":
+        result = verify_eln(arguments.archive)
+        _print(result)
+        return 0 if result["valid"] else 1
+    elif command == "diff-seals":
+        result = compare_seals(arguments.left, arguments.right)
+        if arguments.output:
+            write_json(Path(arguments.output), result)
+        _print(result)
+        return 0 if result["same_root"] else 1
     elif command == "demo":
         bench = build_demo(arguments.destination, seed=arguments.seed, replace=arguments.replace)
         _print({"workspace": str(bench.root), "report": "reports/demo-report.html"})

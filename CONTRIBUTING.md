@@ -22,6 +22,10 @@ python scripts/build_demo.py --check
 python scripts/check_repository.py
 ```
 
+Changes to ELN export should also be exercised with an installed wheel and the external RO-Crate
+validators documented in [ELN interoperability](docs/ELN_INTEROPERABILITY.md). Keep those tools as
+development-only dependencies so the offline runtime remains dependency-free.
+
 ## Design rules
 
 - Raw evidence is never silently modified.

@@ -1,5 +1,6 @@
 import contextlib
 import io
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -55,6 +56,47 @@ class CliTests(unittest.TestCase):
             code = main(["demo", str(self.root)])
         self.assertEqual(code, 2)
         self.assertIn("not empty", stderr.getvalue())
+
+    def test_eln_export_verify_and_seal_diff(self):
+        destination = self.root
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(main(["demo", str(destination)]), 0)
+
+        export = self.root.parent / "demo.eln"
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.assertEqual(main(["export-eln", str(destination), "--output", str(export)]), 0)
+        exported = json.loads(stdout.getvalue())
+        self.assertTrue(exported["verified"])
+
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.assertEqual(main(["verify-eln", str(export)]), 0)
+        self.assertTrue(json.loads(stdout.getvalue())["valid"])
+
+        first = next((destination / "seals").glob("seal-*.json"))
+        raw = destination / "data" / "raw" / "rc-baseline.csv"
+        raw.write_text(raw.read_text(encoding="utf-8") + "120000,1,0.01,-89\n", encoding="utf-8")
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(main(["seal", str(destination), "--label", "after change"]), 0)
+        second = sorted((destination / "seals").glob("seal-*.json"))[-1]
+
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.assertEqual(main(["diff-seals", str(first), str(second)]), 1)
+        difference = json.loads(stdout.getvalue())
+        self.assertFalse(difference["same_root"])
+        self.assertIn("data/raw/rc-baseline.csv", difference["changed"])
+
+    def test_malformed_eln_returns_structured_failure(self):
+        malformed = self.root.parent / "malformed.eln"
+        malformed.write_bytes(b"not a ZIP archive")
+        stdout = io.StringIO()
+        stderr = io.StringIO()
+        with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
+            self.assertEqual(main(["verify-eln", str(malformed)]), 1)
+        self.assertFalse(json.loads(stdout.getvalue())["valid"])
+        self.assertEqual(stderr.getvalue(), "")
 
 
 if __name__ == "__main__":

@@ -9,15 +9,21 @@ research workflow and validation case exist.
 - PyPI-safe documentation links and a large-image social preview.
 - Structured routes for reproducible bugs, analysis proposals, and workflow discussion.
 
-## 0.2 — Interoperability
+## 0.3.0 - ELN interchange
+
+- deterministic ELN Consortium `.eln` export using the deployed RO-Crate 1.1 compatibility
+  profile;
+- dependency-free structural, path, size, and digest verification for `.eln` archives;
+- a machine-readable comparison between two evidence seals.
+
+## Next - Interoperability
 
 - CSV dialect profiles for common oscilloscopes, source-measure units, VNAs, and power analyzers.
 - A stable plug-in protocol for external analysis tools without adding them as core dependencies.
-- RO-Crate export and mapping notes for DataCite and institutional repositories.
+- DataCite mapping notes for institutional repositories.
 - Optional detached Ed25519 signatures in addition to content digests.
-- A machine-readable comparison between two evidence seals.
 
-## 0.3 — Engineering depth
+## 0.4 - Engineering depth
 
 - Waveform feature extraction with explicit sampling and window assumptions.
 - Bode-fit uncertainty propagation and repeated-sweep aggregation.
@@ -25,7 +31,7 @@ research workflow and validation case exist.
 - Monte Carlo uncertainty propagation as an optional extension.
 - Binary-file sidecars for waveform and image formats that should not be converted to CSV.
 
-## 0.4 — Collaboration without a central service
+## 0.5 - Collaboration without a central service
 
 - Merge-aware record identifiers and conflict reports.
 - Reviewer annotations stored as separate immutable records.

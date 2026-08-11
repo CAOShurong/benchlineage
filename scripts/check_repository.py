@@ -23,7 +23,7 @@ TEXT_SUFFIXES = {
     ".yml",
 }
 IGNORED_PARTS = {".git", ".venv", "__pycache__", "build", "dist"}
-EXPECTED_VERSION = "0.2.1"
+EXPECTED_VERSION = "0.3.0"
 
 
 def is_ignored(path: Path) -> bool:
@@ -117,6 +117,8 @@ def check_site(errors: list[str]) -> None:
             errors.append("demonstration report is not self-contained")
     if "python -m pip install benchlineage" not in index:
         errors.append("site lacks the PyPI install path")
+    if "benchlineage export-eln" not in index:
+        errors.append("site lacks the ELN exchange path")
     preview = ROOT / "site" / "social-preview.png"
     if not preview.is_file():
         errors.append("social preview is missing")
@@ -138,6 +140,8 @@ def check_release_metadata(errors: list[str]) -> None:
         ("changelog", changelog, f"## {EXPECTED_VERSION}"),
         ("package", package, f'__version__ = "{EXPECTED_VERSION}"'),
         ("README", readme, "python -m pip install benchlineage"),
+        ("README", readme, "benchlineage export-eln"),
+        ("README", readme, "benchlineage diff-seals"),
     ):
         if marker not in text:
             errors.append(f"{label} release metadata is inconsistent")

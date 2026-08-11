@@ -16,7 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
-        python-version: ["3.11", "3.13"]
+        python-version: ["3.11", "3.13", "3.14"]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v7
@@ -63,7 +63,47 @@ jobs:
           python -m benchlineage verify wheel-demo
           python -m benchlineage bundle wheel-demo --output wheel-demo.zip
           python -m benchlineage verify-bundle wheel-demo.zip
+          python -m benchlineage export-eln wheel-demo --output wheel-demo.eln
+          python -m benchlineage verify-eln wheel-demo.eln
+          python -m benchlineage diff-seals wheel-demo/seals/*.json wheel-demo/seals/*.json
       - uses: actions/upload-artifact@v7
         with:
           name: benchlineage-distributions
           path: dist/
+
+  eln-interoperability:
+    runs-on: ubuntu-latest
+    env:
+      ELN_FORMAT_TEST_COMMIT: 74a64fd7d9a1786ebf713e0b6eb12bddfb241d69
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+          cache: pip
+      - name: Install BenchLineage and independent validators
+        run: |
+          python -m pip install -e .
+          python -m pip install rocrate==0.15.1 roc-validator==0.11.3 jsonschema==4.25.1
+      - name: Build and verify the exchange archive
+        run: |
+          benchlineage demo eln-demo
+          benchlineage export-eln eln-demo --output benchlineage-demo.eln
+          benchlineage verify-eln benchlineage-demo.eln
+      - name: Run the pinned ELN Consortium test suites
+        run: |
+          git init eln-format-tests
+          git -C eln-format-tests remote add origin https://github.com/TheELNConsortium/TheELNFileFormat.git
+          git -C eln-format-tests fetch --depth 1 origin "$ELN_FORMAT_TEST_COMMIT"
+          git -C eln-format-tests checkout FETCH_HEAD -- tests
+          cp benchlineage-demo.eln eln-format-tests/
+          cd eln-format-tests
+          python -m unittest discover -s tests -p 'test_00_pypi_rocrate.py' -v
+          python -m unittest discover -s tests -p 'test_01_params_metadata_json.py' -v
+          python -m unittest discover -s tests -p 'test_02_schema.py' -v
+          python -m unittest discover -s tests -p 'test_03_validator.py' -v
+      - uses: actions/upload-artifact@v7
+        with:
+          name: benchlineage-eln-example
+          path: benchlineage-demo.eln
+          if-no-files-found: error

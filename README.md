@@ -14,6 +14,10 @@ instrument, calibration window, run conditions, raw file, and analysis lineage d
 The default workflow is offline. There is no account, server, database, API key, telemetry, or
 runtime dependency.
 
+When the record needs to leave the project directory, BenchLineage can produce either its strict
+byte-verifiable evidence bundle or an interoperable `.eln` archive for electronic laboratory
+notebook exchange.
+
 [Live demonstration](https://caoshurong.github.io/benchlineage/)
 · [Synthetic report](https://caoshurong.github.io/benchlineage/demo/demo-report.html)
 · [PyPI package](https://pypi.org/project/benchlineage/)
@@ -206,6 +210,38 @@ The verifier refuses unsafe archive paths and reports duplicate, missing,
 added, or changed members without extracting the bundle. This is an integrity
 check, not a digital signature or a claim that the experiment was valid.
 
+## Move the record into an electronic lab notebook
+
+The [ELN Consortium format](https://the.elnconsortium.org/specification/) is a ZIP-packaged
+RO-Crate exchange format implemented by products including eLabFTW, Kadi4Mat, PASTA, RSpace, and
+SampleDB. Export the same sealed workspace without copying records into a vendor-specific form by
+hand:
+
+```bash
+benchlineage export-eln thesis-bench --output thesis-bench.eln
+benchlineage verify-eln thesis-bench.eln
+```
+
+The exporter preserves every original workspace file and adds flattened JSON-LD that describes
+the workspace owner, studies, instruments, calibrations, experimental runs, raw files, and
+analyses. Instruments become RO-Crate `IndividualProduct` entities; runs and analyses become
+`CreateAction` provenance. Each local file carries its byte length and SHA-256 digest.
+
+The Dataset identifier carries the latest BenchLineage evidence root. As with a native seal, that
+root excludes generated reports and seal records; the ELN's per-file SHA-256 entries still cover
+every member of the finished archive.
+
+`verify-eln` reads the archive without extracting it. It rejects unsafe or duplicate paths,
+multiple archive roots, malformed graph references, missing or unlisted payloads, and byte or
+digest mismatches. Exports are deterministic for the same sealed bytes and output filename.
+
+BenchLineage targets the ELN Consortium's currently exercised RO-Crate 1.1 compatibility surface,
+which maximizes compatibility with existing importers. It does not claim that every target ELN
+will preserve every BenchLineage-specific field in its own interface; the original JSON, CSV,
+reports, and seals remain in the archive even when an importer ignores richer metadata. The exact
+mapping and independent validation evidence are documented in
+[ELN interoperability](https://github.com/CAOShurong/benchlineage/blob/main/docs/ELN_INTEROPERABILITY.md).
+
 ## Built-in analyses
 
 BenchLineage deliberately implements a small, inspectable analysis core:
@@ -267,6 +303,18 @@ root-sum-square, and reports component variance shares. See
 `benchlineage seal` checks byte identity. It records the SHA-256 digest and byte length of each
 evidence file, then hashes the ordered inventory into one root digest. Reports and previous seals
 are excluded so presentation can be regenerated without changing the recorded evidence.
+
+Compare two recorded states without manually reading their inventories:
+
+```bash
+benchlineage diff-seals \
+  thesis-bench/seals/seal-before.json \
+  thesis-bench/seals/seal-after.json
+```
+
+The command returns machine-readable `added`, `removed`, and `changed` path lists plus both labels,
+timestamps, and root digests. It exits with status 0 only when the roots match, so it can gate a
+handoff or publication script.
 
 A passing seal does **not** prove scientific truth. It proves only that the inventoried bytes match
 the declared root.
