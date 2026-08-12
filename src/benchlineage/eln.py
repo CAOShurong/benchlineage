@@ -60,15 +60,6 @@ def _file_info(name: str) -> zipfile.ZipInfo:
     return info
 
 
-def _directory_info(name: str) -> zipfile.ZipInfo:
-    normalized = name.rstrip("/") + "/"
-    info = zipfile.ZipInfo(normalized, date_time=(1980, 1, 1, 0, 0, 0))
-    info.compress_type = zipfile.ZIP_STORED
-    info.create_system = 3
-    info.external_attr = (0o40755 << 16) | 0x10
-    return info
-
-
 def _write_file(archive: zipfile.ZipFile, name: str, path: Path) -> None:
     """Stream one member so large evidence files are not loaded into memory."""
     info = _file_info(name)
@@ -434,8 +425,6 @@ def build_eln(workspace: str | Path | Workspace, output: str | Path) -> Path:
             compresslevel=9,
             strict_timestamps=True,
         ) as archive:
-            archive.writestr(_directory_info(archive_root), b"")
-            archive.writestr(_directory_info(f"{archive_root}/workspace"), b"")
             archive.writestr(_file_info(f"{archive_root}/ro-crate-metadata.json"), metadata_bytes)
             for path in files:
                 relative = path.relative_to(bench.root).as_posix()
