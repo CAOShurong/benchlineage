@@ -133,7 +133,10 @@ benchlineage init thesis-bench \
   --owner "Your Name" \
   --owner-email "you@example.org" \
   --owner-given-name "Your" \
-  --owner-family-name "Name"
+  --owner-family-name "Name" \
+  --data-license-url "https://spdx.org/licenses/CC-BY-4.0.html" \
+  --data-license-name "CC BY 4.0" \
+  --data-license-description "Experimental data released under CC BY 4.0."
 
 benchlineage add-instrument thesis-bench \
   --id scope-01 \
@@ -244,6 +247,12 @@ The exporter preserves every original workspace file and adds flattened JSON-LD 
 the workspace owner, studies, instruments, calibrations, experimental runs, raw files, and
 analyses. Instruments become RO-Crate `IndividualProduct` entities; runs and analyses become
 `CreateAction` provenance. Each local file carries its byte length and SHA-256 digest.
+
+When `init` receives a data-license URL, `export-eln` links the root Dataset to a RO-Crate
+`CreativeWork` license entity with its declared name and description. The URL must be an absolute
+HTTP(S) URL without embedded credentials. BenchLineage does not infer a license: existing or new
+workspaces that omit the declaration retain an explicit contact-the-author warning. The public
+synthetic demo declares the repository's MIT license; that declaration does not license user data.
 
 The Dataset identifier carries the latest BenchLineage evidence root. As with a native seal, that
 root excludes generated reports and seal records; the ELN's per-file SHA-256 entries still cover

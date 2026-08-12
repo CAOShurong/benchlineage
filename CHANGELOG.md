@@ -2,6 +2,27 @@
 
 All notable changes to BenchLineage are documented here.
 
+## 0.3.5 - 2026-08-13
+
+### Added
+
+- Added optional workspace-level data-license URL, name, and description fields to `init`, with
+  concise rejection of partial, relative, credential-bearing, or non-string declarations.
+- Linked licensed `.eln` exports to a named RO-Crate `CreativeWork` entity while preserving the
+  explicit contact-the-author warning for undeclared workspaces.
+
+### Changed
+
+- Declared the public synthetic demonstration data under the repository's existing MIT license;
+  this declaration does not apply to user-created workspaces.
+- Documented the difference between code licensing and an explicit workspace data-license
+  declaration.
+
+### Verified
+
+- Covered CLI, workspace, persisted-audit, licensed-export, undeclared-export, deterministic-demo,
+  and self-contained-report paths with regression tests.
+
 ## 0.3.4 - 2026-08-12
 
 ### Fixed

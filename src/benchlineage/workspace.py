@@ -7,6 +7,7 @@ import datetime as dt
 from email.utils import parseaddr
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlparse
 
 from .io import read_json, safe_identifier, write_json
 
@@ -28,6 +29,53 @@ def valid_email(value: str) -> bool:
     return bool(local and "." in domain and not domain.startswith(".") and not domain.endswith("."))
 
 
+def normalize_data_license(
+    url: Any = "",
+    name: Any = "",
+    description: Any = "",
+) -> dict[str, str]:
+    """Validate and normalize an optional workspace data-license declaration."""
+
+    values: dict[str, str] = {}
+    for field, value in (
+        ("data license URL", url),
+        ("data license name", name),
+        ("data license description", description),
+    ):
+        if value is None:
+            values[field] = ""
+        elif isinstance(value, str):
+            values[field] = value.strip()
+        else:
+            raise ValueError(f"{field} must be a string")
+
+    license_url = values["data license URL"]
+    license_name = values["data license name"]
+    license_description = values["data license description"]
+    if not license_url:
+        if license_name or license_description:
+            raise ValueError("data license URL is required when license details are supplied")
+        return {}
+
+    parsed = urlparse(license_url)
+    if (
+        parsed.scheme.lower() not in {"http", "https"}
+        or not parsed.netloc
+        or parsed.username is not None
+        or parsed.password is not None
+    ):
+        raise ValueError(
+            "data license URL must be an absolute HTTP(S) URL without embedded credentials"
+        )
+
+    result = {"data_license_url": license_url}
+    if license_name:
+        result["data_license_name"] = license_name
+    if license_description:
+        result["data_license_description"] = license_description
+    return result
+
+
 class Workspace:
     """A transparent directory of JSON metadata and raw measurement files."""
 
@@ -46,6 +94,9 @@ class Workspace:
         owner_email: str = "",
         owner_given_name: str = "",
         owner_family_name: str = "",
+        data_license_url: str = "",
+        data_license_name: str = "",
+        data_license_description: str = "",
     ) -> dict[str, Any]:
         if self.metadata_path.exists():
             raise FileExistsError(f"workspace already exists: {self.root}")
@@ -83,6 +134,13 @@ class Workspace:
         ):
             raise ValueError("owner email must be a valid plain email address")
         metadata.update({key: value for key, value in optional_owner_fields.items() if value})
+        metadata.update(
+            normalize_data_license(
+                data_license_url,
+                data_license_name,
+                data_license_description,
+            )
+        )
         if not metadata["title"] or not metadata["owner"]:
             raise ValueError("title and owner are required")
         write_json(self.metadata_path, metadata)

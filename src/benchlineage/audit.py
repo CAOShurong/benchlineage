@@ -8,7 +8,7 @@ from typing import Any
 
 from .io import read_json
 from .provenance import latest_seal, verify_seal
-from .workspace import Workspace, valid_email
+from .workspace import Workspace, normalize_data_license, valid_email
 
 
 def _parse_time(value: str) -> dt.datetime:
@@ -44,6 +44,14 @@ def audit_workspace(workspace: str | Path | Workspace) -> dict[str, Any]:
         )
     if metadata.get("owner_email") and not valid_email(str(metadata["owner_email"])):
         error("workspace.owner.email", "workspace owner email is invalid")
+    try:
+        normalize_data_license(
+            metadata.get("data_license_url"),
+            metadata.get("data_license_name"),
+            metadata.get("data_license_description"),
+        )
+    except ValueError as exception:
+        error("workspace.data_license", str(exception))
 
     categories = ("instruments", "calibrations", "studies", "runs", "analysis")
     records: dict[str, dict[str, dict]] = {}

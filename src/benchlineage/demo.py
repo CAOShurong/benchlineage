@@ -106,6 +106,12 @@ def build_demo(
         owner_email="benchlineage-demo@example.invalid",
         owner_given_name="Shurong",
         owner_family_name="Cao",
+        data_license_url="https://spdx.org/licenses/MIT.html",
+        data_license_name="MIT License",
+        data_license_description=(
+            "The public synthetic demonstration data is distributed under the MIT License. "
+            "This declaration does not apply to user-created workspaces."
+        ),
     )
     bench.add_instrument(
         instrument_id="scope-01",

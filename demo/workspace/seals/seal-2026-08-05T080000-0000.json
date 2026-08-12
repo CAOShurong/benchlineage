@@ -18,8 +18,8 @@
       "path": "analysis/rc-swap-002.json"
     },
     {
-      "bytes": 521,
-      "digest": "sha256:85c4e49b1a225fdd518491e98be8886d212522d39495edc29a1baa119ac6254b",
+      "bytes": 790,
+      "digest": "sha256:d9f39f39ea91737169ac015b67aa822ec68e110ccb6754459965cfdf6109132c",
       "path": "benchlineage.json"
     },
     {
@@ -94,7 +94,7 @@
     }
   ],
   "label": "Public synthetic demonstration",
-  "root_digest": "sha256:b40aa7fe02d3c7a98593018744f06d45cbb07cb6e7dae0fbc6418128938a5df6",
+  "root_digest": "sha256:a773859976ba1ef520ce55339d32e485626389513a2cf89dfc26eabe4f153027",
   "schema": "benchlineage/seal/v1",
   "scope": {
     "excluded": [
