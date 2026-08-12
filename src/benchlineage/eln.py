@@ -24,7 +24,7 @@ ELN_CONFORMS_TO = "https://w3id.org/ro/crate/1.1"
 ELN_FORMAT_VERSION = "1.0"
 ELN_SHA256_TERM = "https://the.elnconsortium.org/specification/#sha256"
 BENCHLINEAGE_URL = "https://github.com/CAOShurong/benchlineage"
-BENCHLINEAGE_VERSION = "0.3.0"
+BENCHLINEAGE_VERSION = "0.3.1"
 MEDIA_TYPES = {
     ".csv": "text/csv",
     ".gz": "application/gzip",
@@ -178,9 +178,15 @@ def _metadata_document(
     contextual: list[dict[str, Any]] = []
     mentioned_ids: list[str] = []
 
-    people: dict[str, dict[str, Any]] = {
-        owner_id: {"@id": owner_id, "@type": "Person", "name": owner_name}
-    }
+    owner = {"@id": owner_id, "@type": "Person", "name": owner_name}
+    for workspace_field, person_field in (
+        ("owner_email", "email"),
+        ("owner_given_name", "givenName"),
+        ("owner_family_name", "familyName"),
+    ):
+        if workspace.get(workspace_field):
+            owner[person_field] = workspace[workspace_field]
+    people: dict[str, dict[str, Any]] = {owner_id: owner}
 
     instruments: dict[str, dict[str, Any]] = {}
     for _, record in _load_records(bench, "instruments"):
@@ -349,6 +355,7 @@ def _metadata_document(
     experiment_dataset = {
         "@id": "./workspace/",
         "@type": "Dataset",
+        "genre": "experiment",
         "name": workspace["title"],
         "description": "Sealed experimental evidence exported from a BenchLineage workspace.",
         "author": _reference(owner_id),

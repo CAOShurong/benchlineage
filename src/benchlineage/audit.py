@@ -8,7 +8,7 @@ from typing import Any
 
 from .io import read_json
 from .provenance import latest_seal, verify_seal
-from .workspace import Workspace
+from .workspace import Workspace, valid_email
 
 
 def _parse_time(value: str) -> dt.datetime:
@@ -42,6 +42,8 @@ def audit_workspace(workspace: str | Path | Workspace) -> dict[str, Any]:
         warning(
             "workspace.version", f"unrecognized format version: {metadata.get('format_version')}"
         )
+    if metadata.get("owner_email") and not valid_email(str(metadata["owner_email"])):
+        error("workspace.owner.email", "workspace owner email is invalid")
 
     categories = ("instruments", "calibrations", "studies", "runs", "analysis")
     records: dict[str, dict[str, dict]] = {}
@@ -94,6 +96,13 @@ def audit_workspace(workspace: str | Path | Workspace) -> dict[str, Any]:
         except (KeyError, TypeError, ValueError) as exception:
             error("run.time", f"{run_id} has invalid start time: {exception}")
             continue
+        try:
+            recorded_time = _parse_time(record.get("recorded_at", record["started_at"]))
+        except (KeyError, TypeError, ValueError) as exception:
+            error("run.time", f"{run_id} has invalid recorded time: {exception}")
+            continue
+        if recorded_time < run_time:
+            error("run.time.order", f"{run_id} was recorded before it started")
         for instrument_id in record.get("instruments", []):
             candidates = [
                 value
@@ -127,6 +136,17 @@ def audit_workspace(workspace: str | Path | Workspace) -> dict[str, Any]:
         run_id = record.get("run_id")
         if run_id not in records["runs"]:
             error("analysis.run", f"{analysis_id} references unknown run {run_id}")
+            continue
+        try:
+            analysis_time = _parse_time(record["created_at"])
+            run_recorded_time = _parse_time(
+                records["runs"][run_id].get("recorded_at", records["runs"][run_id]["started_at"])
+            )
+        except (KeyError, TypeError, ValueError) as exception:
+            error("analysis.time", f"{analysis_id} has invalid time metadata: {exception}")
+            continue
+        if analysis_time < run_recorded_time:
+            error("analysis.time.order", f"{analysis_id} was created before its run was recorded")
 
     seal_result = None
     seal_path = latest_seal(bench)

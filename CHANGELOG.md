@@ -2,6 +2,22 @@
 
 All notable changes to BenchLineage are documented here.
 
+## 0.3.1 - 2026-08-12
+
+### Fixed
+
+- Declared exported ELN datasets as experiments so eLabFTW and SampleDB can select their native
+  experiment/measurement record types without a product-specific override.
+- Added optional explicit owner identity fields and included them in exported author metadata;
+  the deterministic demo can now be imported without assigning an existing eLabFTW user.
+- Rejected run records whose recorded timestamp precedes their start timestamp and corrected the
+  public deterministic demonstration.
+
+### Verified
+
+- Imported the installed-package demo archive into the official eLabFTW 5.6.12 Docker image and
+  inspected the resulting entity type, title, payload count, hashes, and source archive digest.
+
 ## 0.3.0 - 2026-08-11
 
 ### Added

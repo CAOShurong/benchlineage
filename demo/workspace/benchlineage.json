@@ -3,6 +3,9 @@
   "format": "benchlineage-workspace",
   "format_version": "1.0",
   "owner": "Shurong Cao",
+  "owner_email": "benchlineage-demo@example.invalid",
+  "owner_family_name": "Cao",
+  "owner_given_name": "Shurong",
   "principles": [
     "raw data is immutable evidence",
     "analysis is derived and replaceable",

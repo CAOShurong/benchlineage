@@ -23,7 +23,8 @@ TEXT_SUFFIXES = {
     ".yml",
 }
 IGNORED_PARTS = {".git", ".venv", "__pycache__", "build", "dist"}
-EXPECTED_VERSION = "0.3.0"
+EXPECTED_VERSION = "0.3.1"
+EXPECTED_RELEASE_DATE = "2026-08-12"
 
 
 def is_ignored(path: Path) -> bool:
@@ -59,6 +60,14 @@ def check_toml(errors: list[str]) -> None:
         errors.append("pyproject version does not match the release")
     if pyproject["project"]["authors"] != [{"name": "Shurong Cao"}]:
         errors.append("package authorship must name Shurong Cao only")
+    citation = (ROOT / "CITATION.cff").read_text(encoding="utf-8")
+    if f"version: {EXPECTED_VERSION}" not in citation:
+        errors.append("citation version does not match the release")
+    if f"date-released: {EXPECTED_RELEASE_DATE}" not in citation:
+        errors.append("citation date does not match the release")
+    changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
+    if f"## {EXPECTED_VERSION} - {EXPECTED_RELEASE_DATE}" not in changelog:
+        errors.append("changelog version or date does not match the release")
 
 
 def check_english(errors: list[str]) -> None:

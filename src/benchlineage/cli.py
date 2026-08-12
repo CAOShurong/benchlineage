@@ -35,13 +35,16 @@ def _parser() -> argparse.ArgumentParser:
         prog="benchlineage",
         description="Local-first provenance and uncertainty trails for EE experiments.",
     )
-    parser.add_argument("--version", action="version", version="BenchLineage 0.3.0")
+    parser.add_argument("--version", action="version", version="BenchLineage 0.3.1")
     subcommands = parser.add_subparsers(dest="command", required=True)
 
     initialize = subcommands.add_parser("init", help="initialize a transparent workspace")
     initialize.add_argument("workspace")
     initialize.add_argument("--title", required=True)
     initialize.add_argument("--owner", required=True)
+    initialize.add_argument("--owner-email", default="")
+    initialize.add_argument("--owner-given-name", default="")
+    initialize.add_argument("--owner-family-name", default="")
 
     instrument = subcommands.add_parser("add-instrument", help="register instrument identity")
     instrument.add_argument("workspace")
@@ -161,7 +164,13 @@ def execute(arguments: argparse.Namespace) -> int:
     command = arguments.command
     if command == "init":
         _print(
-            Workspace(arguments.workspace).initialize(title=arguments.title, owner=arguments.owner)
+            Workspace(arguments.workspace).initialize(
+                title=arguments.title,
+                owner=arguments.owner,
+                owner_email=arguments.owner_email,
+                owner_given_name=arguments.owner_given_name,
+                owner_family_name=arguments.owner_family_name,
+            )
         )
     elif command == "add-instrument":
         _print(

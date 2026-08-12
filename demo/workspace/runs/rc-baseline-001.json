@@ -15,7 +15,7 @@
   "raw_files": [
     "data/raw/rc-baseline.csv"
   ],
-  "recorded_at": "2026-08-04T07:59:00+00:00",
+  "recorded_at": "2026-08-04T06:01:00+00:00",
   "schema": "benchlineage/run/v1",
   "started_at": "2026-08-04T06:00:00+00:00",
   "study_id": "rc-filter"

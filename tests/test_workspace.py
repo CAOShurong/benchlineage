@@ -21,6 +21,28 @@ class WorkspaceTests(unittest.TestCase):
         self.assertTrue((self.root / "data" / "raw").is_dir())
         self.assertEqual(self.bench.require()["title"], "Test bench")
 
+    def test_optional_owner_identity_is_preserved(self):
+        identified = Workspace(Path(self.temporary.name) / "identified")
+        metadata = identified.initialize(
+            title="Identified bench",
+            owner="Ada Lovelace",
+            owner_email="ada@example.invalid",
+            owner_given_name="Ada",
+            owner_family_name="Lovelace",
+        )
+        self.assertEqual(metadata["owner_email"], "ada@example.invalid")
+        self.assertEqual(metadata["owner_given_name"], "Ada")
+        self.assertEqual(metadata["owner_family_name"], "Lovelace")
+
+    def test_invalid_owner_email_is_rejected(self):
+        invalid = Workspace(Path(self.temporary.name) / "invalid-email")
+        with self.assertRaisesRegex(ValueError, "owner email"):
+            invalid.initialize(
+                title="Invalid identity",
+                owner="Researcher",
+                owner_email="not-an-email",
+            )
+
     def test_refuses_reinitialize(self):
         with self.assertRaises(FileExistsError):
             self.bench.initialize(title="Again", owner="Researcher")
