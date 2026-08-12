@@ -5,6 +5,7 @@ from pathlib import Path
 
 from benchlineage.audit import audit_workspace
 from benchlineage.demo import build_demo
+from benchlineage.io import read_json, write_json
 from benchlineage.provenance import compare_seals, latest_seal, seal_workspace, verify_seal
 from benchlineage.report import build_report
 
@@ -30,6 +31,31 @@ class EndToEndTests(unittest.TestCase):
         self.assertEqual(audit["status"], "pass")
         self.assertEqual(audit["errors"], [])
         self.assertEqual(audit["warnings"], [])
+
+    def test_recorded_before_started_is_rejected(self):
+        run_path = self.root / "runs" / "rc-baseline-001.json"
+        record = read_json(run_path)
+        record["recorded_at"] = "2026-08-04T05:59:59+00:00"
+        write_json(run_path, record)
+        audit = audit_workspace(self.bench)
+        self.assertEqual(audit["status"], "fail")
+        self.assertIn("run.time.order", {entry["code"] for entry in audit["errors"]})
+
+    def test_invalid_persisted_owner_email_is_rejected(self):
+        metadata_path = self.root / "benchlineage.json"
+        metadata = read_json(metadata_path)
+        metadata["owner_email"] = "not-an-email"
+        write_json(metadata_path, metadata)
+        audit = audit_workspace(self.bench)
+        self.assertIn("workspace.owner.email", {entry["code"] for entry in audit["errors"]})
+
+    def test_analysis_before_recorded_run_is_rejected(self):
+        analysis_path = self.root / "analysis" / "rc-baseline-001.json"
+        analysis = read_json(analysis_path)
+        analysis["created_at"] = "2026-08-04T05:59:59+00:00"
+        write_json(analysis_path, analysis)
+        audit = audit_workspace(self.bench)
+        self.assertIn("analysis.time.order", {entry["code"] for entry in audit["errors"]})
 
     def test_latest_seal_verifies(self):
         seal = latest_seal(self.bench)

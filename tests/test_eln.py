@@ -40,6 +40,11 @@ class ElnTests(unittest.TestCase):
         self.assertEqual(graph["ro-crate-metadata.json"]["version"], "1.0")
         self.assertEqual(graph["./"]["@type"], "Dataset")
         self.assertEqual(graph["./workspace/"]["@type"], "Dataset")
+        self.assertEqual(graph["./workspace/"]["genre"], "experiment")
+        owner = graph["./workspace/"]["author"]["@id"]
+        self.assertEqual(graph[owner]["email"], "benchlineage-demo@example.invalid")
+        self.assertEqual(graph[owner]["givenName"], "Shurong")
+        self.assertEqual(graph[owner]["familyName"], "Cao")
         self.assertEqual(graph["#instrument-scope-01"]["@type"], "IndividualProduct")
         self.assertEqual(graph["#run-rc-baseline-001"]["@type"], "CreateAction")
         self.assertEqual(
@@ -62,6 +67,22 @@ class ElnTests(unittest.TestCase):
             "original.eln/workspace/data/raw/rc-baseline.csv",
             result["changed"],
         )
+
+    def test_workspace_without_optional_owner_identity_still_exports(self):
+        metadata_path = self.workspace.root / "benchlineage.json"
+        metadata = read_json(metadata_path)
+        for field in ("owner_email", "owner_given_name", "owner_family_name"):
+            metadata.pop(field)
+        write_json(metadata_path, metadata)
+        seal_workspace(self.workspace, label="legacy owner metadata")
+
+        archive_path = build_eln(self.workspace, self.root / "legacy-owner.eln")
+        self.assertTrue(verify_eln(archive_path)["valid"])
+        with zipfile.ZipFile(archive_path) as archive:
+            crate = json.loads(archive.read("legacy-owner.eln/ro-crate-metadata.json"))
+        graph = {entity["@id"]: entity for entity in crate["@graph"]}
+        owner_id = graph["./workspace/"]["author"]["@id"]
+        self.assertNotIn("email", graph[owner_id])
 
     def test_unicode_and_space_containing_paths_round_trip(self):
         report = self.workspace.root / "reports" / "trace Ω #1.txt"

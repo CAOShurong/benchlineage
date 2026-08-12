@@ -22,7 +22,9 @@ archive location supplies the wider namespace.
 ## Workspace
 
 `benchlineage.json` identifies the format, version, title, owner, creation time, and governing
-principles.
+principles. Optional owner email, given-name, and family-name fields allow an ELN importer to map
+the archive author to a local account without guessing how to split a display name. These fields
+are copied into exported archives, so omit them when the author's email should not be disclosed.
 
 ## Study
 

@@ -2,8 +2,8 @@ cff-version: 1.2.0
 message: "If you use BenchLineage, cite the software version and your workspace root digest."
 title: "BenchLineage"
 type: software
-version: 0.3.0
-date-released: 2026-08-11
+version: 0.3.1
+date-released: 2026-08-12
 authors:
   - family-names: Cao
     given-names: Shurong

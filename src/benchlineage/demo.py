@@ -103,6 +103,9 @@ def build_demo(
     bench.initialize(
         title="Power-conversion and RC-filter characterization",
         owner="Shurong Cao",
+        owner_email="benchlineage-demo@example.invalid",
+        owner_given_name="Shurong",
+        owner_family_name="Cao",
     )
     bench.add_instrument(
         instrument_id="scope-01",
@@ -278,14 +281,20 @@ def build_demo(
     ]:
         record = _portable_numbers(read_json(record_path))
         if "created_at" in record:
-            record["created_at"] = fixed_created_at
+            if record_path.parent.name == "analysis":
+                run = read_json(root / "runs" / f"{record['run_id']}.json")
+                recorded_at = dt.datetime.fromisoformat(run["recorded_at"])
+                record["created_at"] = (recorded_at + dt.timedelta(minutes=1)).isoformat()
+            else:
+                record["created_at"] = fixed_created_at
         if "recorded_at" in record:
-            record["recorded_at"] = fixed_created_at
+            started_at = dt.datetime.fromisoformat(record["started_at"])
+            record["recorded_at"] = (started_at + dt.timedelta(minutes=1)).isoformat()
         write_json(record_path, record)
     seal_workspace(
         bench,
         label="Public synthetic demonstration",
-        created_at="2026-08-04T08:00:00+00:00",
+        created_at="2026-08-05T08:00:00+00:00",
     )
     if build_html:
         build_report(

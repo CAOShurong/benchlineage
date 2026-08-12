@@ -48,6 +48,50 @@ class CliTests(unittest.TestCase):
         self.assertEqual(code, 1)
         self.assertIn('"status": "fail"', stdout.getvalue())
 
+    def test_init_accepts_explicit_owner_identity(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(
+                main(
+                    [
+                        "init",
+                        str(self.root),
+                        "--title",
+                        "Interop bench",
+                        "--owner",
+                        "Ada Lovelace",
+                        "--owner-email",
+                        "ada@example.invalid",
+                        "--owner-given-name",
+                        "Ada",
+                        "--owner-family-name",
+                        "Lovelace",
+                    ]
+                ),
+                0,
+            )
+        metadata = json.loads((self.root / "benchlineage.json").read_text(encoding="utf-8"))
+        self.assertEqual(metadata["owner_email"], "ada@example.invalid")
+        self.assertEqual(metadata["owner_given_name"], "Ada")
+        self.assertEqual(metadata["owner_family_name"], "Lovelace")
+
+    def test_init_rejects_invalid_owner_email(self):
+        stderr = io.StringIO()
+        with contextlib.redirect_stderr(stderr):
+            code = main(
+                [
+                    "init",
+                    str(self.root),
+                    "--title",
+                    "Invalid identity",
+                    "--owner",
+                    "Researcher",
+                    "--owner-email",
+                    "not-an-email",
+                ]
+            )
+        self.assertEqual(code, 2)
+        self.assertIn("owner email", stderr.getvalue())
+
     def test_duplicate_demo_returns_usage_error(self):
         with contextlib.redirect_stdout(io.StringIO()):
             self.assertEqual(main(["demo", str(self.root)]), 0)

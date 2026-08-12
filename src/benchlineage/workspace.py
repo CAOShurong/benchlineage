@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import csv
 import datetime as dt
+from email.utils import parseaddr
 from pathlib import Path
 from typing import Any
 
@@ -16,6 +17,17 @@ def utc_now() -> str:
     return dt.datetime.now(dt.UTC).replace(microsecond=0).isoformat()
 
 
+def valid_email(value: str) -> bool:
+    """Accept a plain address with one non-empty local part and a dotted domain."""
+    if not value or any(character.isspace() for character in value):
+        return False
+    display_name, address = parseaddr(value)
+    if display_name or address != value or address.count("@") != 1:
+        return False
+    local, domain = address.rsplit("@", 1)
+    return bool(local and "." in domain and not domain.startswith(".") and not domain.endswith("."))
+
+
 class Workspace:
     """A transparent directory of JSON metadata and raw measurement files."""
 
@@ -26,7 +38,15 @@ class Workspace:
     def metadata_path(self) -> Path:
         return self.root / "benchlineage.json"
 
-    def initialize(self, *, title: str, owner: str) -> dict[str, Any]:
+    def initialize(
+        self,
+        *,
+        title: str,
+        owner: str,
+        owner_email: str = "",
+        owner_given_name: str = "",
+        owner_family_name: str = "",
+    ) -> dict[str, Any]:
         if self.metadata_path.exists():
             raise FileExistsError(f"workspace already exists: {self.root}")
         for directory in (
@@ -53,6 +73,16 @@ class Workspace:
                 "sealed records are content-addressed",
             ],
         }
+        optional_owner_fields = {
+            "owner_email": owner_email.strip(),
+            "owner_given_name": owner_given_name.strip(),
+            "owner_family_name": owner_family_name.strip(),
+        }
+        if optional_owner_fields["owner_email"] and not valid_email(
+            optional_owner_fields["owner_email"]
+        ):
+            raise ValueError("owner email must be a valid plain email address")
+        metadata.update({key: value for key, value in optional_owner_fields.items() if value})
         if not metadata["title"] or not metadata["owner"]:
             raise ValueError("title and owner are required")
         write_json(self.metadata_path, metadata)

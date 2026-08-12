@@ -126,7 +126,10 @@ The generated demonstration includes:
 ```bash
 benchlineage init thesis-bench \
   --title "Wide-bandgap converter characterization" \
-  --owner "Your Name"
+  --owner "Your Name" \
+  --owner-email "you@example.org" \
+  --owner-given-name "Your" \
+  --owner-family-name "Name"
 
 benchlineage add-instrument thesis-bench \
   --id scope-01 \
