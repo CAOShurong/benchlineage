@@ -74,6 +74,114 @@ class CliTests(unittest.TestCase):
         self.assertEqual(metadata["owner_given_name"], "Ada")
         self.assertEqual(metadata["owner_family_name"], "Lovelace")
 
+    def test_json_output_roundtrips_unicode_on_legacy_code_page(self):
+        output_bytes = io.BytesIO()
+        legacy_stdout = io.TextIOWrapper(output_bytes, encoding="cp936")
+        with contextlib.redirect_stdout(legacy_stdout):
+            code = main(
+                [
+                    "init",
+                    str(self.root),
+                    "--title",
+                    "Unicode ß bench",
+                    "--owner",
+                    "Researcher",
+                ]
+            )
+            legacy_stdout.flush()
+        self.assertEqual(code, 0)
+        output = output_bytes.getvalue().decode("ascii")
+        self.assertEqual(json.loads(output)["title"], "Unicode ß bench")
+
+    def test_audit_reports_missing_required_workspace_field(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(
+                main(
+                    [
+                        "init",
+                        str(self.root),
+                        "--title",
+                        "Incomplete bench",
+                        "--owner",
+                        "Researcher",
+                    ]
+                ),
+                0,
+            )
+        metadata_path = self.root / "benchlineage.json"
+        metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+        del metadata["title"]
+        metadata_path.write_text(json.dumps(metadata), encoding="utf-8")
+
+        stdout = io.StringIO()
+        stderr = io.StringIO()
+        with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
+            code = main(["audit", str(self.root)])
+        self.assertEqual(code, 1)
+        self.assertEqual(stderr.getvalue(), "")
+        result = json.loads(stdout.getvalue())
+        self.assertEqual(result["errors"][0]["code"], "workspace.invalid")
+        self.assertIn("title", result["errors"][0]["message"])
+
+    def test_run_accepts_bom_prefixed_conditions_file(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(
+                main(
+                    [
+                        "init",
+                        str(self.root),
+                        "--title",
+                        "PowerShell input",
+                        "--owner",
+                        "Researcher",
+                    ]
+                ),
+                0,
+            )
+            self.assertEqual(
+                main(
+                    [
+                        "create-study",
+                        str(self.root),
+                        "--id",
+                        "study-001",
+                        "--title",
+                        "BOM compatibility",
+                        "--objective",
+                        "Exercise a PowerShell-style JSON file.",
+                        "--hypothesis",
+                        "The CLI accepts a UTF-8 BOM.",
+                        "--protocol",
+                        "Record one synthetic run.",
+                    ]
+                ),
+                0,
+            )
+        conditions = self.root.parent / "conditions.json"
+        conditions.write_text('{"bus_voltage_v": 400}', encoding="utf-8-sig")
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(
+                main(
+                    [
+                        "add-run",
+                        str(self.root),
+                        "--id",
+                        "run-001",
+                        "--study",
+                        "study-001",
+                        "--operator",
+                        "Researcher",
+                        "--started-at",
+                        "2026-08-12T14:00:00+08:00",
+                        "--conditions",
+                        str(conditions),
+                    ]
+                ),
+                0,
+            )
+        record = json.loads((self.root / "runs" / "run-001.json").read_text(encoding="utf-8"))
+        self.assertEqual(record["conditions"], {"bus_voltage_v": 400})
+
     def test_init_rejects_invalid_owner_email(self):
         stderr = io.StringIO()
         with contextlib.redirect_stderr(stderr):

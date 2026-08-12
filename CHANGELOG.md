@@ -2,6 +2,27 @@
 
 All notable changes to BenchLineage are documented here.
 
+## 0.3.4 - 2026-08-12
+
+### Fixed
+
+- Escaped CLI JSON as ASCII so Unicode values still round-trip when Windows uses a legacy console
+  code page, including after commands have written durable artifacts.
+- Rejected missing or blank workspace titles and owners with the existing structured
+  `workspace.invalid` audit result instead of exposing a Python traceback.
+- Accepted BOM-prefixed UTF-8 JSON argument files produced by Windows PowerShell 5.1 while keeping
+  durable workspace records strictly BOM-free.
+- Preserved non-ASCII characters in ELN File IRIs while percent-encoding ASCII delimiters, so ZIP
+  member names remain resolvable by consumers that compare IRI paths literally.
+
+### Verified
+
+- Reproduced all four failures from fresh public 0.3.3 wheel and sdist installs, then reran the
+  installed-package success and failure paths without a UTF-8 environment workaround.
+- Parsed the corrected synthetic CC0 export with the current SampleDB default-branch ELN parser
+  and passed the current TheELNFileFormat default-branch test suite. These are maintainer-run
+  compatibility checks, not evidence of independent adoption.
+
 ## 0.3.3 - 2026-08-12
 
 ### Fixed
