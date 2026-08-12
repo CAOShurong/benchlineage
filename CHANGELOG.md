@@ -2,6 +2,13 @@
 
 All notable changes to BenchLineage are documented here.
 
+## 0.3.2 - 2026-08-12
+
+### Fixed
+
+- Omit explicit empty directory members from `.eln` archives so strict downstream importers see
+  exactly one archive root.
+
 ## 0.3.1 - 2026-08-12
 
 ### Fixed

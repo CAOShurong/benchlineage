@@ -120,6 +120,19 @@ SHA-256 mismatch but still returned command success and created the record with 
 checksum-error policy. Treat a successful consumer import as a handoff result, not as proof of
 archive integrity; verify the source archive independently before import.
 
+The same day, the official SampleDB source at commit
+`f135e5dc2923e1bf473f0698a34fbe4616248673` (`v0.33.1-77-gf135e5dc`) was run locally against
+PostgreSQL 15.18. Its real `create_eln_import`, `parse_eln_file`, and `import_eln_file` paths parsed
+and persisted the BenchLineage 0.3.2 candidate as one object and one imported user.
+The title was preserved, and all 20 RO-Crate File entities matched the persisted attachments by
+original filename, byte length, and SHA-256. The same test harness also imported SampleDB's
+Kadi4Mat example fixture, providing an independent producer baseline for the local environment.
+
+SampleDB rejected the original 0.3.0 and 0.3.1 archive structure before metadata parsing because
+explicit empty directory ZIP members made its root-directory check observe an additional empty
+parent. BenchLineage 0.3.2 omits directory members; the 21 file members still imply the same root
+and workspace hierarchy without duplicating it as empty entries.
+
 ## Limits
 
 - Export is one-way. BenchLineage does not import arbitrary `.eln` archives into

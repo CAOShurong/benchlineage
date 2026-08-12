@@ -24,7 +24,7 @@ ELN_CONFORMS_TO = "https://w3id.org/ro/crate/1.1"
 ELN_FORMAT_VERSION = "1.0"
 ELN_SHA256_TERM = "https://the.elnconsortium.org/specification/#sha256"
 BENCHLINEAGE_URL = "https://github.com/CAOShurong/benchlineage"
-BENCHLINEAGE_VERSION = "0.3.1"
+BENCHLINEAGE_VERSION = "0.3.2"
 MEDIA_TYPES = {
     ".csv": "text/csv",
     ".gz": "application/gzip",
@@ -57,15 +57,6 @@ def _file_info(name: str) -> zipfile.ZipInfo:
     info.compress_type = zipfile.ZIP_DEFLATED
     info.create_system = 3
     info.external_attr = 0o100644 << 16
-    return info
-
-
-def _directory_info(name: str) -> zipfile.ZipInfo:
-    normalized = name.rstrip("/") + "/"
-    info = zipfile.ZipInfo(normalized, date_time=(1980, 1, 1, 0, 0, 0))
-    info.compress_type = zipfile.ZIP_STORED
-    info.create_system = 3
-    info.external_attr = (0o40755 << 16) | 0x10
     return info
 
 
@@ -434,8 +425,6 @@ def build_eln(workspace: str | Path | Workspace, output: str | Path) -> Path:
             compresslevel=9,
             strict_timestamps=True,
         ) as archive:
-            archive.writestr(_directory_info(archive_root), b"")
-            archive.writestr(_directory_info(f"{archive_root}/workspace"), b"")
             archive.writestr(_file_info(f"{archive_root}/ro-crate-metadata.json"), metadata_bytes)
             for path in files:
                 relative = path.relative_to(bench.root).as_posix()

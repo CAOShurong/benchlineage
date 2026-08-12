@@ -23,7 +23,7 @@ TEXT_SUFFIXES = {
     ".yml",
 }
 IGNORED_PARTS = {".git", ".venv", "__pycache__", "build", "dist"}
-EXPECTED_VERSION = "0.3.1"
+EXPECTED_VERSION = "0.3.2"
 EXPECTED_RELEASE_DATE = "2026-08-12"
 
 

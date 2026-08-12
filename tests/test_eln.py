@@ -35,6 +35,7 @@ class ElnTests(unittest.TestCase):
         with zipfile.ZipFile(first) as archive:
             names = archive.namelist()
             self.assertTrue(all(name.startswith("evidence.eln/") for name in names))
+            self.assertFalse(any(info.is_dir() for info in archive.infolist()))
             metadata = json.loads(archive.read("evidence.eln/ro-crate-metadata.json"))
         graph = {entity["@id"]: entity for entity in metadata["@graph"]}
         self.assertEqual(graph["ro-crate-metadata.json"]["version"], "1.0")
