@@ -24,7 +24,7 @@ ELN_CONFORMS_TO = "https://w3id.org/ro/crate/1.1"
 ELN_FORMAT_VERSION = "1.0"
 ELN_SHA256_TERM = "https://the.elnconsortium.org/specification/#sha256"
 BENCHLINEAGE_URL = "https://github.com/CAOShurong/benchlineage"
-BENCHLINEAGE_VERSION = "0.3.1"
+BENCHLINEAGE_VERSION = "0.3.2"
 MEDIA_TYPES = {
     ".csv": "text/csv",
     ".gz": "application/gzip",
