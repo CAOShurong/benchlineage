@@ -160,6 +160,22 @@ flattening and availability details; BenchLineage's result only covers its docum
 and payload-integrity checks. Neither third-party archive is copied into this repository because
 their embedded data-license statements are more restrictive or ambiguous than their host record.
 
+## Current consumer-parser compatibility
+
+The 0.3.4 audit also exercised a freshly installed wheel against current consumer code. A fully
+synthetic CC0 workspace used Unicode file names, spaces, an ASCII `#` delimiter, and a long Windows
+path. SampleDB's ELN parser from default-branch commit
+[`cb6e031efe28c5f7f53146c883dbe74be69b31c8`](https://github.com/sciapp/sampledb/commit/cb6e031efe28c5f7f53146c883dbe74be69b31c8)
+parsed one object and eight attachments; every attachment matched its declared byte length and
+SHA-256 digest. The same archive passed the current TheELNFileFormat default-branch tests at commit
+[`73286db7de6e3802db1354a1487a67b65b27e2d1`](https://github.com/TheELNConsortium/TheELNFileFormat/commit/73286db7de6e3802db1354a1487a67b65b27e2d1).
+
+The SampleDB check called its real `parse_eln_file` implementation with an in-memory adapter for
+the database query used to identify the import job. It did not run the SampleDB web interface or
+persist records to PostgreSQL. The fixture was generated solely for this maintainer-run audit and
+is not third-party data or evidence of adoption. Missing experiment names and malformed ZIP files
+were also required to fail without changing the input archives.
+
 ## Limits
 
 - Export is one-way. BenchLineage does not import arbitrary `.eln` archives into

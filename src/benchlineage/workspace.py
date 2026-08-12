@@ -94,6 +94,9 @@ class Workspace:
         metadata = read_json(self.metadata_path)
         if metadata.get("format") != "benchlineage-workspace":
             raise ValueError("unsupported workspace metadata")
+        for field in ("title", "owner"):
+            if not isinstance(metadata.get(field), str) or not metadata[field].strip():
+                raise ValueError(f"workspace {field} is required")
         return metadata
 
     def add_instrument(

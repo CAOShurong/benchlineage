@@ -97,7 +97,7 @@ class ElnTests(unittest.TestCase):
             self.assertIn("unicode.eln/workspace/reports/trace Ω #1.txt", archive.namelist())
             metadata = json.loads(archive.read("unicode.eln/ro-crate-metadata.json"))
         identifiers = {entity["@id"] for entity in metadata["@graph"]}
-        self.assertIn("./workspace/reports/trace%20%CE%A9%20%231.txt", identifiers)
+        self.assertIn("./workspace/reports/trace%20Ω%20%231.txt", identifiers)
 
     def test_missing_added_and_duplicate_members_are_detected(self):
         original = build_eln(self.workspace, self.root / "original.eln")

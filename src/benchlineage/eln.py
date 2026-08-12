@@ -24,7 +24,7 @@ ELN_CONFORMS_TO = "https://w3id.org/ro/crate/1.1"
 ELN_FORMAT_VERSION = "1.0"
 ELN_SHA256_TERM = "https://the.elnconsortium.org/specification/#sha256"
 BENCHLINEAGE_URL = "https://github.com/CAOShurong/benchlineage"
-BENCHLINEAGE_VERSION = "0.3.3"
+BENCHLINEAGE_VERSION = "0.3.4"
 MEDIA_TYPES = {
     ".csv": "text/csv",
     ".gz": "application/gzip",
@@ -88,7 +88,13 @@ def _safe_member(name: str) -> bool:
 
 
 def _file_id(relative: str) -> str:
-    return "./workspace/" + quote(relative, safe="/-._~")
+    # Keep Unicode as an IRI while escaping ASCII URI delimiters. This preserves
+    # original ZIP member names for importers that match @id paths literally.
+    encoded = "".join(
+        quote(character, safe="/-._~") if character.isascii() else character
+        for character in relative
+    )
+    return "./workspace/" + encoded
 
 
 def _person_id(name: str) -> str:

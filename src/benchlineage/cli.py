@@ -13,7 +13,7 @@ from .audit import audit_workspace
 from .bundle import build_bundle, verify_bundle
 from .demo import build_demo
 from .eln import build_eln, verify_eln
-from .io import read_json, write_json
+from .io import write_json
 from .provenance import compare_seals, latest_seal, seal_workspace, verify_seal
 from .report import build_report
 from .workspace import Workspace
@@ -22,12 +22,16 @@ from .workspace import Workspace
 def _json_argument(value: str) -> Any:
     path = Path(value)
     if path.is_file():
-        return read_json(path)
+        # Windows PowerShell 5.1 writes a UTF-8 BOM for `-Encoding UTF8`.
+        # Accept it at this external-input boundary without relaxing durable records.
+        return json.loads(path.read_text(encoding="utf-8-sig"))
     return json.loads(value)
 
 
 def _print(value: Any) -> None:
-    print(json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True))
+    # CLI output is a machine-readable interchange surface. ASCII-escaped JSON
+    # remains valid on legacy Windows code pages while round-tripping Unicode.
+    print(json.dumps(value, ensure_ascii=True, indent=2, sort_keys=True))
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -35,7 +39,7 @@ def _parser() -> argparse.ArgumentParser:
         prog="benchlineage",
         description="Local-first provenance and uncertainty trails for EE experiments.",
     )
-    parser.add_argument("--version", action="version", version="BenchLineage 0.3.3")
+    parser.add_argument("--version", action="version", version="BenchLineage 0.3.4")
     subcommands = parser.add_subparsers(dest="command", required=True)
 
     initialize = subcommands.add_parser("init", help="initialize a transparent workspace")

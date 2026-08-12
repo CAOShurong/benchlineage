@@ -47,6 +47,14 @@ class WorkspaceTests(unittest.TestCase):
         with self.assertRaises(FileExistsError):
             self.bench.initialize(title="Again", owner="Researcher")
 
+    def test_require_rejects_missing_required_metadata(self):
+        metadata_path = self.root / "benchlineage.json"
+        metadata = read_json(metadata_path)
+        del metadata["owner"]
+        metadata_path.write_text(json.dumps(metadata), encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "workspace owner is required"):
+            self.bench.require()
+
     def test_identifier_normalization(self):
         self.assertEqual(safe_identifier("Scope 01"), "scope-01")
         with self.assertRaises(ValueError):
