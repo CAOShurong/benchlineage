@@ -35,7 +35,7 @@ def _parser() -> argparse.ArgumentParser:
         prog="benchlineage",
         description="Local-first provenance and uncertainty trails for EE experiments.",
     )
-    parser.add_argument("--version", action="version", version="BenchLineage 0.3.2")
+    parser.add_argument("--version", action="version", version="BenchLineage 0.3.3")
     subcommands = parser.add_subparsers(dest="command", required=True)
 
     initialize = subcommands.add_parser("init", help="initialize a transparent workspace")

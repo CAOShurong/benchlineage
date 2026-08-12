@@ -2,6 +2,20 @@
 
 All notable changes to BenchLineage are documented here.
 
+## 0.3.3 - 2026-08-12
+
+### Fixed
+
+- Accepted parent/child Dataset relationships permitted by the current ELN Consortium
+  specification, so current SampleDB exports no longer fail verification.
+- Reported standard RO-Crate preview files and ELN metadata signatures as unverified ancillary
+  members instead of treating them as undeclared evidence payloads.
+
+### Verified
+
+- Pinned public eLabFTW 5.6.9 and SampleDB producer archives by source and SHA-256, then exercised
+  them in CI without redistributing their data in this repository.
+
 ## 0.3.2 - 2026-08-12
 
 ### Fixed
