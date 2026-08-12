@@ -24,7 +24,7 @@ ELN_CONFORMS_TO = "https://w3id.org/ro/crate/1.1"
 ELN_FORMAT_VERSION = "1.0"
 ELN_SHA256_TERM = "https://the.elnconsortium.org/specification/#sha256"
 BENCHLINEAGE_URL = "https://github.com/CAOShurong/benchlineage"
-BENCHLINEAGE_VERSION = "0.3.4"
+BENCHLINEAGE_VERSION = "0.3.5"
 MEDIA_TYPES = {
     ".csv": "text/csv",
     ".gz": "application/gzip",
@@ -341,7 +341,6 @@ def _metadata_document(
         "@type": "Dataset",
         "name": workspace["title"],
         "description": "An ELN Consortium exchange archive exported by BenchLineage.",
-        "license": "No data license was declared; contact the workspace author before reuse.",
         "author": _reference(owner_id),
         "dateCreated": workspace["created_at"],
         "dateModified": seal["created_at"],
@@ -349,6 +348,22 @@ def _metadata_document(
         "identifier": seal["root_digest"],
         "hasPart": [_reference("./workspace/")],
     }
+    if workspace.get("data_license_url"):
+        license_url = workspace["data_license_url"]
+        root_dataset["license"] = _reference(license_url)
+        contextual.append(
+            {
+                "@id": license_url,
+                "@type": "CreativeWork",
+                "name": workspace.get("data_license_name") or "Declared data license",
+                "description": workspace.get("data_license_description")
+                or f"The workspace owner declared this data license: {license_url}",
+            }
+        )
+    else:
+        root_dataset["license"] = (
+            "No data license was declared; contact the workspace author before reuse."
+        )
     experiment_dataset = {
         "@id": "./workspace/",
         "@type": "Dataset",

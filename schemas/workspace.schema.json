@@ -12,6 +12,9 @@
     "owner_email": {"type": "string", "format": "email"},
     "owner_given_name": {"type": "string", "minLength": 1},
     "owner_family_name": {"type": "string", "minLength": 1},
+    "data_license_url": {"type": "string", "format": "uri", "pattern": "^https?://"},
+    "data_license_name": {"type": "string", "minLength": 1},
+    "data_license_description": {"type": "string", "minLength": 1},
     "created_at": {"type": "string", "format": "date-time"},
     "principles": {"type": "array", "items": {"type": "string"}}
   },

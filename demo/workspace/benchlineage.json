@@ -1,5 +1,8 @@
 {
   "created_at": "2026-08-04T07:59:00+00:00",
+  "data_license_description": "The public synthetic demonstration data is distributed under the MIT License. This declaration does not apply to user-created workspaces.",
+  "data_license_name": "MIT License",
+  "data_license_url": "https://spdx.org/licenses/MIT.html",
   "format": "benchlineage-workspace",
   "format_version": "1.0",
   "owner": "Shurong Cao",

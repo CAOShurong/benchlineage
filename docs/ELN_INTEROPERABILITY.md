@@ -184,8 +184,11 @@ were also required to fail without changing the input archives.
   displays every domain-specific entity.
 - The archive carries hashes, not a trusted signature or timestamp. Anyone who can replace both a
   file and its metadata can create a different internally consistent archive.
-- No data license is inferred. When the workspace declares none, the root Dataset explicitly says
-  to contact the author before reuse.
+- No data license is inferred. A workspace may declare an absolute HTTP(S) license URL plus an
+  optional name and description; the exporter links the root Dataset to that RO-Crate contextual
+  entity. When the workspace declares none, the root Dataset explicitly says to contact the author
+  before reuse. The public synthetic demo declares the repository's MIT license, which does not
+  apply to arbitrary user workspaces.
 - Format validity, integrity, and provenance do not establish that an experiment was performed
   correctly or honestly.
 

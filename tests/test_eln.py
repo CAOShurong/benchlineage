@@ -41,6 +41,10 @@ class ElnTests(unittest.TestCase):
         graph = {entity["@id"]: entity for entity in metadata["@graph"]}
         self.assertEqual(graph["ro-crate-metadata.json"]["version"], "1.0")
         self.assertEqual(graph["./"]["@type"], "Dataset")
+        license_id = graph["./"]["license"]["@id"]
+        self.assertEqual(license_id, "https://spdx.org/licenses/MIT.html")
+        self.assertEqual(graph[license_id]["name"], "MIT License")
+        self.assertIn("synthetic demonstration", graph[license_id]["description"])
         self.assertEqual(graph["./workspace/"]["@type"], "Dataset")
         self.assertEqual(graph["./workspace/"]["genre"], "experiment")
         owner = graph["./workspace/"]["author"]["@id"]
@@ -85,6 +89,27 @@ class ElnTests(unittest.TestCase):
         graph = {entity["@id"]: entity for entity in crate["@graph"]}
         owner_id = graph["./workspace/"]["author"]["@id"]
         self.assertNotIn("email", graph[owner_id])
+
+    def test_workspace_without_data_license_keeps_explicit_reuse_warning(self):
+        metadata_path = self.workspace.root / "benchlineage.json"
+        metadata = read_json(metadata_path)
+        for field in (
+            "data_license_url",
+            "data_license_name",
+            "data_license_description",
+        ):
+            metadata.pop(field)
+        write_json(metadata_path, metadata)
+        seal_workspace(self.workspace, label="undeclared data license")
+
+        archive_path = build_eln(self.workspace, self.root / "unlicensed.eln")
+        with zipfile.ZipFile(archive_path) as archive:
+            crate = json.loads(archive.read("unlicensed.eln/ro-crate-metadata.json"))
+        graph = {entity["@id"]: entity for entity in crate["@graph"]}
+        self.assertEqual(
+            graph["./"]["license"],
+            "No data license was declared; contact the workspace author before reuse.",
+        )
 
     def test_unicode_and_space_containing_paths_round_trip(self):
         report = self.workspace.root / "reports" / "trace Ω #1.txt"

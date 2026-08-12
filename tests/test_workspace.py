@@ -43,6 +43,32 @@ class WorkspaceTests(unittest.TestCase):
                 owner_email="not-an-email",
             )
 
+    def test_optional_data_license_is_preserved(self):
+        licensed = Workspace(Path(self.temporary.name) / "licensed")
+        metadata = licensed.initialize(
+            title="Reusable bench",
+            owner="Researcher",
+            data_license_url="https://spdx.org/licenses/CC0-1.0.html",
+            data_license_name="CC0 1.0 Universal",
+            data_license_description="Reusable synthetic fixture.",
+        )
+        self.assertEqual(
+            metadata["data_license_url"],
+            "https://spdx.org/licenses/CC0-1.0.html",
+        )
+        self.assertEqual(metadata["data_license_name"], "CC0 1.0 Universal")
+
+    def test_data_license_details_require_an_absolute_http_url(self):
+        for suffix, options in (
+            ("missing-url", {"data_license_name": "MIT License"}),
+            ("relative-url", {"data_license_url": "licenses/MIT.html"}),
+            ("credentials", {"data_license_url": "https://user@example.org/license"}),
+        ):
+            with self.subTest(suffix=suffix):
+                invalid = Workspace(Path(self.temporary.name) / suffix)
+                with self.assertRaisesRegex(ValueError, "data license"):
+                    invalid.initialize(title="Invalid license", owner="Researcher", **options)
+
     def test_refuses_reinitialize(self):
         with self.assertRaises(FileExistsError):
             self.bench.initialize(title="Again", owner="Researcher")

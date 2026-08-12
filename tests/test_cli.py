@@ -65,6 +65,12 @@ class CliTests(unittest.TestCase):
                         "Ada",
                         "--owner-family-name",
                         "Lovelace",
+                        "--data-license-url",
+                        "https://spdx.org/licenses/CC-BY-4.0.html",
+                        "--data-license-name",
+                        "CC BY 4.0",
+                        "--data-license-description",
+                        "Reusable interop fixture.",
                     ]
                 ),
                 0,
@@ -73,6 +79,11 @@ class CliTests(unittest.TestCase):
         self.assertEqual(metadata["owner_email"], "ada@example.invalid")
         self.assertEqual(metadata["owner_given_name"], "Ada")
         self.assertEqual(metadata["owner_family_name"], "Lovelace")
+        self.assertEqual(
+            metadata["data_license_url"],
+            "https://spdx.org/licenses/CC-BY-4.0.html",
+        )
+        self.assertEqual(metadata["data_license_name"], "CC BY 4.0")
 
     def test_json_output_roundtrips_unicode_on_legacy_code_page(self):
         output_bytes = io.BytesIO()
@@ -199,6 +210,24 @@ class CliTests(unittest.TestCase):
             )
         self.assertEqual(code, 2)
         self.assertIn("owner email", stderr.getvalue())
+
+    def test_init_rejects_license_details_without_url(self):
+        stderr = io.StringIO()
+        with contextlib.redirect_stderr(stderr):
+            code = main(
+                [
+                    "init",
+                    str(self.root),
+                    "--title",
+                    "Invalid license",
+                    "--owner",
+                    "Researcher",
+                    "--data-license-name",
+                    "MIT License",
+                ]
+            )
+        self.assertEqual(code, 2)
+        self.assertIn("data license URL", stderr.getvalue())
 
     def test_duplicate_demo_returns_usage_error(self):
         with contextlib.redirect_stdout(io.StringIO()):

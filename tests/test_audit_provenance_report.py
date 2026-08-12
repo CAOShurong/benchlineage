@@ -49,6 +49,16 @@ class EndToEndTests(unittest.TestCase):
         audit = audit_workspace(self.bench)
         self.assertIn("workspace.owner.email", {entry["code"] for entry in audit["errors"]})
 
+    def test_invalid_persisted_data_license_is_rejected(self):
+        metadata_path = self.root / "benchlineage.json"
+        metadata = read_json(metadata_path)
+        metadata["data_license_url"] = "licenses/MIT.html"
+        write_json(metadata_path, metadata)
+        audit = audit_workspace(self.bench)
+        errors = {entry["code"]: entry["message"] for entry in audit["errors"]}
+        self.assertIn("workspace.data_license", errors)
+        self.assertIn("absolute HTTP(S)", errors["workspace.data_license"])
+
     def test_analysis_before_recorded_run_is_rejected(self):
         analysis_path = self.root / "analysis" / "rc-baseline-001.json"
         analysis = read_json(analysis_path)
@@ -107,7 +117,11 @@ class EndToEndTests(unittest.TestCase):
         self.assertIn("window.__BENCHLINEAGE__", text)
         self.assertNotIn("<script src=", text)
         self.assertNotIn('<link rel="stylesheet"', text)
-        self.assertNotIn("https://", text)
+        self.assertNotRegex(text, r'(?:src|href)=["\']https?://')
+        self.assertIn(
+            '"data_license_url":"https://spdx.org/licenses/MIT.html"',
+            text,
+        )
 
     def test_report_escapes_labels(self):
         metadata_path = self.root / "benchlineage.json"

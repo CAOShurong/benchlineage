@@ -25,6 +25,11 @@ archive location supplies the wider namespace.
 principles. Optional owner email, given-name, and family-name fields allow an ELN importer to map
 the archive author to a local account without guessing how to split a display name. These fields
 are copied into exported archives, so omit them when the author's email should not be disclosed.
+Optional `data_license_url`, `data_license_name`, and `data_license_description` fields let the
+workspace owner declare reuse terms without BenchLineage guessing them. The URL is validated as
+an absolute HTTP(S) URL and becomes a linked RO-Crate license entity in `.eln` exports. A missing
+declaration remains an explicit no-license warning rather than silently inheriting the code
+license.
 
 ## Study
 
