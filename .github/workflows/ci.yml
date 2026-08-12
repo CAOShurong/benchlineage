@@ -74,7 +74,7 @@ jobs:
   eln-interoperability:
     runs-on: ubuntu-latest
     env:
-      ELN_FORMAT_TEST_COMMIT: 74a64fd7d9a1786ebf713e0b6eb12bddfb241d69
+      ELN_FORMAT_TEST_COMMIT: 19028dd2878065b34df7a7df836babaa61ad2845
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
@@ -90,6 +90,16 @@ jobs:
           benchlineage demo eln-demo
           benchlineage export-eln eln-demo --output benchlineage-demo.eln
           benchlineage verify-eln benchlineage-demo.eln
+      - name: Verify pinned third-party producer archives
+        run: |
+          curl --fail --location --output sampledb.eln \
+            "https://raw.githubusercontent.com/TheELNConsortium/TheELNFileFormat/${ELN_FORMAT_TEST_COMMIT}/examples/SampleDB/sampledb_export.eln"
+          curl --fail --location --output elabftw.eln \
+            "https://zenodo.org/api/records/21413739/files/LEGO-showcase_eLab-v5.6.9.eln/content"
+          echo "eab127863e36ad8849875cdbad157796fd9d6925a6f01d01fd06a15769bf3d50  sampledb.eln" | sha256sum --check
+          echo "39958ee74e4be13925ab003659514f93059397b824662d43597ecde2803f1c7c  elabftw.eln" | sha256sum --check
+          benchlineage verify-eln sampledb.eln
+          benchlineage verify-eln elabftw.eln
       - name: Run the pinned ELN Consortium test suites
         run: |
           git init eln-format-tests

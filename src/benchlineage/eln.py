@@ -24,7 +24,7 @@ ELN_CONFORMS_TO = "https://w3id.org/ro/crate/1.1"
 ELN_FORMAT_VERSION = "1.0"
 ELN_SHA256_TERM = "https://the.elnconsortium.org/specification/#sha256"
 BENCHLINEAGE_URL = "https://github.com/CAOShurong/benchlineage"
-BENCHLINEAGE_VERSION = "0.3.2"
+BENCHLINEAGE_VERSION = "0.3.3"
 MEDIA_TYPES = {
     ".csv": "text/csv",
     ".gz": "application/gzip",
@@ -470,6 +470,19 @@ def _digest_archive_member(archive: zipfile.ZipFile, info: zipfile.ZipInfo) -> s
     return hasher.hexdigest()
 
 
+def _is_unverified_ancillary(root: str, member: str) -> bool:
+    """Return whether an unlisted member is reserved packaging, not evidence payload."""
+    prefix = f"{root}/"
+    if not member.startswith(prefix):
+        return False
+    relative = member.removeprefix(prefix)
+    return (
+        relative == "ro-crate-preview.html"
+        or relative.startswith("ro-crate-preview_files/")
+        or relative == "ro-crate-metadata.json.minisig"
+    )
+
+
 def verify_eln(source: str | Path) -> dict[str, Any]:
     """Verify ELN structure and every locally listed payload without extraction."""
     path = Path(source)
@@ -487,6 +500,7 @@ def verify_eln(source: str | Path) -> dict[str, Any]:
         "structure": [],
         "missing": [],
         "added": [],
+        "unverified_ancillary": [],
         "changed": [],
         "invalid_entities": [],
     }
@@ -607,10 +621,6 @@ def verify_eln(source: str | Path) -> dict[str, Any]:
                     )
                     continue
                 referenced_parts.add(child_id)
-                if identifier != "./" and "Dataset" in _entity_types(entities[child_id]):
-                    result["invalid_entities"].append(
-                        f"ELN experiment Dataset contains another Dataset: {identifier}"
-                    )
 
         expected: dict[str, dict[str, Any]] = {}
         for entity in file_entities:
@@ -633,12 +643,14 @@ def verify_eln(source: str | Path) -> dict[str, Any]:
         available = {
             info.filename
             for info in archive.infolist()
-            if not info.is_dir()
-            and info.filename != metadata_name
-            and not info.filename.endswith("/ro-crate-metadata.json.minisig")
+            if not info.is_dir() and info.filename != metadata_name
         }
         result["missing"] = sorted(set(expected) - available)
-        result["added"] = sorted(available - set(expected))
+        unlisted = available - set(expected)
+        result["unverified_ancillary"] = sorted(
+            member for member in unlisted if _is_unverified_ancillary(root, member)
+        )
+        result["added"] = sorted(unlisted - set(result["unverified_ancillary"]))
         for member in sorted(set(expected) & available):
             entity = expected[member]
             info = archive.getinfo(member)

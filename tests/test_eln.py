@@ -1,3 +1,4 @@
+import hashlib
 import json
 import tempfile
 import unittest
@@ -126,6 +127,68 @@ class ElnTests(unittest.TestCase):
             with zipfile.ZipFile(duplicate, "a") as archive:
                 archive.writestr(omitted_name, "second entry")
         self.assertIn(omitted_name, verify_eln(duplicate)["duplicates"])
+
+    def test_parent_child_datasets_and_standard_preview_are_supported(self):
+        payload = b"third-party producer payload\n"
+        digest = hashlib.sha256(payload).hexdigest()
+        metadata = {
+            "@context": "https://w3id.org/ro/crate/1.2/context",
+            "@graph": [
+                {
+                    "@id": "ro-crate-metadata.json",
+                    "@type": "CreativeWork",
+                    "about": {"@id": "./"},
+                    "conformsTo": {"@id": "https://w3id.org/ro/crate/1.2"},
+                },
+                {
+                    "@id": "./",
+                    "@type": "Dataset",
+                    "name": "Third-party export",
+                    "hasPart": [{"@id": "./parent/"}, {"@id": "./child/"}],
+                },
+                {
+                    "@id": "./parent/",
+                    "@type": "Dataset",
+                    "name": "Parent experiment",
+                    "hasPart": [{"@id": "./child/"}],
+                },
+                {
+                    "@id": "./child/",
+                    "@type": "Dataset",
+                    "name": "Child experiment",
+                    "hasPart": [{"@id": "./child/result.txt"}],
+                },
+                {
+                    "@id": "./child/result.txt",
+                    "@type": "File",
+                    "name": "result.txt",
+                    "contentSize": str(len(payload)),
+                    "sha256": digest,
+                },
+            ],
+        }
+        archive_path = self.root / "third-party.eln"
+        with zipfile.ZipFile(archive_path, "w") as archive:
+            archive.writestr("third-party/ro-crate-metadata.json", json.dumps(metadata))
+            archive.writestr("third-party/child/result.txt", payload)
+            archive.writestr(
+                "third-party/ro-crate-preview.html", "<!doctype html><title>Preview</title>"
+            )
+            archive.writestr("third-party/ro-crate-preview_files/style.css", "body {}")
+            archive.writestr("third-party/ro-crate-metadata.json.minisig", "untrusted fixture")
+
+        result = verify_eln(archive_path)
+
+        self.assertTrue(result["valid"])
+        self.assertEqual(result["added"], [])
+        self.assertEqual(
+            result["unverified_ancillary"],
+            [
+                "third-party/ro-crate-metadata.json.minisig",
+                "third-party/ro-crate-preview.html",
+                "third-party/ro-crate-preview_files/style.css",
+            ],
+        )
 
     def test_multiple_roots_are_rejected(self):
         malformed = self.root / "malformed.eln"

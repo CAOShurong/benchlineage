@@ -30,7 +30,10 @@ BenchLineage is tested at six layers.
 - modified ZIP members fail bundle verification;
 - bundle paths cannot escape during extraction.
 - ELN archives are byte-stable for unchanged workspaces;
-- duplicate, unsafe, missing, added, or modified ELN members fail verification;
+- duplicate, unsafe, missing, added, or modified ELN evidence members fail verification;
+- standard RO-Crate preview and ELN signature members remain explicitly reported as unverified
+  ancillary material rather than being mistaken for hashed evidence;
+- parent/child Dataset relationships from current third-party producers are accepted;
 - percent-encoded file identifiers round-trip to Unicode and space-containing member names.
 
 ## 4. End-to-end workflow

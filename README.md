@@ -236,7 +236,11 @@ every member of the finished archive.
 
 `verify-eln` reads the archive without extracting it. It rejects unsafe or duplicate paths,
 multiple archive roots, malformed graph references, missing or unlisted payloads, and byte or
-digest mismatches. Exports are deterministic for the same sealed bytes and output filename.
+digest mismatches. Standard `ro-crate-preview.html`, `ro-crate-preview_files/`, and ELN metadata
+signature members are reported as `unverified_ancillary` instead of evidence: their presence is
+allowed, but BenchLineage does not claim their bytes or signature trust were verified unless the
+metadata separately declares them as hashed File entities. Exports are deterministic for the same
+sealed bytes and output filename.
 
 BenchLineage targets the ELN Consortium's currently exercised RO-Crate 1.1 compatibility surface,
 which maximizes compatibility with existing importers. It does not claim that every target ELN
@@ -244,6 +248,8 @@ will preserve every BenchLineage-specific field in its own interface; the origin
 reports, and seals remain in the archive even when an importer ignores richer metadata. The exact
 mapping and independent validation evidence are documented in
 [ELN interoperability](https://github.com/CAOShurong/benchlineage/blob/main/docs/ELN_INTEROPERABILITY.md).
+BenchLineage does not convert a third-party `.eln` archive into its stricter workspace schema;
+`verify-eln` is a read-only archive check, not an import command.
 
 ## Built-in analyses
 

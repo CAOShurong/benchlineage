@@ -98,7 +98,7 @@ def build_bundle(
     manifest = {
         "schema": BUNDLE_SCHEMA,
         "created_at": seal["created_at"],
-        "created_with": "BenchLineage 0.3.2",
+        "created_with": "BenchLineage 0.3.3",
         "workspace": {
             "title": audit["workspace"],
             "root_digest": seal["root_digest"],
