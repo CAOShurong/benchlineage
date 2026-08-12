@@ -123,6 +123,10 @@ The generated demonstration includes:
 
 ## Start a real workspace
 
+The command blocks in this section use the POSIX-shell `\` line continuation. In PowerShell,
+replace each trailing `\` with a backtick (`` ` ``), or put the command on one line. Use a JSON
+file for structured arguments as shown below; this avoids shell-dependent quote handling.
+
 ```bash
 benchlineage init thesis-bench \
   --title "Wide-bandgap converter characterization" \
@@ -164,7 +168,18 @@ BenchLineage and avoids locking a lab into one driver ecosystem:
 thesis-bench/data/raw/gate-loop-rg2p2.csv
 ```
 
-Record the run:
+Save the run conditions as `conditions.json`:
+
+```json
+{
+  "bus_voltage_v": 400,
+  "load_current_a": 20,
+  "gate_resistance_ohm": 2.2
+}
+```
+
+Record the run. The `--conditions` option accepts either a JSON file path or inline JSON; the file
+form works unchanged in POSIX shells and PowerShell:
 
 ```bash
 benchlineage add-run thesis-bench \
@@ -174,7 +189,7 @@ benchlineage add-run thesis-bench \
   --started-at 2026-08-04T14:00:00+08:00 \
   --instrument scope-01 \
   --raw-file data/raw/gate-loop-rg2p2.csv \
-  --conditions '{"bus_voltage_v":400,"load_current_a":20,"gate_resistance_ohm":2.2}'
+  --conditions conditions.json
 ```
 
 Then analyze, audit, seal, and report:

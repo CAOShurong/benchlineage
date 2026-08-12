@@ -151,6 +151,8 @@ def check_release_metadata(errors: list[str]) -> None:
         ("README", readme, "python -m pip install benchlineage"),
         ("README", readme, "benchlineage export-eln"),
         ("README", readme, "benchlineage diff-seals"),
+        ("README", readme, "In PowerShell"),
+        ("README", readme, "--conditions conditions.json"),
     ):
         if marker not in text:
             errors.append(f"{label} release metadata is inconsistent")
