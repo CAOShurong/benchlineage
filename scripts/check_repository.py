@@ -23,8 +23,8 @@ TEXT_SUFFIXES = {
     ".yml",
 }
 IGNORED_PARTS = {".git", ".venv", "__pycache__", "build", "dist"}
-EXPECTED_VERSION = "0.3.5"
-EXPECTED_RELEASE_DATE = "2026-08-13"
+EXPECTED_VERSION = "0.3.6"
+EXPECTED_RELEASE_DATE = "2026-08-23"
 
 
 def is_ignored(path: Path) -> bool:
