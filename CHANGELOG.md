@@ -2,7 +2,7 @@
 
 All notable changes to BenchLineage are documented here.
 
-## Unreleased
+## 0.3.6 - 2026-08-23
 
 ### Changed
 
