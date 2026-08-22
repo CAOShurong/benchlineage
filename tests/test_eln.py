@@ -254,7 +254,9 @@ class ElnTests(unittest.TestCase):
         graph = metadata["@graph"]
         root = next(entity for entity in graph if entity.get("genre") == "experiment")
         self.assertIsInstance(root["keywords"], str)
-        self.assertTrue(all(", " not in tag for tag in root["keywords"].split(", ") or [root["keywords"]]))
+        self.assertTrue(
+            all(", " not in tag for tag in root["keywords"].split(", ") or [root["keywords"]])
+        )
 
     def test_output_inside_workspace_and_wrong_extension_are_rejected(self):
         with self.assertRaisesRegex(ValueError, "outside the workspace"):

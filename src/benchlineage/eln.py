@@ -9,10 +9,10 @@ import shutil
 import tempfile
 import zipfile
 from collections import Counter
+from collections.abc import Iterable
 from contextlib import suppress
 from pathlib import Path, PurePosixPath
 from typing import Any
-from collections.abc import Iterable
 from urllib.parse import quote, unquote, urlparse
 
 from .audit import audit_workspace
@@ -71,6 +71,7 @@ def _keywords(tags: Iterable[str]) -> str:
             f"string): {offending!r}; rename the tag or replace the comma"
         )
     return ", ".join(str(tag) for tag in items)
+
 
 def _file_info(name: str) -> zipfile.ZipInfo:
     info = zipfile.ZipInfo(name, date_time=(1980, 1, 1, 0, 0, 0))
