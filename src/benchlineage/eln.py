@@ -11,7 +11,8 @@ import zipfile
 from collections import Counter
 from contextlib import suppress
 from pathlib import Path, PurePosixPath
-from typing import Any, Iterable
+from typing import Any
+from collections.abc import Iterable
 from urllib.parse import quote, unquote, urlparse
 
 from .audit import audit_workspace
