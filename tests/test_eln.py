@@ -237,6 +237,27 @@ class ElnTests(unittest.TestCase):
             result["structure"],
         )
 
+    def test_tags_containing_commas_are_rejected_at_export(self):
+        study_path = sorted((self.workspace.root / "studies").glob("*.json"))[0]
+        record = read_json(study_path)
+        record["tags"] = ["gain, phase", "stability"]
+        write_json(study_path, record)
+        seal_workspace(self.workspace, label="comma tags fixture")
+
+        with self.assertRaisesRegex(ValueError, "tags containing commas"):
+            build_eln(self.workspace, self.root / "comma.eln")
+
+    def test_normal_tags_export_as_consortium_string_keywords(self):
+        export = build_eln(self.workspace, self.root / "keywords.eln")
+        with zipfile.ZipFile(export) as archive:
+            metadata = json.loads(archive.read("keywords.eln/ro-crate-metadata.json"))
+        graph = metadata["@graph"]
+        root = next(entity for entity in graph if entity.get("genre") == "experiment")
+        self.assertIsInstance(root["keywords"], str)
+        self.assertTrue(
+            all(", " not in tag for tag in root["keywords"].split(", ") or [root["keywords"]])
+        )
+
     def test_output_inside_workspace_and_wrong_extension_are_rejected(self):
         with self.assertRaisesRegex(ValueError, "outside the workspace"):
             build_eln(self.workspace, self.workspace.root / "evidence.eln")

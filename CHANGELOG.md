@@ -2,6 +2,16 @@
 
 All notable changes to BenchLineage are documented here.
 
+## Unreleased
+
+### Changed
+
+- `.eln` export now rejects tags that contain commas with a concise, actionable error: the ELN
+  Consortium test suite requires keywords as one comma-separated string, which cannot represent
+  such a tag without silently splitting it into different keywords on import. Previously the
+  ambiguous value was exported without warning (see the property-type discussion in
+  TheELNFileFormat/TheELNFileFormat#158).
+
 ## 0.3.5 - 2026-08-13
 
 ### Added

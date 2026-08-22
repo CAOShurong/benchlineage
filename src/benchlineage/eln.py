@@ -9,6 +9,7 @@ import shutil
 import tempfile
 import zipfile
 from collections import Counter
+from collections.abc import Iterable
 from contextlib import suppress
 from pathlib import Path, PurePosixPath
 from typing import Any
@@ -50,6 +51,26 @@ MEDIA_TYPES = {
     ".yml": "application/yaml",
     ".zip": "application/zip",
 }
+
+
+def _keywords(tags: Iterable[str]) -> str:
+    """Render tags as the .eln comma-separated keyword string.
+
+    The ELN Consortium test suite requires keywords as a comma- or
+    space-separated string, which cannot represent a tag that itself
+    contains a comma. Refuse such tags loudly instead of exporting an
+    ambiguous value that would silently split into different tags on
+    import.
+    """
+    items = list(tags)
+    offending = [tag for tag in items if "," in str(tag)]
+    if offending:
+        raise ValueError(
+            "cannot export tags containing commas to .eln "
+            "(the exchange format stores keywords as one comma-separated "
+            f"string): {offending!r}; rename the tag or replace the comma"
+        )
+    return ", ".join(str(tag) for tag in items)
 
 
 def _file_info(name: str) -> zipfile.ZipInfo:
@@ -216,7 +237,7 @@ def _metadata_document(
             "description": record["objective"],
             "abstract": record.get("hypothesis", ""),
             "text": record["protocol"],
-            "keywords": ", ".join(record.get("tags", [])),
+            "keywords": _keywords(record.get("tags", [])),
             "dateCreated": record.get("created_at", workspace["created_at"]),
         }
         studies[record["id"]] = entity
@@ -375,7 +396,7 @@ def _metadata_document(
         "dateModified": seal["created_at"],
         "identifier": seal["root_digest"],
         "text": summary,
-        "keywords": ", ".join(sorted(tags)),
+        "keywords": _keywords(sorted(tags)),
         "hasPart": [
             _reference(file_ids[path.relative_to(bench.root).as_posix()]) for path in files
         ],
