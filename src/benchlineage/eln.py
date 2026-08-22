@@ -216,7 +216,7 @@ def _metadata_document(
             "description": record["objective"],
             "abstract": record.get("hypothesis", ""),
             "text": record["protocol"],
-            "keywords": ", ".join(record.get("tags", [])),
+            "keywords": list(record.get("tags", [])),
             "dateCreated": record.get("created_at", workspace["created_at"]),
         }
         studies[record["id"]] = entity
@@ -375,7 +375,7 @@ def _metadata_document(
         "dateModified": seal["created_at"],
         "identifier": seal["root_digest"],
         "text": summary,
-        "keywords": ", ".join(sorted(tags)),
+        "keywords": sorted(tags),
         "hasPart": [
             _reference(file_ids[path.relative_to(bench.root).as_posix()]) for path in files
         ],
