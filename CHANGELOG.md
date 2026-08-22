@@ -2,6 +2,15 @@
 
 All notable changes to BenchLineage are documented here.
 
+## 0.3.7 - 2026-08-23
+
+### Fixed
+
+- Corrected the 0.3.6 release process: the published 0.3.6 wheel carried
+  `benchlineage.__version__ = "0.3.5"` internally while its package metadata said
+  0.3.6 (three version pins were missed when tagging). 0.3.7 is the first fully
+  consistent release of the comma-tag export guard; 0.3.6 should be yanked.
+
 ## 0.3.6 - 2026-08-23
 
 ### Changed
