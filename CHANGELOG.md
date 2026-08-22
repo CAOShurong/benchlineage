@@ -6,9 +6,10 @@ All notable changes to BenchLineage are documented here.
 
 ### Changed
 
-- `.eln` exports now emit `keywords` as a list of strings instead of a comma-separated string,
-  so tags that themselves contain commas round-trip as distinct keywords without ambiguity
-  (aligns with the property-type agreement discussion in
+- `.eln` export now rejects tags that contain commas with a concise, actionable error: the ELN
+  Consortium test suite requires keywords as one comma-separated string, which cannot represent
+  such a tag without silently splitting it into different keywords on import. Previously the
+  ambiguous value was exported without warning (see the property-type discussion in
   TheELNFileFormat/TheELNFileFormat#158).
 
 ## 0.3.5 - 2026-08-13

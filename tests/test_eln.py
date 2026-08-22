@@ -237,27 +237,24 @@ class ElnTests(unittest.TestCase):
             result["structure"],
         )
 
-    def test_tags_containing_commas_round_trip_as_distinct_keywords(self):
+    def test_tags_containing_commas_are_rejected_at_export(self):
         study_path = sorted((self.workspace.root / "studies").glob("*.json"))[0]
         record = read_json(study_path)
         record["tags"] = ["gain, phase", "stability"]
         write_json(study_path, record)
         seal_workspace(self.workspace, label="comma tags fixture")
 
-        export = build_eln(self.workspace, self.root / "comma.eln")
+        with self.assertRaisesRegex(ValueError, "tags containing commas"):
+            build_eln(self.workspace, self.root / "comma.eln")
+
+    def test_normal_tags_export_as_consortium_string_keywords(self):
+        export = build_eln(self.workspace, self.root / "keywords.eln")
         with zipfile.ZipFile(export) as archive:
-            metadata = json.loads(archive.read("comma.eln/ro-crate-metadata.json"))
+            metadata = json.loads(archive.read("keywords.eln/ro-crate-metadata.json"))
         graph = metadata["@graph"]
-        study = next(
-            entity
-            for entity in graph
-            if entity.get("@type") == "CreativeWork" and entity.get("name") == record["title"]
-        )
-        self.assertEqual(study["keywords"], ["gain, phase", "stability"])
         root = next(entity for entity in graph if entity.get("genre") == "experiment")
-        self.assertIn("gain, phase", root["keywords"])
-        self.assertIn("stability", root["keywords"])
-        self.assertIsInstance(root["keywords"], list)
+        self.assertIsInstance(root["keywords"], str)
+        self.assertTrue(all(", " not in tag for tag in root["keywords"].split(", ") or [root["keywords"]]))
 
     def test_output_inside_workspace_and_wrong_extension_are_rejected(self):
         with self.assertRaisesRegex(ValueError, "outside the workspace"):
