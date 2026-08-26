@@ -73,6 +73,22 @@ middle, and every surrounding statement has a recorded source.
 
 <p align="center"><sub>Integrity checks answer whether recorded files changed; they do not certify whether the experiment was scientifically correct.</sub></p>
 
+## Try it without installing
+
+Any command runs straight off PyPI through [uv](https://docs.astral.sh/uv/) or pipx — no
+environment to create, nothing added to your Python installation:
+
+```bash
+uvx benchlineage demo my-bench --seed 20260804
+uvx benchlineage verify my-bench
+```
+
+The first command builds a complete synthetic workspace — instruments, calibrations, an RC
+low-pass sweep followed by a deliberate resistor substitution, derived analyses and uncertainty
+budgets — seals it, and writes `my-bench/reports/demo-report.html`. The second re-hashes every
+evidence file and checks the inventory against the recorded root digest; the expected result is
+`"valid": true`. Swap `demo` for `init` whenever you want to start recording real work.
+
 ## Install
 
 Install from PyPI:
@@ -81,6 +97,10 @@ Install from PyPI:
 python -m pip install benchlineage
 benchlineage --version
 ```
+
+Or don't install at all: `uvx benchlineage <command>` (and `pipx run benchlineage <command>`)
+runs each command from a cached, isolated environment — see
+[the one-minute demonstration](#try-it-without-installing).
 
 For an isolated one-off demonstration with [pipx](https://pipx.pypa.io/):
 
