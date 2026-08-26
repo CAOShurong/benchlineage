@@ -2,6 +2,21 @@
 
 All notable changes to BenchLineage are documented here.
 
+## 0.3.8 - 2026-08-26
+
+### Fixed
+
+- Eliminated the last version-number drift: the `BenchLineage 0.3.5` string was
+  still hardcoded in four output surfaces — the `benchlineage --version` banner,
+  the bundle `created_with` stamp, the ELN `SoftwareApplication.version` entity,
+  and the report footer — while the package metadata and `__version__` already
+  said 0.3.7. Every version string now derives from a single source
+  (`src/benchlineage/_version.py`), so a release can no longer print one number
+  while shipping another.
+- Added `tests/test_version_consistency.py` and a `scripts/check_repository.py`
+  rule that fail the build on any hardcoded semver literal outside `_version.py`,
+  closing the escape hatch that let 0.3.6 and 0.3.7 slip past.
+
 ## 0.3.7 - 2026-08-23
 
 ### Fixed

@@ -15,6 +15,7 @@ from pathlib import Path, PurePosixPath
 from typing import Any
 from urllib.parse import quote, unquote, urlparse
 
+from ._version import __version__
 from .audit import audit_workspace
 from .io import canonical_json, digest_file, read_json, relative_files
 from .provenance import latest_seal, verify_seal
@@ -25,7 +26,7 @@ ELN_CONFORMS_TO = "https://w3id.org/ro/crate/1.1"
 ELN_FORMAT_VERSION = "1.0"
 ELN_SHA256_TERM = "https://the.elnconsortium.org/specification/#sha256"
 BENCHLINEAGE_URL = "https://github.com/CAOShurong/benchlineage"
-BENCHLINEAGE_VERSION = "0.3.5"
+BENCHLINEAGE_VERSION = __version__
 MEDIA_TYPES = {
     ".csv": "text/csv",
     ".gz": "application/gzip",

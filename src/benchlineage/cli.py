@@ -8,6 +8,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from ._version import __version__
 from .analysis import analyze_run
 from .audit import audit_workspace
 from .bundle import build_bundle, verify_bundle
@@ -39,7 +40,7 @@ def _parser() -> argparse.ArgumentParser:
         prog="benchlineage",
         description="Local-first provenance and uncertainty trails for EE experiments.",
     )
-    parser.add_argument("--version", action="version", version="BenchLineage 0.3.5")
+    parser.add_argument("--version", action="version", version=f"BenchLineage {__version__}")
     subcommands = parser.add_subparsers(dest="command", required=True)
 
     initialize = subcommands.add_parser("init", help="initialize a transparent workspace")

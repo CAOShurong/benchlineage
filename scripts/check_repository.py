@@ -23,8 +23,8 @@ TEXT_SUFFIXES = {
     ".yml",
 }
 IGNORED_PARTS = {".git", ".venv", "__pycache__", "build", "dist"}
-EXPECTED_VERSION = "0.3.7"
-EXPECTED_RELEASE_DATE = "2026-08-23"
+EXPECTED_VERSION = "0.3.8"
+EXPECTED_RELEASE_DATE = "2026-08-26"
 
 
 def is_ignored(path: Path) -> bool:
@@ -144,10 +144,12 @@ def check_release_metadata(errors: list[str]) -> None:
     changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     package = (ROOT / "src" / "benchlineage" / "__init__.py").read_text(encoding="utf-8")
+    version_module = (ROOT / "src" / "benchlineage" / "_version.py").read_text(encoding="utf-8")
     for label, text, marker in (
         ("citation", citation, f"version: {EXPECTED_VERSION}"),
         ("changelog", changelog, f"## {EXPECTED_VERSION}"),
-        ("package", package, f'__version__ = "{EXPECTED_VERSION}"'),
+        ("package", package, 'from ._version import __version__'),
+        ("version module", version_module, f'__version__ = "{EXPECTED_VERSION}"'),
         ("README", readme, "python -m pip install benchlineage"),
         ("README", readme, "benchlineage export-eln"),
         ("README", readme, "benchlineage diff-seals"),
@@ -156,6 +158,17 @@ def check_release_metadata(errors: list[str]) -> None:
     ):
         if marker not in text:
             errors.append(f"{label} release metadata is inconsistent")
+    version_module = (ROOT / "src" / "benchlineage" / "_version.py").read_text(encoding="utf-8")
+    if f'__version__ = "{EXPECTED_VERSION}"' not in version_module:
+        errors.append("_version.py does not match the release")
+    for source in (ROOT / "src" / "benchlineage").glob("*.py"):
+        if source.name == "_version.py":
+            continue
+        text = source.read_text(encoding="utf-8")
+        if re.search(r"[\"']\d+\.\d+\.\d+[\"']", text):
+            errors.append(
+                f"hardcoded version string in {source.relative_to(ROOT)}; import from _version"
+            )
     for relative in (
         "docs/assets/hero.svg",
         "docs/assets/workflow.svg",

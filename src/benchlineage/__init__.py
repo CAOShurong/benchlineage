@@ -1,5 +1,6 @@
 """BenchLineage public package."""
 
+from ._version import __version__
 from .analysis import analyze_run
 from .audit import audit_workspace
 from .bundle import build_bundle, verify_bundle
@@ -10,6 +11,7 @@ from .report import build_report
 from .workspace import Workspace
 
 __all__ = [
+    "__version__",
     "Workspace",
     "analyze_run",
     "audit_workspace",
@@ -23,5 +25,3 @@ __all__ = [
     "verify_bundle",
     "verify_eln",
 ]
-
-__version__ = "0.3.7"

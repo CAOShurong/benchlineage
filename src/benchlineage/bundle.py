@@ -10,12 +10,14 @@ from contextlib import suppress
 from pathlib import Path, PurePosixPath
 from typing import Any
 
+from ._version import __version__
 from .audit import audit_workspace
 from .io import canonical_json, digest_bytes, digest_file, read_json, relative_files
 from .provenance import latest_seal, verify_seal
 from .workspace import Workspace
 
 BUNDLE_SCHEMA = "benchlineage/bundle/v1"
+_CREATED_WITH = f"BenchLineage {__version__}"
 _README = """BenchLineage evidence bundle
 ============================
 
@@ -98,7 +100,7 @@ def build_bundle(
     manifest = {
         "schema": BUNDLE_SCHEMA,
         "created_at": seal["created_at"],
-        "created_with": "BenchLineage 0.3.5",
+        "created_with": _CREATED_WITH,
         "workspace": {
             "title": audit["workspace"],
             "root_digest": seal["root_digest"],
