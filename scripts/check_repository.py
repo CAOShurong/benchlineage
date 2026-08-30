@@ -148,7 +148,7 @@ def check_release_metadata(errors: list[str]) -> None:
     for label, text, marker in (
         ("citation", citation, f"version: {EXPECTED_VERSION}"),
         ("changelog", changelog, f"## {EXPECTED_VERSION}"),
-        ("package", package, 'from ._version import __version__'),
+        ("package", package, "from ._version import __version__"),
         ("version module", version_module, f'__version__ = "{EXPECTED_VERSION}"'),
         ("README", readme, "python -m pip install benchlineage"),
         ("README", readme, "benchlineage export-eln"),

@@ -88,7 +88,7 @@ def test_eln_software_version_carries_package_version(tmp_path):
     from benchlineage.demo import build_demo
     from benchlineage.eln import BENCHLINEAGE_VERSION, build_eln
 
-    assert BENCHLINEAGE_VERSION == __version__
+    assert __version__ == BENCHLINEAGE_VERSION
     workspace = tmp_path / "ws"
     build_demo(str(workspace))
     eln_path = tmp_path / "ws.eln"
@@ -99,8 +99,6 @@ def test_eln_software_version_carries_package_version(tmp_path):
         )
         graph = json.loads(archive.read(metadata_name))["@graph"]
     versions = [
-        entity["version"]
-        for entity in graph
-        if entity.get("@type") == "SoftwareApplication"
+        entity["version"] for entity in graph if entity.get("@type") == "SoftwareApplication"
     ]
     assert versions == [f"{__version__}"]
