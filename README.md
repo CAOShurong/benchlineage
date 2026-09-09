@@ -18,6 +18,15 @@ When the record needs to leave the project directory, BenchLineage can produce e
 byte-verifiable evidence bundle or an interoperable `.eln` archive for electronic laboratory
 notebook exchange.
 
+<p align="center">
+  <a href="https://github.com/CAOShurong/benchlineage/actions/workflows/ci.yml"><img src="https://github.com/CAOShurong/benchlineage/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://pypi.org/project/benchlineage/"><img src="https://img.shields.io/pypi/v/benchlineage?color=2b6f6b" alt="PyPI"></a>
+  <a href="https://pypi.org/project/benchlineage/"><img src="https://img.shields.io/pypi/dm/benchlineage?color=2b6f6b&logo=pypi&logoColor=white" alt="Downloads"></a>
+  <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.11%2B-20384a" alt="Python 3.11+"></a>
+  <a href="https://caoshurong.github.io/benchlineage/"><img src="https://img.shields.io/badge/docs-live%20demo-28766d" alt="Live Demo"></a>
+  <a href="https://github.com/CAOShurong/benchlineage/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-a47a36" alt="License: MIT"></a>
+</p>
+
 [Live demonstration](https://caoshurong.github.io/benchlineage/)
 · [Synthetic report](https://caoshurong.github.io/benchlineage/demo/demo-report.html)
 · [PyPI package](https://pypi.org/project/benchlineage/)
